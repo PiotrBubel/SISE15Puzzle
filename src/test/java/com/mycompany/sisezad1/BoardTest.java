@@ -166,7 +166,6 @@ public class BoardTest {
 
         Board instance = new Board(state);
         boolean expResult = true;
-        System.out.println("1 x=" + instance.findZero()[0] + ", y=" + instance.findZero()[1]);
         boolean result = instance.canMoveLeft();
         assertEquals(expResult, result);
 
@@ -178,7 +177,6 @@ public class BoardTest {
         };
 
         instance = new Board(state);
-        System.out.println("2 x=" + instance.findZero()[0] + ", y=" + instance.findZero()[1]);
         expResult = false;
         result = instance.canMoveLeft();
         assertEquals(expResult, result);
@@ -368,6 +366,335 @@ public class BoardTest {
             {5, 6, 7, 8},
             {9, 10, 11, 12},
             {13, 14, 0, 15}
+        };
+
+        Board expResult = new Board(state2);
+        Board result = instance.moveDown();
+
+        assertArrayEquals(expResult.getState(), result.getState());
+    }
+
+    //---------------------------------------------------------------------------
+    /**
+     * Test of isCorrect method, of class Board.
+     */
+    @org.junit.Test
+    public void testIsCorrectUnsymmetrical() {
+
+        int[][] state = new int[][]{
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 11, 0}
+        };
+
+        Board instance = new Board(state);
+        boolean expResult = true;
+        boolean result = instance.isCorrect();
+        assertEquals(expResult, result);
+    }
+
+    @org.junit.Test
+    public void testIsCorrectFalseUnsymmetrical() {
+
+        int[][] state = new int[][]{
+            {1, 2, 3, 4},
+            {5, 6, 7, 8},
+            {9, 10, 0, 11},};
+
+        Board instance = new Board(state);
+        boolean expResult = false;
+        boolean result = instance.isCorrect();
+        assertEquals(expResult, result);
+    }
+
+    @org.junit.Test
+    public void testFindZeroUnsymmetrical() {
+
+        int[][] state = new int[][]{
+            {1, 3, 2},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 11, 0}
+        };
+
+        Board instance = new Board(state);
+        int[] expResult = new int[2];
+        expResult[0] = 3;
+        expResult[1] = 2;
+        int[] result = instance.findZero();
+        assertEquals(expResult[0], result[0]);
+        assertEquals(expResult[1], result[1]);
+    }
+
+    /**
+     * Test of countMisplaced method, of class Board.
+     */
+    @Test
+    public void testCountMisplacedUnsymmetrical() {
+
+        int[][] state = new int[][]{
+            {1, 2, 3, 4},
+            {5, 6, 7, 8},
+            {9, 10, 0, 11},};
+
+        Board instance = new Board(state);
+        int expResult = 2;
+        int result = instance.countMisplaced();
+        assertEquals(expResult, result);
+
+        state = new int[][]{
+            {2, 3, 1},
+            {6, 4, 5},
+            {8, 9, 7},
+            {11, 0, 10}
+        };
+
+        instance = new Board(state);
+        expResult = 12;
+        result = instance.countMisplaced();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of canMoveRight method, of class Board.
+     */
+    @Test
+    public void testCanMoveRightUnsymmetrical() {
+        int[][] state = new int[][]{
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 0, 11}
+        };
+
+        Board instance = new Board(state);
+        boolean expResult = true;
+        boolean result = instance.canMoveRight();
+        assertEquals(expResult, result);
+
+        state = new int[][]{
+            {1, 2, 3, 4},
+            {5, 6, 7, 8},
+            {9, 10, 11, 0}
+        };
+
+        instance = new Board(state);
+        expResult = false;
+        result = instance.canMoveRight();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of canMoveLeft method, of class Board.
+     */
+    @Test
+    public void testCanMoveLeftUnsymmetrical() {
+        int[][] state = new int[][]{
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 11, 0}
+        };
+
+        Board instance = new Board(state);
+        boolean expResult = true;
+        boolean result = instance.canMoveLeft();
+        assertEquals(expResult, result);
+
+        state = new int[][]{
+            {1, 2, 3, 4},
+            {5, 6, 7, 8},
+            {0, 9, 10, 11}
+        };
+
+        instance = new Board(state);
+        expResult = false;
+        result = instance.canMoveLeft();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of canMoveUp method, of class Board.
+     */
+    @Test
+    public void testCanMoveUpUnsymmetrical() {
+        int[][] state = new int[][]{
+            {1, 2, 3, 4},
+            {5, 6, 7, 8},
+            {9, 10, 0, 11}
+        };
+
+        Board instance = new Board(state);
+        boolean expResult = true;
+        boolean result = instance.canMoveUp();
+        assertEquals(expResult, result);
+
+        state = new int[][]{
+            {1, 2, 0},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 11, 3}
+        };
+
+        instance = new Board(state);
+        expResult = false;
+        result = instance.canMoveUp();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of canMoveDown method, of class Board.
+     */
+    @Test
+    public void testCanMoveDownUnsymmetrical() {
+        int[][] state = new int[][]{
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 11, 0}
+        };
+
+        Board instance = new Board(state);
+        boolean expResult = false;
+        boolean result = instance.canMoveDown();
+        assertEquals(expResult, result);
+
+        state = new int[][]{
+            {1, 2, 3, 4},
+            {5, 6, 7, 0},
+            {9, 10, 11, 8},};
+
+        instance = new Board(state);
+        expResult = true;
+        result = instance.canMoveDown();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of canMoveDown method, of class Board.
+     */
+    @Test
+    public void testPrintUnsymmetrical() {
+        int[][] state = new int[][]{
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 11, 0}
+        };
+
+        Board instance = new Board(state);
+        instance.print(System.out);
+    }
+
+    /**
+     * Test of getState method, of class Board.
+     */
+    @Test
+    public void testGetStateUnsymmetrical() {
+        int[][] state = new int[][]{
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 11, 0}
+        };
+        Board instance = new Board(state);
+        int[][] result = instance.getState();
+        assertArrayEquals(state, result);
+    }
+
+    /**
+     * Test of moveRight method, of class Board.
+     */
+    @Test
+    public void testMoveRightUnsymmetrical() {
+        int[][] state = new int[][]{
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 0, 11}
+        };
+        Board instance = new Board(state);
+        int[][] state2 = new int[][]{
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 11, 0}
+        };
+
+        Board expResult = new Board(state2);
+        Board result = instance.moveRight();
+
+        assertArrayEquals(expResult.getState(), result.getState());
+    }
+
+    /**
+     * Test of moveLeft method, of class Board.
+     */
+    @Test
+    public void testMoveLeftUnsymmetrical() {
+        int[][] state = new int[][]{
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 11, 0}
+        };
+        Board instance = new Board(state);
+        int[][] state2 = new int[][]{
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 0, 11}
+        };
+
+        Board expResult = new Board(state2);
+        Board result = instance.moveLeft();
+
+        assertArrayEquals(expResult.getState(), result.getState());
+    }
+
+    /**
+     * Test of moveUp method, of class Board.
+     */
+    @Test
+    public void testMoveUpUnsymmetrical() {
+        int[][] state = new int[][]{
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 11, 0}
+        };
+        Board instance = new Board(state);
+        int[][] state2 = new int[][]{
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 0},
+            {10, 11, 9}
+        };
+
+        Board expResult = new Board(state2);
+        Board result = instance.moveUp();
+
+        assertArrayEquals(expResult.getState(), result.getState());
+    }
+
+    /**
+     * Test of moveDown method, of class Board.
+     */
+    @Test
+    public void testMoveDownUnsymmetrical() {
+        int[][] state = new int[][]{
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 0},
+            {10, 11, 9}
+        };
+        Board instance = new Board(state);
+        int[][] state2 = new int[][]{
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9},
+            {10, 11, 0}
         };
 
         Board expResult = new Board(state2);

@@ -26,9 +26,9 @@ public class Board {
         int misplaced = 0;
         int correctValue = 1;
 
-        for (int x = 0; x < state[0].length; x++) {
-            for (int y = 0; y < state.length; y++) {
-                if (x == state[0].length - 1 && y == state.length - 1) {
+        for (int x = 0; x < state.length; x++) {
+            for (int y = 0; y < state[0].length; y++) {
+                if (x == state.length - 1 && y == state[0].length - 1) {
                     correctValue = 0;
                 }
                 if (state[x][y] != correctValue) {
@@ -49,8 +49,8 @@ public class Board {
         int[] coordinates = new int[2];
         coordinates[0] = coordinates[1] = -1;
 
-        for (int x = 0; x < state[0].length; x++) {
-            for (int y = 0; y < state.length; y++) {
+        for (int x = 0; x < state.length; x++) {
+            for (int y = 0; y < state[0].length; y++) {
                 if (state[x][y] == 0) {
                     coordinates[0] = x;
                     coordinates[1] = y;
@@ -62,11 +62,16 @@ public class Board {
     }
 
     public void print(PrintStream out) {
-        for (int x = 0; x < state[0].length; x++) {
-            for (int y = 0; y < state.length; y++) {
-                out.print(state[x][y] + "\t");
+        for (int x = 0; x < state.length; x++) {
+            for (int y = 0; y < state[0].length; y++) {
+                out.print(state[x][y]);
+                if (y < state[0].length - 1) {
+                    out.print("\t");
+                }
             }
-            out.println("");
+            if (x < state.length - 1) {
+                out.println();
+            }
         }
     }
 

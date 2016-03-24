@@ -57,14 +57,18 @@ public class Main {
             {1, 2, 3, 4},
             {5, 6, 7, 8},
             {9, 10, 11, 12},
+            {13, 14, 0, 15},
             {13, 14, 0, 15}
         };
 
         Board instance = new Board(state);
-        SaveLoadFile.saveData("plik.txt", instance);
-        //SaveLoadFile.loadData3("plik.txt");
 
-        instance = ConsoleManualMode.manualMode(instance);
+        instance.print();
+
+        SaveLoadFile.saveData("plik.txt", instance);
+        instance = SaveLoadFile.loadData3("plik.txt");
+
+        //instance = ConsoleManualMode.manualMode(instance);
         instance.print();
 
         System.exit(0);
