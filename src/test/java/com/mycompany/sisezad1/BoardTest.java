@@ -23,6 +23,8 @@ public class BoardTest {
 
     @BeforeClass
     public static void setUpClass() {
+		
+		
     }
 
     @AfterClass

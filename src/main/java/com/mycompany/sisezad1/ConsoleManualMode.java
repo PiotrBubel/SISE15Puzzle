@@ -70,7 +70,7 @@ public class ConsoleManualMode {
             }
 
         } while (!current.isCorrect() && end);
-        
+
         return current;
     }
 }
