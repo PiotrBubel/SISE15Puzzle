@@ -5,15 +5,17 @@
  */
 package com.mycompany.sisezad1;
 
+import com.mycompany.sisezad1.utils.BoardUtils;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
- *
  * @author Piotrek
  */
 public class BoardTest {
@@ -23,8 +25,8 @@ public class BoardTest {
 
     @BeforeClass
     public static void setUpClass() {
-		
-		
+
+
     }
 
     @AfterClass
@@ -46,10 +48,10 @@ public class BoardTest {
     public void testIsCorrect() {
 
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 15, 0}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 15, 0}
         };
 
         Board instance = new Board(state);
@@ -62,10 +64,10 @@ public class BoardTest {
     public void testIsCorrectFalse() {
 
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 0, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 0, 15}
         };
 
         Board instance = new Board(state);
@@ -78,10 +80,10 @@ public class BoardTest {
     public void testFindZero() {
 
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 0, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 0, 15}
         };
 
         Board instance = new Board(state);
@@ -100,27 +102,27 @@ public class BoardTest {
     public void testCountMisplaced() {
 
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 0, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 0, 15}
         };
 
         Board instance = new Board(state);
         int expResult = 2;
-        int result = instance.countMisplaced();
+        int result = BoardUtils.countMisplaced(instance);
         assertEquals(expResult, result);
 
         state = new int[][]{
-            {2, 1, 4, 3},
-            {6, 5, 8, 7},
-            {10, 9, 12, 11},
-            {0, 15, 14, 13}
+                {2, 1, 4, 3},
+                {6, 5, 8, 7},
+                {10, 9, 12, 11},
+                {0, 15, 14, 13}
         };
 
         instance = new Board(state);
         expResult = 16;
-        result = instance.countMisplaced();
+        result = BoardUtils.countMisplaced(instance);
         assertEquals(expResult, result);
     }
 
@@ -130,10 +132,10 @@ public class BoardTest {
     @Test
     public void testCanMoveRight() {
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 0, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 0, 15}
         };
 
         Board instance = new Board(state);
@@ -142,10 +144,10 @@ public class BoardTest {
         assertEquals(expResult, result);
 
         state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 15, 0}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 15, 0}
         };
 
         instance = new Board(state);
@@ -160,10 +162,10 @@ public class BoardTest {
     @Test
     public void testCanMoveLeft() {
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 0, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 0, 15}
         };
 
         Board instance = new Board(state);
@@ -172,10 +174,10 @@ public class BoardTest {
         assertEquals(expResult, result);
 
         state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {0, 14, 15, 13}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {0, 14, 15, 13}
         };
 
         instance = new Board(state);
@@ -190,10 +192,10 @@ public class BoardTest {
     @Test
     public void testCanMoveUp() {
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 0, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 0, 15}
         };
 
         Board instance = new Board(state);
@@ -202,10 +204,10 @@ public class BoardTest {
         assertEquals(expResult, result);
 
         state = new int[][]{
-            {1, 2, 3, 0},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 15, 4}
+                {1, 2, 3, 0},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 15, 4}
         };
 
         instance = new Board(state);
@@ -220,10 +222,10 @@ public class BoardTest {
     @Test
     public void testCanMoveDown() {
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 0, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 0, 15}
         };
 
         Board instance = new Board(state);
@@ -232,10 +234,10 @@ public class BoardTest {
         assertEquals(expResult, result);
 
         state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 0},
-            {13, 14, 15, 12}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 0},
+                {13, 14, 15, 12}
         };
 
         instance = new Board(state);
@@ -250,14 +252,14 @@ public class BoardTest {
     @Test
     public void testPrint() {
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 0, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 0, 15}
         };
 
         Board instance = new Board(state);
-        instance.print(System.out);
+        BoardUtils.printBoard(instance);
     }
 
     /**
@@ -266,10 +268,10 @@ public class BoardTest {
     @Test
     public void testGetState() {
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 0, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 0, 15}
         };
         Board instance = new Board(state);
         int[][] result = instance.getState();
@@ -282,17 +284,17 @@ public class BoardTest {
     @Test
     public void testMoveRight() {
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 0, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 0, 15}
         };
         Board instance = new Board(state);
         int[][] state2 = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 15, 0}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 15, 0}
         };
 
         Board expResult = new Board(state2);
@@ -307,17 +309,17 @@ public class BoardTest {
     @Test
     public void testMoveLeft() {
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 0, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 0, 15}
         };
         Board instance = new Board(state);
         int[][] state2 = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 0, 14, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 0, 14, 15}
         };
 
         Board expResult = new Board(state2);
@@ -332,17 +334,17 @@ public class BoardTest {
     @Test
     public void testMoveUp() {
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 0, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 0, 15}
         };
         Board instance = new Board(state);
         int[][] state2 = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 0, 12},
-            {13, 14, 11, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 0, 12},
+                {13, 14, 11, 15}
         };
 
         Board expResult = new Board(state2);
@@ -357,17 +359,17 @@ public class BoardTest {
     @Test
     public void testMoveDown() {
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 0, 12},
-            {13, 14, 11, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 0, 12},
+                {13, 14, 11, 15}
         };
         Board instance = new Board(state);
         int[][] state2 = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {13, 14, 0, 15}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 0, 15}
         };
 
         Board expResult = new Board(state2);
@@ -377,6 +379,7 @@ public class BoardTest {
     }
 
     //---------------------------------------------------------------------------
+
     /**
      * Test of isCorrect method, of class Board.
      */
@@ -384,10 +387,10 @@ public class BoardTest {
     public void testIsCorrectUnsymmetrical() {
 
         int[][] state = new int[][]{
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9},
-            {10, 11, 0}
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+                {10, 11, 0}
         };
 
         Board instance = new Board(state);
@@ -400,9 +403,9 @@ public class BoardTest {
     public void testIsCorrectFalseUnsymmetrical() {
 
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 0, 11},};
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 0, 11},};
 
         Board instance = new Board(state);
         boolean expResult = false;
@@ -414,10 +417,10 @@ public class BoardTest {
     public void testFindZeroUnsymmetrical() {
 
         int[][] state = new int[][]{
-            {1, 3, 2},
-            {4, 5, 6},
-            {7, 8, 9},
-            {10, 11, 0}
+                {1, 3, 2},
+                {4, 5, 6},
+                {7, 8, 9},
+                {10, 11, 0}
         };
 
         Board instance = new Board(state);
@@ -436,25 +439,25 @@ public class BoardTest {
     public void testCountMisplacedUnsymmetrical() {
 
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 0, 11},};
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 0, 11},};
 
         Board instance = new Board(state);
         int expResult = 2;
-        int result = instance.countMisplaced();
+        int result = BoardUtils.countMisplaced(instance);
         assertEquals(expResult, result);
 
         state = new int[][]{
-            {2, 3, 1},
-            {6, 4, 5},
-            {8, 9, 7},
-            {11, 0, 10}
+                {2, 3, 1},
+                {6, 4, 5},
+                {8, 9, 7},
+                {11, 0, 10}
         };
 
         instance = new Board(state);
         expResult = 12;
-        result = instance.countMisplaced();
+        result = BoardUtils.countMisplaced(instance);
         assertEquals(expResult, result);
     }
 
@@ -464,10 +467,10 @@ public class BoardTest {
     @Test
     public void testCanMoveRightUnsymmetrical() {
         int[][] state = new int[][]{
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9},
-            {10, 0, 11}
+                {0, 1, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+                {10, 2, 11}
         };
 
         Board instance = new Board(state);
@@ -476,9 +479,9 @@ public class BoardTest {
         assertEquals(expResult, result);
 
         state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 0}
+                {1, 2, 3, 0},
+                {5, 6, 7, 8},
+                {9, 10, 11, 4}
         };
 
         instance = new Board(state);
@@ -493,10 +496,10 @@ public class BoardTest {
     @Test
     public void testCanMoveLeftUnsymmetrical() {
         int[][] state = new int[][]{
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9},
-            {10, 11, 0}
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+                {10, 11, 0}
         };
 
         Board instance = new Board(state);
@@ -505,9 +508,9 @@ public class BoardTest {
         assertEquals(expResult, result);
 
         state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {0, 9, 10, 11}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {0, 9, 10, 11}
         };
 
         instance = new Board(state);
@@ -522,9 +525,9 @@ public class BoardTest {
     @Test
     public void testCanMoveUpUnsymmetrical() {
         int[][] state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 0, 11}
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 0, 11}
         };
 
         Board instance = new Board(state);
@@ -533,10 +536,10 @@ public class BoardTest {
         assertEquals(expResult, result);
 
         state = new int[][]{
-            {1, 2, 0},
-            {4, 5, 6},
-            {7, 8, 9},
-            {10, 11, 3}
+                {1, 2, 0},
+                {4, 5, 6},
+                {7, 8, 9},
+                {10, 11, 3}
         };
 
         instance = new Board(state);
@@ -551,10 +554,10 @@ public class BoardTest {
     @Test
     public void testCanMoveDownUnsymmetrical() {
         int[][] state = new int[][]{
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9},
-            {10, 11, 0}
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+                {10, 11, 0}
         };
 
         Board instance = new Board(state);
@@ -563,9 +566,9 @@ public class BoardTest {
         assertEquals(expResult, result);
 
         state = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 0},
-            {9, 10, 11, 8},};
+                {1, 2, 3, 4},
+                {5, 6, 7, 0},
+                {9, 10, 11, 8},};
 
         instance = new Board(state);
         expResult = true;
@@ -579,14 +582,14 @@ public class BoardTest {
     @Test
     public void testPrintUnsymmetrical() {
         int[][] state = new int[][]{
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9},
-            {10, 11, 0}
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+                {10, 11, 0}
         };
 
         Board instance = new Board(state);
-        instance.print(System.out);
+        BoardUtils.printBoard(instance);
     }
 
     /**
@@ -595,10 +598,10 @@ public class BoardTest {
     @Test
     public void testGetStateUnsymmetrical() {
         int[][] state = new int[][]{
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9},
-            {10, 11, 0}
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+                {10, 11, 0}
         };
         Board instance = new Board(state);
         int[][] result = instance.getState();
@@ -611,22 +614,23 @@ public class BoardTest {
     @Test
     public void testMoveRightUnsymmetrical() {
         int[][] state = new int[][]{
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9},
-            {10, 0, 11}
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+                {10, 0, 11}
         };
         Board instance = new Board(state);
         int[][] state2 = new int[][]{
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9},
-            {10, 11, 0}
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+                {10, 11, 0}
         };
 
         Board expResult = new Board(state2);
         Board result = instance.moveRight();
 
+        assertArrayEquals(instance.getState(), state);
         assertArrayEquals(expResult.getState(), result.getState());
     }
 
@@ -636,17 +640,17 @@ public class BoardTest {
     @Test
     public void testMoveLeftUnsymmetrical() {
         int[][] state = new int[][]{
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9},
-            {10, 11, 0}
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+                {10, 11, 0}
         };
         Board instance = new Board(state);
         int[][] state2 = new int[][]{
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9},
-            {10, 0, 11}
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+                {10, 0, 11}
         };
 
         Board expResult = new Board(state2);
@@ -661,17 +665,17 @@ public class BoardTest {
     @Test
     public void testMoveUpUnsymmetrical() {
         int[][] state = new int[][]{
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9},
-            {10, 11, 0}
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+                {10, 11, 0}
         };
         Board instance = new Board(state);
         int[][] state2 = new int[][]{
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 0},
-            {10, 11, 9}
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 0},
+                {10, 11, 9}
         };
 
         Board expResult = new Board(state2);
@@ -686,17 +690,17 @@ public class BoardTest {
     @Test
     public void testMoveDownUnsymmetrical() {
         int[][] state = new int[][]{
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 0},
-            {10, 11, 9}
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 0},
+                {10, 11, 9}
         };
         Board instance = new Board(state);
         int[][] state2 = new int[][]{
-            {1, 2, 3},
-            {4, 5, 6},
-            {7, 8, 9},
-            {10, 11, 0}
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9},
+                {10, 11, 0}
         };
 
         Board expResult = new Board(state2);

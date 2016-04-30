@@ -7,30 +7,50 @@ package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Stack;
+
 /**
- *
  * BFS Breadth-first search - algorytm przeszukiwania wszerz
  *
  *
- * Przechodzenie grafu rozpoczyna się od zadanego wierzchołka s i polega na
- * odwiedzeniu wszystkich osiągalnych z niego wierzchołków. Wynikiem działania
- * algorytmu jest drzewo przeszukiwania wszerz o korzeniu w s, zawierające
- * wszystkie wierzchołki osiągalne z s. Do każdego z tych wierzchołków prowadzi
- * dokładnie jedna ścieżka z s, która jest jednocześnie najkrótszą ścieżką w
- * grafie wejściowym.
+ * Przechodzenie grafu rozpoczyna się od zadanego wierzchołka s i polega na odwiedzeniu wszystkich
+ * osiągalnych z niego wierzchołków. Wynikiem działania algorytmu jest drzewo przeszukiwania wszerz
+ * o korzeniu w s, zawierające wszystkie wierzchołki osiągalne z s. Do każdego z tych wierzchołków
+ * prowadzi dokładnie jedna ścieżka z s, która jest jednocześnie najkrótszą ścieżką w grafie
+ * wejściowym.
  */
 public class BreadthFirstSearch extends PuzzleSolver {
 
+    private int maxDepth;
+
     public BreadthFirstSearch() {
+        super();
     }
 
     public BreadthFirstSearch(String order) {
         super(order);
+        this.maxDepth = 10;
     }
 
+    public BreadthFirstSearch(String order, int maxDepth) {
+        super(order);
+        this.maxDepth = maxDepth;
+    }
+
+    //FIXME
     @Override
-    public void solve(Board unsolved) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public Board solve(Board unsolved) {
+        this.time = System.nanoTime();
 
+        Board correct = unsolved.findAnswerWithBFS(order, maxDepth); //rekurencyjnie, dlatego w klasie Board
+        //TODO zapobieganie zapetleniom? nie wiem czy jest wg potrzebne przy tym sposobie
+
+        this.time = time - System.nanoTime();
+        return correct;
+    }
 }

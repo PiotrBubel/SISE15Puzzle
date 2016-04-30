@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.sisezad1;
+package com.mycompany.sisezad1.utils;
+
+import com.mycompany.sisezad1.Board;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,28 +15,27 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- *
  * @author Piotrek
  */
-public class SaveLoadFile {
+public class FileUtils {
 
     public static void saveData(String filePath, Board board) {
         try (PrintStream out = new PrintStream(new FileOutputStream(filePath))) {
-            board.print(out);
-            /*int[][] state = board.getState();
-             for (int x = 0; x < state[0].length; x++) {
-             for (int y = 0; y < state.length; y++) {
-             out.print(state[x][y]);
-             out.print(" ");
-             }
-             out.println("");
-             }*/
+            //board.print(out);
+            int[][] state = board.getState();
+            for (int x = 0; x < state[0].length; x++) {
+                for (int y = 0; y < state.length; y++) {
+                    out.print(state[x][y]);
+                    out.print(" ");
+                }
+                out.println("");
+            }
         } catch (FileNotFoundException ex) {
             System.err.println("Wystapil blad przy zapisywaniu do pliku: " + ex.getMessage());
         }
     }
 
-    public static Board loadData3(String filePath) {
+    public static Board loadData(String filePath) {
         int[][] state;
 
         ArrayList<String> lines = new ArrayList<String>();
@@ -48,7 +49,7 @@ public class SaveLoadFile {
         }
         ArrayList<String[]> l = new ArrayList<>();
         for (String line : lines) {
-            l.add(line.split("\t"));
+            l.add(line.split(" "));
         }
 
         state = new int[lines.size()][l.get(0).length];

@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.sisezad1;
+package com.mycompany.sisezad1.utils;
+
+import com.mycompany.sisezad1.Board;
 
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Piotrek
  */
 public class ConsoleManualMode {
@@ -19,8 +20,7 @@ public class ConsoleManualMode {
         Board current = board;
         boolean end = true;
         System.out.println("Program przeszedł w tryb manualny. Naciskaj w,a,s,d aby poruszać polem 0. Naciśnij 'p' aby wyjść.");
-        current.print();
-
+        BoardUtils.printBoard(current);
         do {
             try {
                 switch (System.in.read()) {
@@ -30,7 +30,7 @@ public class ConsoleManualMode {
                         } else {
                             System.out.println("Nie da sie.");
                         }
-                        current.print();
+                        BoardUtils.printBoard(current);
                         break;
                     case 's':
                         if (board.canMoveDown()) {
@@ -38,7 +38,7 @@ public class ConsoleManualMode {
                         } else {
                             System.out.println("Nie da sie.");
                         }
-                        current.print();
+                        BoardUtils.printBoard(current);
                         break;
                     case 'a':
                         if (board.canMoveLeft()) {
@@ -46,7 +46,7 @@ public class ConsoleManualMode {
                         } else {
                             System.out.println("Nie da sie.");
                         }
-                        current.print();
+                        BoardUtils.printBoard(current);
                         break;
                     case 'd':
                         if (board.canMoveRight()) {
@@ -54,11 +54,11 @@ public class ConsoleManualMode {
                         } else {
                             System.out.println("Nie da sie.");
                         }
-                        current.print();
+                        BoardUtils.printBoard(current);
                         break;
                     case 'p':
                         end = false;
-                        current.print();
+                        BoardUtils.printBoard(current);
                         System.out.println("Zakończono tryb manualny");
                         break;
                 }

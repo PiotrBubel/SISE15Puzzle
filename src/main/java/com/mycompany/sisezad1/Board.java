@@ -1,17 +1,78 @@
 package com.mycompany.sisezad1;
 
-import java.io.PrintStream;
+import com.mycompany.sisezad1.utils.BoardUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- *
  * @author Piotrek
  */
 public class Board {
 
     private int[][] state;
+    private boolean visited;    //nieuzywane, jesli nie bedzie potrzebne w BFS/A*/czymkolwiek, mozna usunas razem z metodami
+    private List<Board> nextNodes;
+    private Board parentNode;
+    private String path;
 
+    /**
+     * Creates board with given state, other fields are default
+     *
+     * @param state given state
+     */
     public Board(int[][] state) {
-        this.state = state;
+        this.state = state.clone();
+        visited = false;
+        parentNode = null;
+        path = "";
+    }
+
+    /**
+     * Creates copy of given board, use this when you want to copy state and path. Does not copy
+     * parentNode
+     *
+     * @param original Board
+     */
+    public Board(Board original) {
+        state = new int[original.state.length][original.state[0].length];
+
+        for (int x = 0; x < state.length; x++) {
+            for (int y = 0; y < state[0].length; y++) {
+                state[x][y] = original.state[x][y];
+            }
+        }
+        visited = false;
+        parentNode = null;
+        path = original.getPath();
+    }
+
+    public void setNextStepInPath(String step) {
+        this.path = path + step;
+    }
+
+    public String getPath() {
+        return this.path;
+    }
+
+    public Board getParentNode() {
+        return this.parentNode;
+    }
+
+    public void setParentNode(Board parent) {
+        this.parentNode = parent;
+    }
+
+    public List<Board> getNextNodes() {
+        return this.nextNodes;
+    }
+
+    public void visit() {
+        visited = true;
+    }
+
+    public boolean wasVisited() {
+        return this.visited;
     }
 
     public int[][] getState() {
@@ -19,39 +80,21 @@ public class Board {
     }
 
     public boolean isCorrect() {
-        return countMisplaced() == 0;
+        return BoardUtils.countMisplaced(this) == 0;
     }
 
-    public int countMisplaced() {
-        int misplaced = 0;
-        int correctValue = 1;
-
-        for (int x = 0; x < state.length; x++) {
-            for (int y = 0; y < state[0].length; y++) {
-                if (x == state.length - 1 && y == state[0].length - 1) {
-                    correctValue = 0;
-                }
-                if (state[x][y] != correctValue) {
-                    misplaced++;
-                }
-                correctValue++;
-            }
-        }
-        return misplaced;
-    }
 
     /**
-     *
-     * @return x,y coordinates of Zero, x and y are counted from 0, (0,0) is in
-     * upper left corner, x goes down, y goes right
+     * @return x, y coordinates of value, x and y are counted from 0, (0,0) is in upper left corner,
+     * x goes down, y goes right
      */
-    public int[] findZero() {
+    public int[] findNumber(int value) {
         int[] coordinates = new int[2];
         coordinates[0] = coordinates[1] = -1;
 
         for (int x = 0; x < state.length; x++) {
             for (int y = 0; y < state[0].length; y++) {
-                if (state[x][y] == 0) {
+                if (state[x][y] == value) {
                     coordinates[0] = x;
                     coordinates[1] = y;
                     return coordinates;
@@ -61,22 +104,12 @@ public class Board {
         return coordinates;
     }
 
-    public void print(PrintStream out) {
-        for (int x = 0; x < state.length; x++) {
-            for (int y = 0; y < state[0].length; y++) {
-                out.print(state[x][y]);
-                if (y < state[0].length - 1) {
-                    out.print("\t");
-                }
-            }
-            if (x < state.length - 1) {
-                out.println();
-            }
-        }
-    }
-
-    public void print() {
-        print(System.out);
+    /**
+     * @return x, y coordinates of Zero, x and y are counted from 0, (0,0) is in upper left corner,
+     * x goes down, y goes right
+     */
+    public int[] findZero() {
+        return findNumber(0);
     }
 
     public boolean canMoveRight() {
@@ -100,45 +133,147 @@ public class Board {
     }
 
     public Board moveRight() {
-        int[][] newState = state;
+        Board newB = new Board(this);
+        int[][] newState = newB.state;
         int[] zeroCoord = findZero();
 
         newState[zeroCoord[0]][zeroCoord[1]] = newState[zeroCoord[0]][zeroCoord[1] + 1];
         newState[zeroCoord[0]][zeroCoord[1] + 1] = 0;
-        return new Board(newState);
+        //return new Board(newState);
+        newB.path = new String(this.path);
+        newB.setNextStepInPath("D");
+        newB.setParentNode(this);
+        return newB;
     }
 
     public Board moveLeft() {
-        int[][] newState = state;
+        Board newB = new Board(this);
+        int[][] newState = newB.state;
         int[] zeroCoord = findZero();
 
         newState[zeroCoord[0]][zeroCoord[1]] = newState[zeroCoord[0]][zeroCoord[1] - 1];
         newState[zeroCoord[0]][zeroCoord[1] - 1] = 0;
-        return new Board(newState);
+        newB.path = new String(this.path);
+        newB.setNextStepInPath("A");
+        newB.setParentNode(this);
+        return newB;
     }
 
     public Board moveUp() {
-        int[][] newState = state;
+        Board newB = new Board(this);
+        int[][] newState = newB.state;
         int[] zeroCoord = findZero();
 
         newState[zeroCoord[0]][zeroCoord[1]] = newState[zeroCoord[0] - 1][zeroCoord[1]];
         newState[zeroCoord[0] - 1][zeroCoord[1]] = 0;
-        return new Board(newState);
+        newB.path = new String(this.path);
+        newB.setNextStepInPath("W");
+        newB.setParentNode(this);
+        return newB;
     }
 
     public Board moveDown() {
-        int[][] newState = state;
+        Board newB = new Board(this);
+        int[][] newState = newB.state;
         int[] zeroCoord = findZero();
 
         newState[zeroCoord[0]][zeroCoord[1]] = newState[zeroCoord[0] + 1][zeroCoord[1]];
         newState[zeroCoord[0] + 1][zeroCoord[1]] = 0;
-        return new Board(newState);
+        newB.path = new String(this.path);
+        newB.setNextStepInPath("S");
+        newB.setParentNode(this);
+        return newB;
+        /*
+         //Z jakiegoś powodu jak było tak, to zmieniało stan tego obiektu. .clone() nie działa tak jak myślę?
+         int[][] newState = state.clone();
+         int[] zeroCoord = findZero();
+
+         newState[zeroCoord[0]][zeroCoord[1]] = newState[zeroCoord[0] + 1][zeroCoord[1]];
+         newState[zeroCoord[0] + 1][zeroCoord[1]] = 0;
+         return new Board(newState);
+         */
+
     }
 
+    public boolean areAllNextVisited() {
+        for (Board n : nextNodes) {
+            if (!n.visited) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private List<Board> getPossibleStates(String ord) {
+        String order = new String(ord);
+        if (order.startsWith("r") || order.startsWith("R")) {
+            order = BoardUtils.randomizeOrder();
+        }
+        List<Board> possibleStates = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) {
+            Board toAdd = this.move(order.charAt(i));
+            if (toAdd != null) {
+                possibleStates.add(toAdd);
+            }
+        }
+        return possibleStates;
+    }
+
+    public void fillGraph(String order, int depth) {
+        if (depth >= 0) {
+            this.nextNodes = getPossibleStates(order);
+            for (Board nextNode : nextNodes) {
+                nextNode.fillGraph(order, depth - 1);
+            }
+        } else {
+            this.nextNodes = null;
+        }
+    }
+
+    public Board findAnswerWithDFS(String order, int depth) {
+        if (depth >= 0) {
+            this.nextNodes = getPossibleStates(order);
+            for (Board nextNode : nextNodes) {
+                System.out.println(nextNode.path);
+                if (nextNode.isCorrect()) {
+                    return nextNode;
+                } else {
+                    Board possibleAnswer = nextNode.findAnswerWithDFS(order, depth - 1);
+                    if (possibleAnswer != null) {
+                        return possibleAnswer;
+                    }
+                }
+            }
+        } else {
+            this.nextNodes = null;
+            return null;
+        }
+        return null;
+    }
+
+    //FIXME
+    //to jest w zasadzie prawie to samo co iteracyjne DFS, tylko musi trzymac w pamieci caly graf wszerz
+    public Board findAnswerWithBFS(String order, int depth) {
+        if (depth >= 0) {
+            this.nextNodes = getPossibleStates(order);
+            for (Board nextNode : nextNodes) {
+                System.out.println(nextNode.path);
+                if (nextNode.isCorrect()) {
+                    return nextNode;
+                }
+            }
+            for (Board nextNode : nextNodes) {
+                nextNode.findAnswerWithBFS(order, depth - 1);
+            }
+        }
+        return null;
+    }
+
+
     /**
-     *
      * @param direction [w|s|a|d]
-     * @return changed Board, or this Board if wrong direction given
+     * @return changed Board, or null if wrong direction given or can't move in given direction
      */
     public Board move(char direction) {
         switch (direction) {
@@ -146,28 +281,46 @@ public class Board {
                 if (canMoveUp()) {
                     return moveUp();
                 } else {
-                    return this;
+                    return null;
                 }
             case 's':
                 if (canMoveDown()) {
                     return moveDown();
                 } else {
-                    return this;
+                    return null;
                 }
             case 'a':
                 if (canMoveLeft()) {
                     return moveLeft();
                 } else {
-                    return this;
+                    return null;
                 }
             case 'd':
                 if (canMoveRight()) {
                     return moveRight();
                 } else {
-                    return this;
+                    return null;
                 }
             default:
-                return this;
+                return null;
         }
+    }
+
+
+    @Override
+    public boolean equals(Object other) {
+        Board otherB = (Board) other;
+        try {
+            for (int i = 0; i < this.state.length; i++) {
+                for (int j = 0; j < this.state[0].length; j++) {
+                    if (this.state[i][j] != otherB.getState()[i][j]) {
+                        return false;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }
