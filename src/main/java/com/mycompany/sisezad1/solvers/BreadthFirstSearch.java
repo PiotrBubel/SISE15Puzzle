@@ -7,13 +7,6 @@ package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Random;
-import java.util.Stack;
-
 /**
  * BFS Breadth-first search - algorytm przeszukiwania wszerz
  *

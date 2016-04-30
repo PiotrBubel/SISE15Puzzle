@@ -3,10 +3,6 @@ package com.mycompany.sisezad1.solvers;
 import com.mycompany.sisezad1.Board;
 import com.mycompany.sisezad1.utils.BoardUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Stack;
 
 /**
  * @author Piotrek

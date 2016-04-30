@@ -1,14 +1,10 @@
 package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
-
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Best-first search - algorytm 'najpierw najlepszy'

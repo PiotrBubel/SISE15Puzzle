@@ -2,9 +2,6 @@ package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
 
-import java.util.Stack;
-
-import sun.misc.VM;
 
 /**
  * DFS Depth-first search - algorytm przeszukiwania wgłąb
