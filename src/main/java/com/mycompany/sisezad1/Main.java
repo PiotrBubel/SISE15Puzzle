@@ -117,7 +117,7 @@ public class Main {
             System.out.println("algorytm nie znalazł rozwiązania");
         }
 
-        int[][] wrongState = new int[][]{ //da sie latwo rozwiazac - 7 ruchow
+        int[][] wrongState = new int[][]{
                 {5, 1, 2, 4},
                 {9, 6, 3, 8},
                 {0, 10, 7, 12},

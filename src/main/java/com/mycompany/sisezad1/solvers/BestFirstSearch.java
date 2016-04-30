@@ -32,22 +32,21 @@ public class BestFirstSearch extends PuzzleSolver {
     @Override
     public Board solve(Board unsolved) {
         this.firstBoard = new Board(unsolved);
-        //FIXME nie robi grafu, czysci liste za kazdym razem, a bez tego nie mozna pobrac path
         this.time = System.nanoTime();
         int steps = 0;
         Board current = unsolved;
         while (!current.isCorrect()) {
             if (current.canMoveDown()) {
-                nextCombinations.add(new Board(current).moveDown());//.setPath(current.getPath()));
+                nextCombinations.add(new Board(current).moveDown());
             }
             if (current.canMoveUp()) {
-                nextCombinations.add(new Board(current).moveUp());//.setPath(current.getPath()));
+                nextCombinations.add(new Board(current).moveUp());
             }
             if (current.canMoveRight()) {
-                nextCombinations.add(new Board(current).moveRight());//.setPath(current.getPath()));
+                nextCombinations.add(new Board(current).moveRight());
             }
             if (current.canMoveLeft()) {
-                nextCombinations.add(new Board(current).moveLeft());//.setPath(current.getPath()));
+                nextCombinations.add(new Board(current).moveLeft());
             }
             for (Board b : nextCombinations) {
                 System.out.println(b.getPath());
