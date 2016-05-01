@@ -103,36 +103,22 @@ public class Main {
         FileUtils.saveData("plik3.txt", new Board(state3));
         Board instance = FileUtils.loadData("plik3.txt");
 
+        instance = BoardUtils.randomizeBoard(4, 4, 3);
+
         PuzzleSolver solver = new IterativeDepthFirstSearch("wsad", 3);
         //solver = new DepthFirstSearch("wsad", 3);
         //solver = new BestFirstSearch(new MisplacedComparator());
         //solver = new BestFirstSearch(new ManhattanDistanceComparator());
-        //solver = new AStarSearch(new MisplacedComparator(), 10);
+        solver = new AStarSearch(new MisplacedComparator(), 10);
         //solver = new IterativeAStarSearch(new MisplacedComparator(), 10);
 
         Board solved = solver.solve(instance);
 
         if (solved != null) {
             BoardUtils.printBoard(solved);
-            System.out.println();
-            System.out.println("path: " + solved.getPath());
         } else {
             System.out.println("algorytm nie znalazł rozwiązania");
         }
-
-
-        int[][] wrongState = new int[][]{
-                {5, 1, 2, 4},
-                {9, 6, 3, 8},
-                {0, 10, 7, 12},
-                {13, 14, 11, 14}
-        };
-        instance = new Board(wrongState);
-        System.out.println(BoardUtils.correctState(instance.getState()));
-
-        Board random = BoardUtils.randomizeBoard(4, 4, 5);
-        BoardUtils.printBoard(random);
-
 
         System.exit(0);
     }

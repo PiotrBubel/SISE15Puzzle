@@ -24,7 +24,7 @@ public class ManhattanDistanceComparator implements Comparator<Board> {
                 sum = sum + getManhattanDistance(b, i);
             }
         }
-        System.out.println(sum);
+        //System.out.println(sum);
         return sum;
     }
 

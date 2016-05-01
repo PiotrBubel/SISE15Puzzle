@@ -25,6 +25,9 @@ public class BoardUtils {
                 System.out.println();
             }
         }
+        System.out.println();
+        System.out.println("Moves: " + b.getPath().length());
+        System.out.println("Path: " + b.getPath());
     }
 
     /**

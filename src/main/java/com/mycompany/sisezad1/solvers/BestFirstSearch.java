@@ -54,7 +54,7 @@ public class BestFirstSearch extends PuzzleSolver {
             current = chooseBest(nextCombinations, heuristicFunction);
             nextCombinations.clear();
             steps++;
-            System.out.println("steps: " + steps);
+            //System.out.println("steps: " + steps);
             if (steps == maxSteps) {
                 System.out.println("zbyt duza liczba kombinacji");
                 return null;
