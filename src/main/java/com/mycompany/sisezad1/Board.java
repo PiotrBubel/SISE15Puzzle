@@ -3,6 +3,8 @@ package com.mycompany.sisezad1;
 import com.mycompany.sisezad1.utils.BoardUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -204,7 +206,11 @@ public class Board {
         return true;
     }
 
-    private List<Board> getPossibleStates(String ord) {
+    /**
+     * Method returns possible states from this Board in given order
+     *
+     */
+    public List<Board> getPossibleStates(String ord) {
         String order = new String(ord);
         if (order.startsWith("r") || order.startsWith("R")) {
             order = BoardUtils.randomizeOrder();
@@ -217,6 +223,23 @@ public class Board {
                 possibleStates.add(toAdd);
             }
         }
+        return possibleStates;
+    }
+
+    /**
+     * Method returns possible states from this Board in heuristic order
+     *
+     */
+    public List<Board> getPossibleStates(Comparator heuristics) {
+        String order = BoardUtils.randomizeOrder();
+        List<Board> possibleStates = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            Board toAdd = this.move(order.charAt(i));
+            if (toAdd != null) {
+                possibleStates.add(toAdd);
+            }
+        }
+        Collections.sort(possibleStates, heuristics);
         return possibleStates;
     }
 
@@ -252,10 +275,32 @@ public class Board {
         return null;
     }
 
+    public Board findAnswerWithAStar(Comparator heuristics, int depth) {
+        if (depth >= 0) {
+            this.nextNodes = getPossibleStates(heuristics);
+            for (Board nextNode : nextNodes) {
+                System.out.println(nextNode.path);
+                if (nextNode.isCorrect()) {
+                    return nextNode;
+                } else {
+                    Board possibleAnswer = nextNode.findAnswerWithAStar(heuristics, depth - 1);
+                    if (possibleAnswer != null) {
+                        return possibleAnswer;
+                    }
+                }
+            }
+        } else {
+            this.nextNodes = null;
+            return null;
+        }
+        return null;
+    }
+
     //FIXME
     //to jest w zasadzie prawie to samo co iteracyjne DFS, tylko musi trzymac w pamieci caly graf wszerz
     public Board findAnswerWithBFS(String order, int depth) {
         if (depth >= 0) {
+
             this.nextNodes = getPossibleStates(order);
             for (Board nextNode : nextNodes) {
                 System.out.println(nextNode.path);

@@ -6,13 +6,14 @@ import java.util.Comparator;
 
 /**
  * Ocena heurystyczna: suma dystansu kazdego elementu od wlasciwego miejsca (obliczane metryka
- * Manhattan) Dystans nie jest obliczany dla 0.
+ * Manhattan) Dystans nie jest obliczany dla 0, plus ilosc ruchow potrzebnych do osiagniecia danego
+ * stanu
  */
 public class ManhattanDistanceComparator implements Comparator<Board> {
 
     @Override
     public int compare(Board b1, Board b2) {
-        return this.sumDistance(b1) - this.sumDistance(b2);
+        return (this.sumDistance(b1) + b1.getPath().length()) - (this.sumDistance(b2) + b2.getPath().length());
     }
 
     private int sumDistance(Board b) {

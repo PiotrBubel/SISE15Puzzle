@@ -7,6 +7,9 @@ package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
 
+import java.util.List;
+import java.util.Stack;
+
 /**
  * BFS Breadth-first search - algorytm przeszukiwania wszerz
  *
@@ -39,6 +42,15 @@ public class BreadthFirstSearch extends PuzzleSolver {
     @Override
     public Board solve(Board unsolved) {
         this.time = System.nanoTime();
+        Stack<Board> stack = new Stack<>();
+        stack.push(unsolved);
+
+        for (int i = 0; i < maxDepth; i++) {
+            List<Board> list = stack.peek().getPossibleStates(this.order);
+            for(Board b : list){
+                stack.push(b);
+            }
+        }
 
         Board correct = unsolved.findAnswerWithBFS(order, maxDepth); //rekurencyjnie, dlatego w klasie Board
         //TODO zapobieganie zapetleniom? nie wiem czy jest wg potrzebne przy tym sposobie

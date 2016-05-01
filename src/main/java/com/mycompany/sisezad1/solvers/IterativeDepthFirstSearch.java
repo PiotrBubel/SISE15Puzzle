@@ -37,7 +37,7 @@ public class IterativeDepthFirstSearch extends PuzzleSolver {
 
         this.time = System.nanoTime();
 
-        while (depth != maxDepth || solved == null) {
+        while (depth <= maxDepth && solved == null) {
             depthFirstSolver = new DepthFirstSearch(this.order, depth);
             Board toSolve = new Board(unsolved);
             solved = depthFirstSolver.solve(toSolve);

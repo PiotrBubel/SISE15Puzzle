@@ -89,4 +89,76 @@ public class BoardUtils {
         }
         return misplaced;
     }
+
+    /**
+     * @return arranged (correct) board of given size
+     */
+    public static Board buildArrangedBoard(int xState, int yState) {
+        Board randomizedBoard = null;
+        int[][] state = new int[xState][yState];
+        int correctValue = 1;
+
+        for (int x = 0; x < state.length; x++) {
+            for (int y = 0; y < state[0].length; y++) {
+                if (x == state.length - 1 && y == state[0].length - 1) {
+                    correctValue = 0;
+                }
+                state[x][y] = correctValue;
+                correctValue++;
+            }
+        }
+        randomizedBoard = new Board(state);
+        return randomizedBoard;
+    }
+
+    /**
+     * @param board           - arranged board to randomize
+     * @param maxMovesToSolve - moves to perform on given board
+     * @return board after random moves, board path is cleared
+     */
+    public static Board randomizeBoard(Board board, int maxMovesToSolve) {
+
+        Board randomizedBoard = new Board(board);
+        int moves = 0;
+        Random rand = new Random();
+
+        while (moves < maxMovesToSolve) {
+            int direction = rand.nextInt() % 4;
+
+            switch (direction) {
+                case 0:
+                    if (randomizedBoard.canMoveUp()) {
+                        randomizedBoard = randomizedBoard.moveUp();
+                        moves++;
+                    }
+                    break;
+                case 1:
+                    if (randomizedBoard.canMoveDown()) {
+                        randomizedBoard = randomizedBoard.moveDown();
+                        moves++;
+                    }
+                    break;
+                case 2:
+                    if (randomizedBoard.canMoveLeft()) {
+                        randomizedBoard = randomizedBoard.moveLeft();
+                        moves++;
+                    }
+                    break;
+                case 3:
+                    if (randomizedBoard.canMoveRight()) {
+                        randomizedBoard = randomizedBoard.moveRight();
+                        moves++;
+                    }
+                    break;
+            }
+        }
+        return new Board(randomizedBoard.getState());
+    }
+
+    /**
+     * @return board of given size, after random moves
+     */
+    public static Board randomizeBoard(int xState, int yState, int maxMovesToSolve) {
+        return BoardUtils.randomizeBoard(BoardUtils.buildArrangedBoard(xState, yState), maxMovesToSolve);
+    }
 }
