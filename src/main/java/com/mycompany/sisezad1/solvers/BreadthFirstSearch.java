@@ -6,26 +6,31 @@
 package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
-
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * BFS Breadth-first search - algorytm przeszukiwania wszerz
  *
  *
- * Przechodzenie grafu rozpoczyna się od zadanego wierzchołka s i polega na odwiedzeniu wszystkich
- * osiągalnych z niego wierzchołków. Wynikiem działania algorytmu jest drzewo przeszukiwania wszerz
- * o korzeniu w s, zawierające wszystkie wierzchołki osiągalne z s. Do każdego z tych wierzchołków
- * prowadzi dokładnie jedna ścieżka z s, która jest jednocześnie najkrótszą ścieżką w grafie
- * wejściowym.
+ * Przechodzenie grafu rozpoczyna się od zadanego wierzchołka s i polega na
+ * odwiedzeniu wszystkich osiągalnych z niego wierzchołków. Wynikiem działania
+ * algorytmu jest drzewo przeszukiwania wszerz o korzeniu w s, zawierające
+ * wszystkie wierzchołki osiągalne z s. Do każdego z tych wierzchołków prowadzi
+ * dokładnie jedna ścieżka z s, która jest jednocześnie najkrótszą ścieżką w
+ * grafie wejściowym.
  */
 public class BreadthFirstSearch extends PuzzleSolver {
 
     private int maxDepth;
+    // Robie na listach ale mozna tez na kolejce FIFO
+    private List<Board> uncheckedNodes;
+    private List<Board> checkedNodes;
+    private List<Board> newNodes;
 
     public BreadthFirstSearch() {
         super();
+        this.maxDepth = 10;
     }
 
     public BreadthFirstSearch(String order) {
@@ -36,26 +41,82 @@ public class BreadthFirstSearch extends PuzzleSolver {
     public BreadthFirstSearch(String order, int maxDepth) {
         super(order);
         this.maxDepth = maxDepth;
+
     }
 
-    //FIXME
     @Override
     public Board solve(Board unsolved) {
-        this.time = System.nanoTime();
-        Stack<Board> stack = new Stack<>();
-        stack.push(unsolved);
+        uncheckedNodes = new ArrayList();
+        checkedNodes = new ArrayList();
+        newNodes = new ArrayList();
+        Board current;
 
-        for (int i = 0; i < maxDepth; i++) {
-            List<Board> list = stack.peek().getPossibleStates(this.order);
-            for(Board b : list){
-                stack.push(b);
+        this.time = System.nanoTime();
+
+        // Pierwszy wierzchołek do sprawdzenia 
+        uncheckedNodes.add(new Board(unsolved));
+
+        while (!uncheckedNodes.isEmpty()) {
+            //pobieranie pierwszego wierzcholka z listy niesprawdzonych
+            current = uncheckedNodes.get(0);
+            // Sprawdzenie mozliwych stanow wg kolejnosci
+            newNodes = current.getPossibleStates(this.order);
+            // usuniecie powtarzajacych sie wierzcholkow (zeby nie zapetlilo)
+            newNodes = removeChecked();
+            uncheckedNodes.addAll(newNodes);
+            // Sprawdzenie aktualnego wiercholka 
+            System.out.println(current.getPath());
+            if (current.isCorrect()) {
+                this.time = time - System.nanoTime();
+                return current;
+            }
+            // Dodanie do listy sprawdzonych, usuniecie z niesprawdzonych
+            addToChecked(current);
+            
+            if (countActualDepth(current) > maxDepth) {
+                System.out.println("Za duza głebokosc"); 
+                // To raczej nie powinno sie zdarzyc i pewnie mozna to usunac
+                // Bo jak nie znajdzie to petla while sie skonczy wiec mozliwe
+                // ze glebokosc tu jest wgl niepotrzebna.
+                break;
             }
         }
-
-        Board correct = unsolved.findAnswerWithBFS(order, maxDepth); //rekurencyjnie, dlatego w klasie Board
-        //TODO zapobieganie zapetleniom? nie wiem czy jest wg potrzebne przy tym sposobie
-
+        System.out.println("Nie znaleziono rozwiazania");
         this.time = time - System.nanoTime();
-        return correct;
+        return null;
     }
+
+    private List<Board> removeChecked() {
+        List<Board> tmp = new ArrayList();
+        boolean isChecked = false;
+        for (Board newNode : newNodes) {
+            for (Board checkedNode : checkedNodes) {
+                if (newNode.equals(checkedNode)) {
+                    isChecked = true;
+                }
+            }
+            if (isChecked) {
+                isChecked = false;
+            } else {
+                tmp.add(newNode);
+            }
+        }
+        return tmp;
+    }
+
+    private void addToChecked(Board current) {
+        checkedNodes.add(current);
+        uncheckedNodes.remove(current);
+    }
+
+    private int countActualDepth(Board current) {
+        int depth = 0;
+        Board parent = current.getParentNode();
+        while (parent != null) {
+            depth++;
+            parent = parent.getParentNode();
+        }
+        return depth;
+    }
+
 }
