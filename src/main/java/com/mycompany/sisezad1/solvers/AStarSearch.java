@@ -1,7 +1,7 @@
 package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
-import com.mycompany.sisezad1.heuristics.MisplacedComparator;
+import com.mycompany.sisezad1.heuristics.*;
 
 import java.io.PrintStream;
 import java.util.Comparator;
