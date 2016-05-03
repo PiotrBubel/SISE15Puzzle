@@ -59,6 +59,11 @@ public class FileUtils {
             }
         }
 
-        return new Board(state);
+        if (BoardUtils.correctState(state)) {
+            return new Board(state);
+        } else {
+            System.err.println("Plansza wczytana z pliku jest bledna");
+            return null;
+        }
     }
 }

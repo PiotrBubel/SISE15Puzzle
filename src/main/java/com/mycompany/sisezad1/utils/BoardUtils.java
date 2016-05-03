@@ -120,13 +120,14 @@ public class BoardUtils {
      * @return board after random moves, board path is cleared
      */
     public static Board randomizeBoard(Board board, int maxMovesToSolve) {
-
+        boolean temp_lc = Board.LOOP_CONTROL;
+        Board.LOOP_CONTROL = false;    //FIXME dont work with loop control enabled
         Board randomizedBoard = new Board(board);
         int moves = 0;
-        Random rand = new Random();
 
         while (moves < maxMovesToSolve) {
-            int direction = rand.nextInt() % 4;
+            Random rand = new Random();
+            int direction = rand.nextInt(4);// % 4;
 
             switch (direction) {
                 case 0:
@@ -155,6 +156,7 @@ public class BoardUtils {
                     break;
             }
         }
+        Board.LOOP_CONTROL = temp_lc;
         return new Board(randomizedBoard.getState());
     }
 

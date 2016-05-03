@@ -107,18 +107,24 @@ public class Main {
                 {13, 14, 11, 15}
         };
 
-        FileUtils.saveData("plik3.txt", new Board(state666));
+        FileUtils.saveData("plik3.txt", new Board(state7));
         Board instance = FileUtils.loadData("plik3.txt");
 
         instance = BoardUtils.randomizeBoard(4, 4, 6);
 
+        //FileUtils.saveData("plikTestowy.txt", instance);
+
+        Board.LOOP_CONTROL = true;
+
         PuzzleSolver solver = new IterativeDepthFirstSearch("wsad", 10);
-        //solver = new DepthFirstSearch("wsad", 10);
+        solver = new DepthFirstSearch("wsad", 15);
         //solver = new BestFirstSearch(new MisplacedComparator());
         //solver = new BestFirstSearch(new ManhattanDistanceComparator()); //FIXME
         //solver = new AStarSearch(new MisplacedComparator(), 20);
         //solver = new IterativeAStarSearch(new MisplacedComparator(), 20);
         //solver = new BreadthFirstSearch("wsad", 20);
+        //TODO dwie wersje, z kontrola zapetlen i bez
+
 
         PrintStream stream = null;
         try {
@@ -128,7 +134,6 @@ public class Main {
             e.printStackTrace();
             System.out.println("Blad podczas tworzenia pliku");
         }
-
         Board solved = solver.solve(instance, stream);
 
         if (solved != null) {

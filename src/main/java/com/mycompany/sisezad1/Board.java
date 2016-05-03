@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class Board {
 
+    public static boolean LOOP_CONTROL = false;
     private int[][] state;
     private List<Board> nextNodes;
     private Board parentNode;
@@ -104,27 +105,29 @@ public class Board {
     }
 
     public boolean canMoveRight() {
-        int[] zeroCoord = findZero();
-        if (!this.path.isEmpty() && this.path != null) {
-            if (this.path.endsWith("A") ||
-                    this.path.endsWith("DWAS") ||
-                    this.path.endsWith("DSAW")
-                    ) { //TODO more loop patterns
-                //dwas
-                //dsaw
-                return false;
+        if (LOOP_CONTROL) {
+            if (!this.path.isEmpty() && this.path != null) {
+                if (this.path.endsWith("A") ||
+                        this.path.endsWith("DWAS") ||
+                        this.path.endsWith("DSAW")
+                        ) { //TODO more loop patterns, prevent deadlock
+                    return false;
+                }
             }
         }
+        int[] zeroCoord = findZero();
         return !(zeroCoord[1] == state[0].length - 1);
     }
 
     public boolean canMoveLeft() {
-        if (!this.path.isEmpty() && this.path != null) {
-            if (this.path.endsWith("D") ||
-                    this.path.endsWith("AWDS") ||
-                    this.path.endsWith("ASDW")
-                    ) { //TODO more loop patterns
-                return false;
+        if (LOOP_CONTROL) {
+            if (!this.path.isEmpty() && this.path != null) {
+                if (this.path.endsWith("D") ||
+                        this.path.endsWith("AWDS") ||
+                        this.path.endsWith("ASDW")
+                        ) { //TODO more loop patterns, prevent deadlock
+                    return false;
+                }
             }
         }
         int[] zeroCoord = findZero();
@@ -132,12 +135,14 @@ public class Board {
     }
 
     public boolean canMoveUp() {
-        if (!this.path.isEmpty() && this.path != null) {
-            if (this.path.endsWith("S") ||
-                    this.path.endsWith("WDSA") ||
-                    this.path.endsWith("WASD")
-                    ) {  //TODO more loop patterns
-                return false;
+        if (LOOP_CONTROL) {
+            if (!this.path.isEmpty() && this.path != null) {
+                if (this.path.endsWith("S") ||
+                        this.path.endsWith("WDSA") ||
+                        this.path.endsWith("WASD")
+                        ) {  //TODO more loop patterns, prevent deadlock
+                    return false;
+                }
             }
         }
         int[] zeroCoord = findZero();
@@ -145,12 +150,15 @@ public class Board {
     }
 
     public boolean canMoveDown() {
-        if (!this.path.isEmpty() && this.path != null) {
-            if (this.path.endsWith("W") ||
-                    this.path.endsWith("SDWA") ||
-                    this.path.endsWith("SAWD")
-                    ) {  //TODO more loop patterns
-                return false;
+        if (LOOP_CONTROL) {
+
+            if (!this.path.isEmpty() && this.path != null) {
+                if (this.path.endsWith("W") ||
+                        this.path.endsWith("SDWA") ||
+                        this.path.endsWith("SAWD")
+                        ) {  //TODO more loop patterns, prevent deadlock
+                    return false;
+                }
             }
         }
         int[] zeroCoord = findZero();
@@ -235,6 +243,9 @@ public class Board {
             if (toAdd != null) {
                 possibleStates.add(toAdd);
             }
+        }
+        if (possibleStates.isEmpty()) {
+            System.out.println("DEADLOCK");
         }
         return possibleStates;
     }
