@@ -1,6 +1,7 @@
 package com.mycompany.sisezad1;
 
 import com.mycompany.sisezad1.utils.BoardUtils;
+import com.sun.deploy.util.StringUtils;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -105,20 +106,54 @@ public class Board {
 
     public boolean canMoveRight() {
         int[] zeroCoord = findZero();
+        if (!this.path.isEmpty() && this.path != null) {
+            if (this.path.endsWith("A") ||
+                    this.path.endsWith("DWAS") ||
+                    this.path.endsWith("DSAW")
+                    ) { //TODO more loop patterns
+                //dwas
+                //dsaw
+                return false;
+            }
+        }
         return !(zeroCoord[1] == state[0].length - 1);
     }
 
     public boolean canMoveLeft() {
+        if (!this.path.isEmpty() && this.path != null) {
+            if (this.path.endsWith("D") ||
+                    this.path.endsWith("AWDS") ||
+                    this.path.endsWith("ASDW")
+                    ) { //TODO more loop patterns
+                return false;
+            }
+        }
         int[] zeroCoord = findZero();
         return (zeroCoord[1] > 0);
     }
 
     public boolean canMoveUp() {
+        if (!this.path.isEmpty() && this.path != null) {
+            if (this.path.endsWith("S") ||
+                    this.path.endsWith("WDSA") ||
+                    this.path.endsWith("WASD")
+                    ) {  //TODO more loop patterns
+                return false;
+            }
+        }
         int[] zeroCoord = findZero();
         return (zeroCoord[0] > 0);
     }
 
     public boolean canMoveDown() {
+        if (!this.path.isEmpty() && this.path != null) {
+            if (this.path.endsWith("W") ||
+                    this.path.endsWith("SDWA") ||
+                    this.path.endsWith("SAWD")
+                    ) {  //TODO more loop patterns
+                return false;
+            }
+        }
         int[] zeroCoord = findZero();
         return !(zeroCoord[0] == state.length - 1);
     }
@@ -188,7 +223,6 @@ public class Board {
 
     /**
      * Method returns possible states from this Board in given order
-     *
      */
     public List<Board> getPossibleStates(String ord) {
         String order = new String(ord);
@@ -208,7 +242,6 @@ public class Board {
 
     /**
      * Method returns possible states from this Board in heuristic order
-     *
      */
     public List<Board> getPossibleStates(Comparator heuristics) {
         String order = BoardUtils.randomizeOrder();
