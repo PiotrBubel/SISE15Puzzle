@@ -40,7 +40,6 @@ public class DepthFirstSearch extends PuzzleSolver {
         this.time = System.nanoTime();
 
         Board correct = unsolved.findAnswerWithDFS(order, maxDepth, stream); //rekurencyjnie, dlatego w klasie Board
-        //TODO zapobieganie zapetleniom? nie wiem czy jest wg potrzebne przy tym sposobie
         this.time = time - System.nanoTime();
         return correct;
     }

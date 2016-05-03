@@ -35,7 +35,11 @@ public class Main {
                     solver = new DepthFirstSearch();
                     break;
                 case "-i":
-                    solver = new IterativeDepthFirstSearch(Integer.parseInt(args[1]));
+                    if (args.length > 1) {
+                        solver = new IterativeDepthFirstSearch(args[1], Integer.parseInt(args[2]));
+                    } else {
+                        solver = new IterativeDepthFirstSearch(args[1], 8); //default depth
+                    }
                     break;
 
                 //pierwszy argument to algorytm, drugi to kolejnosc, trzeci jesli potrzebny to glebokosc
@@ -106,15 +110,15 @@ public class Main {
         FileUtils.saveData("plik3.txt", new Board(state666));
         Board instance = FileUtils.loadData("plik3.txt");
 
-        //instance = BoardUtils.randomizeBoard(4, 4, 3);
+        instance = BoardUtils.randomizeBoard(4, 4, 6);
 
         PuzzleSolver solver = new IterativeDepthFirstSearch("wsad", 20);
-        //solver = new DepthFirstSearch("wsad", 20);
+        solver = new DepthFirstSearch("wsad", 10);
         //solver = new BestFirstSearch(new MisplacedComparator());
         //solver = new BestFirstSearch(new ManhattanDistanceComparator());
-        //solver = new AStarSearch(new MisplacedComparator(), 10);
-        //solver = new IterativeAStarSearch(new MisplacedComparator(), 10);
-        solver = new BreadthFirstSearch("wsad", 20);
+        //solver = new AStarSearch(new MisplacedComparator(), 20);
+        //solver = new IterativeAStarSearch(new MisplacedComparator(), 20);
+        //solver = new BreadthFirstSearch("wsad", 20);
 
         PrintStream stream = null;
         try {

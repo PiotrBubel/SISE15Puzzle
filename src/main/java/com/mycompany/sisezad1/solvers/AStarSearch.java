@@ -29,7 +29,6 @@ public class AStarSearch extends PuzzleSolver {
 
     @Override
     public Board solve(Board unsolved, PrintStream stream) {
-        //TODO zapobieganie zapętleniom?
         //połączenie depth first z heurestyką, rozwijany jest węzeł o najlepszej heurestyce,
         //rozni sie od best first, ze zapisuje wyniki w grafie
         //rozni sie od dfs tym, ze kolejnosc nie jest podana ani losowa, ale heurystyczna

@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class BestFirstSearch extends PuzzleSolver {
 
-    //TODO zapobieganie zapętleniom?
-
     public int maxSteps;
     private List<Board> nextCombinations;
     private Comparator heuristicFunction;

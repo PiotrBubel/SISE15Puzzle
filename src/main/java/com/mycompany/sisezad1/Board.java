@@ -1,6 +1,7 @@
 package com.mycompany.sisezad1;
 
 import com.mycompany.sisezad1.utils.BoardUtils;
+import com.sun.deploy.util.StringUtils;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -105,20 +106,40 @@ public class Board {
 
     public boolean canMoveRight() {
         int[] zeroCoord = findZero();
+        if(!this.path.isEmpty() && this.path != null){
+            if(this.path.endsWith("A")){ //TODO more loop patterns
+                return false;
+            }
+        }
         return !(zeroCoord[1] == state[0].length - 1);
     }
 
     public boolean canMoveLeft() {
+        if(!this.path.isEmpty() && this.path != null){
+            if(this.path.endsWith("D")){ //TODO more loop patterns
+                return false;
+            }
+        }
         int[] zeroCoord = findZero();
         return (zeroCoord[1] > 0);
     }
 
     public boolean canMoveUp() {
+        if(!this.path.isEmpty() && this.path != null){
+            if(this.path.endsWith("S")){  //TODO more loop patterns
+                return false;
+            }
+        }
         int[] zeroCoord = findZero();
         return (zeroCoord[0] > 0);
     }
 
     public boolean canMoveDown() {
+        if(!this.path.isEmpty() && this.path != null){
+            if(this.path.endsWith("W")){  //TODO more loop patterns
+                return false;
+            }
+        }
         int[] zeroCoord = findZero();
         return !(zeroCoord[0] == state.length - 1);
     }
