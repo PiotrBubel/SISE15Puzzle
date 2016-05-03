@@ -2,6 +2,8 @@ package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
 
+import java.io.PrintStream;
+
 
 /**
  * DFS Depth-first search - algorytm przeszukiwania wgłąb
@@ -30,10 +32,14 @@ public class DepthFirstSearch extends PuzzleSolver {
     }
 
     @Override
-    public Board solve(Board unsolved) {
+    public Board solve(Board unsolved, PrintStream stream) {
+        if(stream == null){
+            stream = System.out;
+        }
+
         this.time = System.nanoTime();
 
-        Board correct = unsolved.findAnswerWithDFS(order, maxDepth); //rekurencyjnie, dlatego w klasie Board
+        Board correct = unsolved.findAnswerWithDFS(order, maxDepth, stream); //rekurencyjnie, dlatego w klasie Board
         //TODO zapobieganie zapetleniom? nie wiem czy jest wg potrzebne przy tym sposobie
         this.time = time - System.nanoTime();
         return correct;

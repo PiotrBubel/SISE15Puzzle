@@ -3,6 +3,7 @@ package com.mycompany.sisezad1.solvers;
 import com.mycompany.sisezad1.Board;
 import com.mycompany.sisezad1.heuristics.MisplacedComparator;
 
+import java.io.PrintStream;
 import java.util.Comparator;
 
 /**
@@ -27,15 +28,19 @@ public class AStarSearch extends PuzzleSolver {
     }
 
     @Override
-    public Board solve(Board unsolved) {
+    public Board solve(Board unsolved, PrintStream stream) {
         //TODO zapobieganie zapętleniom?
         //połączenie depth first z heurestyką, rozwijany jest węzeł o najlepszej heurestyce,
         //rozni sie od best first, ze zapisuje wyniki w grafie
         //rozni sie od dfs tym, ze kolejnosc nie jest podana ani losowa, ale heurystyczna
 
+        if(stream == null){
+            stream = System.out;
+        }
+
         this.time = System.nanoTime();
 
-        Board correct = unsolved.findAnswerWithAStar(heuristicFunction, maxDepth); //rekurencyjnie, dlatego w klasie Board
+        Board correct = unsolved.findAnswerWithAStar(heuristicFunction, maxDepth, stream); //rekurencyjnie, dlatego w klasie Board
 
         this.time = time - System.nanoTime();
         return correct;

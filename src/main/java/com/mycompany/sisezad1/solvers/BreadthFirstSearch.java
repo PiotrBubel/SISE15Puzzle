@@ -6,6 +6,8 @@
 package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
+
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +15,11 @@ import java.util.List;
  * BFS Breadth-first search - algorytm przeszukiwania wszerz
  *
  *
- * Przechodzenie grafu rozpoczyna się od zadanego wierzchołka s i polega na
- * odwiedzeniu wszystkich osiągalnych z niego wierzchołków. Wynikiem działania
- * algorytmu jest drzewo przeszukiwania wszerz o korzeniu w s, zawierające
- * wszystkie wierzchołki osiągalne z s. Do każdego z tych wierzchołków prowadzi
- * dokładnie jedna ścieżka z s, która jest jednocześnie najkrótszą ścieżką w
- * grafie wejściowym.
+ * Przechodzenie grafu rozpoczyna się od zadanego wierzchołka s i polega na odwiedzeniu wszystkich
+ * osiągalnych z niego wierzchołków. Wynikiem działania algorytmu jest drzewo przeszukiwania wszerz
+ * o korzeniu w s, zawierające wszystkie wierzchołki osiągalne z s. Do każdego z tych wierzchołków
+ * prowadzi dokładnie jedna ścieżka z s, która jest jednocześnie najkrótszą ścieżką w grafie
+ * wejściowym.
  */
 public class BreadthFirstSearch extends PuzzleSolver {
 
@@ -45,11 +46,15 @@ public class BreadthFirstSearch extends PuzzleSolver {
     }
 
     @Override
-    public Board solve(Board unsolved) {
+    public Board solve(Board unsolved, PrintStream stream) {
         uncheckedNodes = new ArrayList();
         checkedNodes = new ArrayList();
         newNodes = new ArrayList();
         Board current;
+
+        if(stream == null){
+            stream = System.out;
+        }
 
         this.time = System.nanoTime();
 
@@ -65,16 +70,16 @@ public class BreadthFirstSearch extends PuzzleSolver {
             newNodes = removeChecked();
             uncheckedNodes.addAll(newNodes);
             // Sprawdzenie aktualnego wiercholka 
-            System.out.println(current.getPath());
+            stream.println(current.getPath());
             if (current.isCorrect()) {
                 this.time = time - System.nanoTime();
                 return current;
             }
             // Dodanie do listy sprawdzonych, usuniecie z niesprawdzonych
             addToChecked(current);
-            
+
             if (countActualDepth(current) > maxDepth) {
-                System.out.println("Za duza głebokosc"); 
+                System.out.println("Za duza głebokosc");
                 // To raczej nie powinno sie zdarzyc i pewnie mozna to usunac
                 // Bo jak nie znajdzie to petla while sie skonczy wiec mozliwe
                 // ze glebokosc tu jest wgl niepotrzebna.

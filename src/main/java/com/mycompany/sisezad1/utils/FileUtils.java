@@ -44,7 +44,7 @@ public class FileUtils {
                 lines.add(in.nextLine());
             }
         } catch (FileNotFoundException ex) {
-            System.err.println("Wystapil blad przy zapisywaniu do pliku: " + ex.getMessage());
+            System.err.println("Wystapil blad przy odczytywaniu z pliku: " + ex.getMessage());
         }
         ArrayList<String[]> l = new ArrayList<>();
         for (String line : lines) {

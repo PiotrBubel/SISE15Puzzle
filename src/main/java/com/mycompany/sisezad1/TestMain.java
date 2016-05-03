@@ -5,14 +5,18 @@ import com.mycompany.sisezad1.solvers.DepthFirstSearch;
 import com.mycompany.sisezad1.solvers.PuzzleSolver;
 import com.mycompany.sisezad1.utils.BoardUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+
 /**
- *
  * @author Sebastian
  */
 public class TestMain {
 
     /**
      * Klasa tylko dla sprawdzania algorytmow zeby nie psuć maina
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -55,10 +59,19 @@ public class TestMain {
                 {13, 14, 11, 15}
         };
 
-        Board instance = new Board(state7);
+        Board instance = new Board(state666);
         PuzzleSolver solver;
-        solver = new BreadthFirstSearch("wsad",20);
-        Board solved = solver.solve(instance);
+        solver = new BreadthFirstSearch("wsad", 20);
+
+        PrintStream stream = null;
+        try {
+            stream = new PrintStream(new FileOutputStream("path.txt"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Blad podczas tworzenia pliku");
+        }
+
+        Board solved = solver.solve(instance, stream);
 
         if (solved != null) {
             BoardUtils.printBoard(solved);

@@ -5,6 +5,9 @@ import com.mycompany.sisezad1.solvers.*;
 import com.mycompany.sisezad1.utils.BoardUtils;
 import com.mycompany.sisezad1.utils.FileUtils;
 
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+
 
 /**
  * @author Piotrek
@@ -100,19 +103,28 @@ public class Main {
                 {13, 14, 11, 15}
         };
 
-        FileUtils.saveData("plik3.txt", new Board(state3));
+        FileUtils.saveData("plik3.txt", new Board(state666));
         Board instance = FileUtils.loadData("plik3.txt");
 
-        instance = BoardUtils.randomizeBoard(4, 4, 3);
+        //instance = BoardUtils.randomizeBoard(4, 4, 3);
 
-        PuzzleSolver solver = new IterativeDepthFirstSearch("wsad", 3);
-        //solver = new DepthFirstSearch("wsad", 3);
+        PuzzleSolver solver = new IterativeDepthFirstSearch("wsad", 20);
+        //solver = new DepthFirstSearch("wsad", 20);
         //solver = new BestFirstSearch(new MisplacedComparator());
         //solver = new BestFirstSearch(new ManhattanDistanceComparator());
-        solver = new AStarSearch(new MisplacedComparator(), 10);
+        //solver = new AStarSearch(new MisplacedComparator(), 10);
         //solver = new IterativeAStarSearch(new MisplacedComparator(), 10);
+        solver = new BreadthFirstSearch("wsad", 20);
 
-        Board solved = solver.solve(instance);
+        PrintStream stream = null;
+        try {
+            stream = new PrintStream(new FileOutputStream("path.txt"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Blad podczas tworzenia pliku");
+        }
+
+        Board solved = solver.solve(instance, stream);
 
         if (solved != null) {
             BoardUtils.printBoard(solved);

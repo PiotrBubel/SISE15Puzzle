@@ -2,6 +2,7 @@ package com.mycompany.sisezad1;
 
 import com.mycompany.sisezad1.utils.BoardUtils;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,7 +14,6 @@ import java.util.List;
 public class Board {
 
     private int[][] state;
-    private boolean visited;    //nieuzywane, jesli nie bedzie potrzebne w BFS/A*/czymkolwiek, mozna usunas razem z metodami
     private List<Board> nextNodes;
     private Board parentNode;
     private String path;
@@ -25,7 +25,6 @@ public class Board {
      */
     public Board(int[][] state) {
         this.state = state.clone();
-        visited = false;
         parentNode = null;
         path = "";
     }
@@ -44,7 +43,6 @@ public class Board {
                 state[x][y] = original.state[x][y];
             }
         }
-        visited = false;
         parentNode = null;
         path = original.getPath();
     }
@@ -69,14 +67,6 @@ public class Board {
         return this.nextNodes;
     }
 
-    public void visit() {
-        visited = true;
-    }
-
-    public boolean wasVisited() {
-        return this.visited;
-    }
-
     public int[][] getState() {
         return this.state;
     }
@@ -84,7 +74,6 @@ public class Board {
     public boolean isCorrect() {
         return BoardUtils.countMisplaced(this) == 0;
     }
-
 
     /**
      * @return x, y coordinates of value, x and y are counted from 0, (0,0) is in upper left corner,
@@ -197,15 +186,6 @@ public class Board {
 
     }
 
-    public boolean areAllNextVisited() {
-        for (Board n : nextNodes) {
-            if (!n.visited) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     /**
      * Method returns possible states from this Board in given order
      *
@@ -243,26 +223,15 @@ public class Board {
         return possibleStates;
     }
 
-    public void fillGraph(String order, int depth) {
+    public Board findAnswerWithDFS(String order, int depth, PrintStream stream) {
         if (depth >= 0) {
             this.nextNodes = getPossibleStates(order);
             for (Board nextNode : nextNodes) {
-                nextNode.fillGraph(order, depth - 1);
-            }
-        } else {
-            this.nextNodes = null;
-        }
-    }
-
-    public Board findAnswerWithDFS(String order, int depth) {
-        if (depth >= 0) {
-            this.nextNodes = getPossibleStates(order);
-            for (Board nextNode : nextNodes) {
-                System.out.println(nextNode.path);
+                stream.println(nextNode.path);
                 if (nextNode.isCorrect()) {
                     return nextNode;
                 } else {
-                    Board possibleAnswer = nextNode.findAnswerWithDFS(order, depth - 1);
+                    Board possibleAnswer = nextNode.findAnswerWithDFS(order, depth - 1, stream);
                     if (possibleAnswer != null) {
                         return possibleAnswer;
                     }
@@ -275,15 +244,15 @@ public class Board {
         return null;
     }
 
-    public Board findAnswerWithAStar(Comparator heuristics, int depth) {
+    public Board findAnswerWithAStar(Comparator heuristics, int depth, PrintStream stream) {
         if (depth >= 0) {
             this.nextNodes = getPossibleStates(heuristics);
             for (Board nextNode : nextNodes) {
-                System.out.println(nextNode.path);
+                stream.println(nextNode.path);
                 if (nextNode.isCorrect()) {
                     return nextNode;
                 } else {
-                    Board possibleAnswer = nextNode.findAnswerWithAStar(heuristics, depth - 1);
+                    Board possibleAnswer = nextNode.findAnswerWithAStar(heuristics, depth - 1, stream);
                     if (possibleAnswer != null) {
                         return possibleAnswer;
                     }
@@ -295,26 +264,6 @@ public class Board {
         }
         return null;
     }
-
-    //FIXME
-    //to jest w zasadzie prawie to samo co iteracyjne DFS, tylko musi trzymac w pamieci caly graf wszerz
-    public Board findAnswerWithBFS(String order, int depth) {
-        if (depth >= 0) {
-
-            this.nextNodes = getPossibleStates(order);
-            for (Board nextNode : nextNodes) {
-                System.out.println(nextNode.path);
-                if (nextNode.isCorrect()) {
-                    return nextNode;
-                }
-            }
-            for (Board nextNode : nextNodes) {
-                nextNode.findAnswerWithBFS(order, depth - 1);
-            }
-        }
-        return null;
-    }
-
 
     /**
      * @param direction [w|s|a|d]

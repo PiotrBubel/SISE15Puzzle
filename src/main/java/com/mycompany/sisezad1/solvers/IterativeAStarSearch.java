@@ -2,6 +2,7 @@ package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
 
+import java.io.PrintStream;
 import java.util.Comparator;
 
 /**
@@ -21,17 +22,19 @@ public class IterativeAStarSearch extends PuzzleSolver {
     }
 
     @Override
-    public Board solve(Board unsolved) {
+    public Board solve(Board unsolved, PrintStream stream) {
         int depth = 1;
         PuzzleSolver aStarSolver;
         Board solved = null;
-
+        if (stream == null) {
+            stream = System.out;
+        }
         this.time = System.nanoTime();
 
         while (depth <= maxDepth && solved == null) {
             aStarSolver = new AStarSearch(this.heuristicFunction, depth);
             Board toSolve = new Board(unsolved);
-            solved = aStarSolver.solve(toSolve);
+            solved = aStarSolver.solve(toSolve, stream);
             depth++;
         }
         this.time = time - System.nanoTime();

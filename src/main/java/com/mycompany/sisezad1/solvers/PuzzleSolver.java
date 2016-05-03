@@ -3,6 +3,8 @@ package com.mycompany.sisezad1.solvers;
 import com.mycompany.sisezad1.Board;
 import com.mycompany.sisezad1.utils.BoardUtils;
 
+import java.io.PrintStream;
+
 
 /**
  * @author Piotrek
@@ -48,6 +50,6 @@ public abstract class PuzzleSolver {
      * @param unsolved board
      * @return solved board or null when algorithm cannot find solution
      */
-    public abstract Board solve(Board unsolved);
+    public abstract Board solve(Board unsolved, PrintStream pStream);
 
 }

@@ -1,6 +1,8 @@
 package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
+
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,11 +32,16 @@ public class BestFirstSearch extends PuzzleSolver {
     }
 
     @Override
-    public Board solve(Board unsolved) {
+    public Board solve(Board unsolved, PrintStream stream) {
         this.firstBoard = new Board(unsolved);
+        if(stream == null){
+            stream = System.out;
+        }
         this.time = System.nanoTime();
         int steps = 0;
+
         Board current = unsolved;
+        this.time = System.nanoTime();
         while (!current.isCorrect()) {
             if (current.canMoveDown()) {
                 nextCombinations.add(new Board(current).moveDown());
@@ -52,6 +59,7 @@ public class BestFirstSearch extends PuzzleSolver {
                 System.out.println(b.getPath());
             }
             current = chooseBest(nextCombinations, heuristicFunction);
+            stream.println(current.getPath());
             nextCombinations.clear();
             steps++;
             //System.out.println("steps: " + steps);
