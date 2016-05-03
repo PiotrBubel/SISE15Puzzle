@@ -26,8 +26,13 @@ public class BoardUtils {
             }
         }
         System.out.println();
-        System.out.println("Moves: " + b.getPath().length());
-        System.out.println("Path: " + b.getPath());
+
+        if(b.getPath() != null && !b.getPath().isEmpty()){
+            System.out.println("Moves: " + b.getPath().length());
+            System.out.println("Path: " + b.getPath());
+        }else{
+            System.out.println("No path attached");
+        }
     }
 
     /**
@@ -60,10 +65,10 @@ public class BoardUtils {
      */
     public static String randomizeOrder() {
         List<String> ord = new ArrayList<>();
-        ord.add("w");
-        ord.add("s");
-        ord.add("a");
-        ord.add("d");
+        ord.add(Board.DOWN_CHAR);
+        ord.add(Board.LEFT_CHAR);
+        ord.add(Board.RIGHT_CHAR);
+        ord.add(Board.UP_CHAR);
         String randOrd = new String();
         while (ord.size() > 0) {
             Random r = new Random();

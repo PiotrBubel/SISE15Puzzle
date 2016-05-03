@@ -8,8 +8,10 @@ import java.util.Comparator;
 /**
  * Ocena heurystyczna: liczba elementow poza swoim polozeniem docelowym + liczba ruchow od startu
  * (tym lepsze czym wiecej plytek na swoim miejscu, tym gorsze czym wiecej ruchow potrzebuje)
+ *
+ * Powinno byc uzywane do A* i IDA*
  */
-public class MisplacedDepthComparator implements Comparator<Board> {
+public class AMisplacedComparator extends MisplacedComparator {
 
     @Override
     public int compare(Board b1, Board b2) {

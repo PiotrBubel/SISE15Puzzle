@@ -6,40 +6,33 @@ import java.util.Comparator;
 
 /**
  * Ocena heurystyczna: suma dystansu kazdego elementu od wlasciwego miejsca (obliczane metryka
- * Manhattan) Dystans nie jest obliczany dla 0, plus ilosc ruchow potrzebnych do osiagniecia danego
- * stanu
+ * Manhattan)
+ *
+ * Powinno byc uzywane do Best-first (podane do A* sprawia, ze A* dziala jak best-first)
  */
 public class ManhattanDistanceComparator implements Comparator<Board> {
 
     @Override
     public int compare(Board b1, Board b2) {
-        return (this.sumDistance(b1) + b1.getPath().length()) - (this.sumDistance(b2) + b2.getPath().length());
+        return this.sumDistance(b1) - this.sumDistance(b2);
     }
 
-    private int sumDistance(Board b) {
+    public int sumDistance(Board b) {
         int sum = 0;
         int[][] state = b.getState();
-        for (int[] line : state) {
-            for (int i : line) {
-                sum = sum + getManhattanDistance(b, i);
+        int correctValue = 1;
+
+        for (int x = 0; x < state.length; x++) {
+            for (int y = 0; y < state[0].length; y++) {
+                if (x == state.length - 1 && y == state[0].length - 1) {
+                    correctValue = 0;
+                }
+                int[] valueCoord = b.findNumber(correctValue);
+                sum = sum + (Math.abs(valueCoord[0] - x) + Math.abs(valueCoord[1] - y));
+
+                correctValue++;
             }
         }
-        //System.out.println(sum);
         return sum;
-    }
-
-    private int getManhattanDistance(Board b, int val) {
-        int x = b.findNumber(val)[0];
-        int y = b.findNumber(val)[1];
-        int distance = 0;
-
-        if (val != 0) {
-            //FIXME works only when board is symmetrical
-            int properX = (int) Math.floor(((double) val - 1) / (double) (b.getState().length));
-            int properY = (val - 1) % b.getState()[0].length;
-            distance = Math.abs(properX - x) + Math.abs(properY - y);
-        }
-
-        return distance;
     }
 }

@@ -13,7 +13,7 @@ public abstract class PuzzleSolver {
 
     public int allSteps;
     protected long time = 0;
-    protected String order;            //nieuzywane w bestFirst
+    protected String order;            //nieuzywane w metodach heurestycznych
     protected Board firstBoard;
 
     /**
@@ -22,7 +22,7 @@ public abstract class PuzzleSolver {
     public PuzzleSolver() {
         this.order = BoardUtils.randomizeOrder();
         this.firstBoard = null;
-        this.allSteps = 0;
+        //this.allSteps = 0;
     }
 
     public PuzzleSolver(String order) {
@@ -33,7 +33,7 @@ public abstract class PuzzleSolver {
             this.order = BoardUtils.randomizeOrder();
         }
         this.firstBoard = null;
-        this.allSteps = 0;
+        //this.allSteps = 0;
     }
 
     public long getTime() {

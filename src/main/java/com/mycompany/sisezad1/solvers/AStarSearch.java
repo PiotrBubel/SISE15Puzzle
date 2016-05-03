@@ -11,6 +11,9 @@ import java.util.Comparator;
  *
  *
  * Celem tej strategii jest wyznaczenie najtańszej drogi w grafie.
+ *
+ * A* do dzialania wymaga komparatora A, gdy podany zostanie komparator nie-A dziala jak zwykle
+ * best-first
  */
 public class AStarSearch extends PuzzleSolver {
     int maxDepth;
@@ -33,7 +36,7 @@ public class AStarSearch extends PuzzleSolver {
         //rozni sie od best first, ze zapisuje wyniki w grafie
         //rozni sie od dfs tym, ze kolejnosc nie jest podana ani losowa, ale heurystyczna
 
-        if(stream == null){
+        if (stream == null) {
             stream = System.out;
         }
 

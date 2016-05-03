@@ -12,9 +12,11 @@ import java.util.List;
  * Best-first search - algorytm 'najpierw najlepszy'
  *
  *
- * Rozwijany jest "najlepszy" węzeł spośród węzłów rozpatrywanych do tej pory, niezależnie od ich
- * położenia w grafie. Zakłada się, że węzeł najbardziej obiecujący ma najmniejszą wartość funkcji
- * heurystycznej.
+ * Rozwijany jest "najlepszy" węzeł spośród węzłów rozpatrywanych do tej pory. Zakłada się, że węzeł
+ * najbardziej obiecujący ma najmniejszą wartość funkcji heurystycznej.
+ *
+ * Brak zapamietywania calego grafu, nie przechodzi przez graf, do optymalnego dzialania wymaga
+ * wlaczonego LOOP_CONTROL
  */
 public class BestFirstSearch extends PuzzleSolver {
 
@@ -32,7 +34,7 @@ public class BestFirstSearch extends PuzzleSolver {
     @Override
     public Board solve(Board unsolved, PrintStream stream) {
         this.firstBoard = new Board(unsolved);
-        if(stream == null){
+        if (stream == null) {
             stream = System.out;
         }
         this.time = System.nanoTime();
