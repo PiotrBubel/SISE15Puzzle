@@ -118,9 +118,10 @@ public class Main {
 
         PrintStream stream = null;
         try {
-            stream = new PrintStream(new FileOutputStream("path.txt"));
+            String className = solver.getClass().getName();
+            stream = new PrintStream(new FileOutputStream("path_" + className + ".txt"));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             System.out.println("Blad podczas tworzenia pliku");
         }
 
@@ -129,7 +130,7 @@ public class Main {
         if (solved != null) {
             BoardUtils.printBoard(solved);
         } else {
-            System.out.println("algorytm nie znalazł rozwiązania");
+            System.out.println("Algorytm nie znalazł rozwiązania");
         }
 
         System.exit(0);
