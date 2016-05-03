@@ -106,8 +106,13 @@ public class Board {
 
     public boolean canMoveRight() {
         int[] zeroCoord = findZero();
-        if(!this.path.isEmpty() && this.path != null){
-            if(this.path.endsWith("A")){ //TODO more loop patterns
+        if (!this.path.isEmpty() && this.path != null) {
+            if (this.path.endsWith("A") ||
+                    this.path.endsWith("DWAS") ||
+                    this.path.endsWith("DSAW")
+                    ) { //TODO more loop patterns
+                //dwas
+                //dsaw
                 return false;
             }
         }
@@ -115,8 +120,11 @@ public class Board {
     }
 
     public boolean canMoveLeft() {
-        if(!this.path.isEmpty() && this.path != null){
-            if(this.path.endsWith("D")){ //TODO more loop patterns
+        if (!this.path.isEmpty() && this.path != null) {
+            if (this.path.endsWith("D") ||
+                    this.path.endsWith("AWDS") ||
+                    this.path.endsWith("ASDW")
+                    ) { //TODO more loop patterns
                 return false;
             }
         }
@@ -125,8 +133,11 @@ public class Board {
     }
 
     public boolean canMoveUp() {
-        if(!this.path.isEmpty() && this.path != null){
-            if(this.path.endsWith("S")){  //TODO more loop patterns
+        if (!this.path.isEmpty() && this.path != null) {
+            if (this.path.endsWith("S") ||
+                    this.path.endsWith("WDSA") ||
+                    this.path.endsWith("WASD")
+                    ) {  //TODO more loop patterns
                 return false;
             }
         }
@@ -135,8 +146,11 @@ public class Board {
     }
 
     public boolean canMoveDown() {
-        if(!this.path.isEmpty() && this.path != null){
-            if(this.path.endsWith("W")){  //TODO more loop patterns
+        if (!this.path.isEmpty() && this.path != null) {
+            if (this.path.endsWith("W") ||
+                    this.path.endsWith("SDWA") ||
+                    this.path.endsWith("SAWD")
+                    ) {  //TODO more loop patterns
                 return false;
             }
         }
@@ -209,7 +223,6 @@ public class Board {
 
     /**
      * Method returns possible states from this Board in given order
-     *
      */
     public List<Board> getPossibleStates(String ord) {
         String order = new String(ord);
@@ -229,7 +242,6 @@ public class Board {
 
     /**
      * Method returns possible states from this Board in heuristic order
-     *
      */
     public List<Board> getPossibleStates(Comparator heuristics) {
         String order = BoardUtils.randomizeOrder();

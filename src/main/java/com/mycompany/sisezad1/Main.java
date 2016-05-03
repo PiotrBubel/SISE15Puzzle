@@ -113,9 +113,9 @@ public class Main {
         instance = BoardUtils.randomizeBoard(4, 4, 6);
 
         PuzzleSolver solver = new IterativeDepthFirstSearch("wsad", 20);
-        solver = new DepthFirstSearch("wsad", 10);
+        //solver = new DepthFirstSearch("wsad", 10);
         //solver = new BestFirstSearch(new MisplacedComparator());
-        //solver = new BestFirstSearch(new ManhattanDistanceComparator());
+        //solver = new BestFirstSearch(new ManhattanDistanceComparator()); //FIXME
         //solver = new AStarSearch(new MisplacedComparator(), 20);
         //solver = new IterativeAStarSearch(new MisplacedComparator(), 20);
         //solver = new BreadthFirstSearch("wsad", 20);
