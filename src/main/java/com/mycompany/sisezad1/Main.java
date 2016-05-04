@@ -1,5 +1,6 @@
 package com.mycompany.sisezad1;
 
+import com.mycompany.sisezad1.utils.BoardUtils;
 import com.mycompany.sisezad1.utils.ConsoleManualMode;
 
 

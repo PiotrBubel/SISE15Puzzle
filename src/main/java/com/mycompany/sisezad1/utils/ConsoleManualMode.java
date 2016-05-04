@@ -9,8 +9,10 @@ import com.mycompany.sisezad1.Board;
 import com.mycompany.sisezad1.heuristics.*;
 import com.mycompany.sisezad1.solvers.*;
 
+import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,12 +83,12 @@ public class ConsoleManualMode {
     }
 
     public static void mainLoop(String[] args) {
+        PuzzleSolver solver = null;
+
         if (args.length > 1) {
             for (int i = 0; i < args.length; i++) {
                 System.out.println(args[i]);
             }
-
-            PuzzleSolver solver;
 
             switch (args[0]) {
                 //pierwszy argument to algorytm, drugi kiedy potrzebny to glebokosc
@@ -125,10 +127,70 @@ public class ConsoleManualMode {
                     solver = new DepthFirstSearch();
                     break;
             }
-            System.out.println("Uruchomi sie algorytm: " + solver.getClass().toString());
+            System.out.println("Uruchomi sie algorytm: " + solver.getClass().getSimpleName());
+            if (solver.getHeuristicFunction() == null) {
+                System.out.println("Kolejnosc: " + solver.getOrder());
+            } else {
+                System.out.println("Heurystyka: " + solver.getHeuristicFunction().getClass().getSimpleName());
+            }
         } else {
             System.out.println("Program uruchomiony bez poprawnych argumentow");
         }
+
+        Board instance = null;
+        while(instance == null){
+            try {
+                instance = ConsoleManualMode.loadBoardFromUser();
+            } catch (Exception e) {
+                System.out.println("Nastapil blad, sprobuj ponownie");
+            }
+        }
+
+        PrintStream stream = null;
+        try {
+            String className = solver.getClass().getSimpleName();
+            stream = new PrintStream(new FileOutputStream("path_" + className + ".txt"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Blad podczas tworzenia pliku path");
+        }
+
+        Board solved = solver.solve(instance, stream);
+
+        if (solved != null) {
+            System.out.println(solved.getPath().length());
+            System.out.println(solved.getPath());
+        } else {
+            System.out.println("-1");
+        }
+    }
+
+    public static Board loadBoardFromUser() throws IOException {
+
+        InputStreamReader isr = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader(isr);
+        System.out.println("Wprowadz wymiary planszy (wiersze kolumny)");
+        String line = br.readLine();
+        String[] splittedLine = line.split(" ");
+        int rows = Integer.parseInt(splittedLine[0]);
+        int columns = Integer.parseInt(splittedLine[1]);
+        int[][] state = new int[columns][rows];
+
+        System.out.println("Wprowadz stan planszy (wiersze po kolei, ze spacja miedzy liczbami)");
+        for (int i = 0; i < columns; i++) {
+            line = br.readLine();
+            splittedLine = line.split(" ");
+            for (int j = 0; j < rows; j++) {
+                System.out.println(j);
+                state[i][j] = Integer.parseInt(splittedLine[j]);
+            }
+        }
+        System.out.println("Poprawnie wprowadzono plansze");
+
+        return new Board(state);
+    }
+
+    public static void runReportsCases() {
 
         int[][] state1 = new int[][]{ //1 ruch
                 {1, 2, 3, 4},
@@ -207,7 +269,5 @@ public class ConsoleManualMode {
         } else {
             System.out.println("Algorytm nie znalazł rozwiązania");
         }
-
-        System.exit(0);
     }
 }
