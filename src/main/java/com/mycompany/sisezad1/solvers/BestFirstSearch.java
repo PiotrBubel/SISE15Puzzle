@@ -22,13 +22,13 @@ public class BestFirstSearch extends PuzzleSolver {
 
     public int maxSteps;
     private List<Board> nextCombinations;
-    private Comparator heuristicFunction;
 
     public BestFirstSearch(Comparator heuristicFunction) {
         super();
         nextCombinations = new ArrayList<>();
         this.heuristicFunction = heuristicFunction;
         this.maxSteps = 5000;
+        this.createdBoards = 0;
     }
 
     @Override
@@ -37,27 +37,30 @@ public class BestFirstSearch extends PuzzleSolver {
         if (stream == null) {
             stream = System.out;
         }
-        this.time = System.nanoTime();
         int steps = 0;
-
+        PuzzleSolver.CREATED_BOARDS = 0;
         Board current = unsolved;
+        this.createdBoards = 0;
+
         this.time = System.nanoTime();
         while (!current.isCorrect()) {
             if (current.canMoveDown()) {
                 nextCombinations.add(new Board(current).moveDown());
+                this.createdBoards++;
             }
             if (current.canMoveUp()) {
                 nextCombinations.add(new Board(current).moveUp());
+                this.createdBoards++;
             }
             if (current.canMoveRight()) {
                 nextCombinations.add(new Board(current).moveRight());
+                this.createdBoards++;
             }
             if (current.canMoveLeft()) {
                 nextCombinations.add(new Board(current).moveLeft());
+                this.createdBoards++;
             }
-            for (Board b : nextCombinations) {
-                System.out.println(b.getPath());
-            }
+
             current = chooseBest(nextCombinations, heuristicFunction);
             stream.println(current.getPath());
             nextCombinations.clear();
@@ -69,7 +72,8 @@ public class BestFirstSearch extends PuzzleSolver {
             }
         }
 
-        this.time = time - System.nanoTime();
+        this.time = System.nanoTime() - time;
+
         return current;
     }
 

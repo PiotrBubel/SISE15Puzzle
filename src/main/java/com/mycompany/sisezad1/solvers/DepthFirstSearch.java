@@ -19,28 +19,33 @@ public class DepthFirstSearch extends PuzzleSolver {
     public DepthFirstSearch() {
         super();
         maxDepth = 10;
+        this.createdBoards = 0;
     }
 
     public DepthFirstSearch(String order) {
         super(order);
         maxDepth = 10;
+        this.createdBoards = 0;
     }
 
     public DepthFirstSearch(String order, int depth) {
         super(order);
         maxDepth = depth - 1;
+        this.createdBoards = 0;
     }
 
     @Override
     public Board solve(Board unsolved, PrintStream stream) {
-        if(stream == null){
+        if (stream == null) {
             stream = System.out;
         }
 
         this.time = System.nanoTime();
-
+        PuzzleSolver.CREATED_BOARDS = 0;
+        this.createdBoards = 0;
         Board correct = unsolved.findAnswerWithDFS(order, maxDepth, stream); //rekurencyjnie, dlatego w klasie Board
-        this.time = time - System.nanoTime();
+        this.time = System.nanoTime() - time;
+        this.createdBoards = PuzzleSolver.CREATED_BOARDS;
         return correct;
     }
 }

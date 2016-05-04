@@ -4,6 +4,7 @@ import com.mycompany.sisezad1.Board;
 import com.mycompany.sisezad1.utils.BoardUtils;
 
 import java.io.PrintStream;
+import java.util.Comparator;
 
 
 /**
@@ -11,10 +12,15 @@ import java.io.PrintStream;
  */
 public abstract class PuzzleSolver {
 
-    public int allSteps;
+    protected static int CREATED_BOARDS = 0;
+
+
+    protected int createdBoards;
     protected long time = 0;
-    protected String order;            //nieuzywane w metodach heurestycznych
+    protected String order;            //nieuzywane w metodach heurystycznych
     protected Board firstBoard;
+    protected Comparator heuristicFunction; //nieuzywane w metodach nie-heurystycznych
+
 
     /**
      * Wywoływany gdy kolejność ma być losowana
@@ -22,7 +28,8 @@ public abstract class PuzzleSolver {
     public PuzzleSolver() {
         this.order = BoardUtils.randomizeOrder();
         this.firstBoard = null;
-        //this.allSteps = 0;
+        this.createdBoards = 0;
+        this.heuristicFunction = null;
     }
 
     public PuzzleSolver(String order) {
@@ -33,7 +40,19 @@ public abstract class PuzzleSolver {
             this.order = BoardUtils.randomizeOrder();
         }
         this.firstBoard = null;
-        //this.allSteps = 0;
+        this.createdBoards = 0;
+        this.heuristicFunction = null;
+    }
+
+    /**
+     * Method for counting created boards, to use only in Board class
+     */
+    public static void createdBoard(){
+        PuzzleSolver.CREATED_BOARDS++;
+    }
+
+    public Comparator getHeuristicFunction(){
+        return this.heuristicFunction;
     }
 
     public long getTime() {
@@ -42,6 +61,10 @@ public abstract class PuzzleSolver {
 
     public String getOrder() {
         return this.order;
+    }
+
+    public int getCreatedBoards() {
+        return this.createdBoards;
     }
 
     /**

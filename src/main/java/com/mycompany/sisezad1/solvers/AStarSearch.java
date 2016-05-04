@@ -17,17 +17,18 @@ import java.util.Comparator;
  */
 public class AStarSearch extends PuzzleSolver {
     int maxDepth;
-    private Comparator heuristicFunction;
 
     public AStarSearch() {
         super();
         maxDepth = 10;
         this.heuristicFunction = new MisplacedComparator();
+        this.createdBoards = 0;
     }
 
     public AStarSearch(Comparator heuristicFunction, int depth) {
         maxDepth = depth - 1;
         this.heuristicFunction = heuristicFunction;
+        this.createdBoards = 0;
     }
 
     @Override
@@ -41,10 +42,10 @@ public class AStarSearch extends PuzzleSolver {
         }
 
         this.time = System.nanoTime();
-
+        PuzzleSolver.CREATED_BOARDS = 0;
         Board correct = unsolved.findAnswerWithAStar(heuristicFunction, maxDepth, stream); //rekurencyjnie, dlatego w klasie Board
-
-        this.time = time - System.nanoTime();
+        this.createdBoards = PuzzleSolver.CREATED_BOARDS;
+        this.time = System.nanoTime() - time;
         return correct;
     }
 

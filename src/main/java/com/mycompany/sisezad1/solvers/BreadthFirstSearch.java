@@ -32,17 +32,19 @@ public class BreadthFirstSearch extends PuzzleSolver {
     public BreadthFirstSearch() {
         super();
         this.maxDepth = 10;
+        this.createdBoards = 0;
     }
 
     public BreadthFirstSearch(String order) {
         super(order);
         this.maxDepth = 10;
+        this.createdBoards = 0;
     }
 
     public BreadthFirstSearch(String order, int maxDepth) {
         super(order);
         this.maxDepth = maxDepth;
-
+        this.createdBoards = 0;
     }
 
     @Override
@@ -51,6 +53,8 @@ public class BreadthFirstSearch extends PuzzleSolver {
         checkedNodes = new ArrayList();
         newNodes = new ArrayList();
         Board current;
+        PuzzleSolver.CREATED_BOARDS = 0;
+        this.createdBoards = 0;
 
         if (stream == null) {
             stream = System.out;
@@ -72,7 +76,8 @@ public class BreadthFirstSearch extends PuzzleSolver {
             // Sprawdzenie aktualnego wiercholka 
             stream.println(current.getPath());
             if (current.isCorrect()) {
-                this.time = time - System.nanoTime();
+                this.time = System.nanoTime() - time;
+                this.createdBoards = PuzzleSolver.CREATED_BOARDS;
                 return current;
             }
             // Dodanie do listy sprawdzonych, usuniecie z niesprawdzonych
@@ -87,7 +92,9 @@ public class BreadthFirstSearch extends PuzzleSolver {
             }
         }
         System.out.println("Nie znaleziono rozwiazania");
-        this.time = time - System.nanoTime();
+
+        this.createdBoards = PuzzleSolver.CREATED_BOARDS;
+        this.time = System.nanoTime() - time;
         return null;
     }
 
