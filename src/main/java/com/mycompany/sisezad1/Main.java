@@ -1,10 +1,9 @@
 package com.mycompany.sisezad1;
 
-import com.mycompany.sisezad1.heuristics.MisplacedComparator;
-import com.mycompany.sisezad1.solvers.BestFirstSearch;
-import com.mycompany.sisezad1.solvers.PuzzleSolver;
-import com.mycompany.sisezad1.utils.BoardUtils;
-import com.mycompany.sisezad1.utils.ReportsGenerator;
+import com.mycompany.sisezad1.heuristics.*;
+import com.mycompany.sisezad1.solvers.*;
+import com.mycompany.sisezad1.utils.*;
+
 
 
 /**

@@ -6,10 +6,7 @@
 package com.mycompany.sisezad1.utils;
 
 import com.mycompany.sisezad1.Board;
-import com.mycompany.sisezad1.heuristics.AManhattanDistanceComparator;
-import com.mycompany.sisezad1.heuristics.AMisplacedComparator;
-import com.mycompany.sisezad1.heuristics.ManhattanDistanceComparator;
-import com.mycompany.sisezad1.heuristics.MisplacedComparator;
+import com.mycompany.sisezad1.heuristics.*;
 import com.mycompany.sisezad1.solvers.*;
 
 import java.io.BufferedReader;
