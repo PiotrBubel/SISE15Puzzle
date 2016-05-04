@@ -201,7 +201,7 @@ public class Board {
                     return false;
                 }
                 if (STRONG_LOOP_CONTROL && (
-                        this.path.toLowerCase().endsWith(loopCauseDown1()) //FIXME sometimes causes deadlocks
+                        this.path.toLowerCase().endsWith(loopCauseDown1())
                                 || this.path.toLowerCase().endsWith(loopCauseDown2())
                 )) {
                     return false;
@@ -287,7 +287,6 @@ public class Board {
             Board toAdd = this.move(order.charAt(i));
             if (toAdd != null) {
                 possibleStates.add(toAdd);
-                PuzzleSolver.createdBoard();
             }
         }
         if (possibleStates.isEmpty()) {
@@ -297,27 +296,31 @@ public class Board {
     }
 
     /**
-     * Method returns possible states from this Board in heuristic order
+     * Method returns possible states from this Board in given order
      */
     public List<Board> getPossibleStates(Comparator heuristics) {
-        String order = BoardUtils.randomizeOrder();
-        List<Board> possibleStates = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            Board toAdd = this.move(order.charAt(i));
-            if (toAdd != null) {
-                possibleStates.add(toAdd);
-                PuzzleSolver.createdBoard();
-            }
-        }
+        List<Board> possibleStates = this.getPossibleStates("rrrr");
         Collections.sort(possibleStates, heuristics);
         return possibleStates;
+    }
+
+    /**
+     * Method returns only best states from this Board in heuristic order If more than one state
+     * have same, lowest heuristics value, then returns all of them
+     */
+    public List<Board> getBestStates(Comparator heuristics) {
+        List<Board> bestStates = BoardUtils.getOnlyBestBoards(this.getPossibleStates("rrrr"), heuristics);
+        return bestStates;
     }
 
     public Board findAnswerWithDFS(String order, int depth, PrintStream stream) {
         if (depth >= 0) {
             this.nextNodes = getPossibleStates(order);
+            PuzzleSolver.addCreated(this.nextNodes.size());
             for (Board nextNode : nextNodes) {
-                stream.println(nextNode.path);
+                if (stream != null && !nextNode.getPath().isEmpty() && nextNode.getPath() != null) {
+                    stream.println(nextNode.getPath());
+                }
                 if (nextNode.isCorrect()) {
                     return nextNode;
                 } else {
@@ -334,11 +337,19 @@ public class Board {
         return null;
     }
 
+    /**
+     * Method used if best first algorithms woult be similar rather to DFS than BFS
+     *
+     * Abandoned method.
+     */
     public Board findAnswerWithAStar(Comparator heuristics, int depth, PrintStream stream) {
         if (depth >= 0) {
-            this.nextNodes = getPossibleStates(heuristics);
+            this.nextNodes = getBestStates(heuristics);
+            PuzzleSolver.addCreated(this.nextNodes.size());
             for (Board nextNode : nextNodes) {
-                stream.println(nextNode.path);
+                if (stream != null && !nextNode.getPath().isEmpty() && nextNode.getPath() != null) {
+                    stream.println(nextNode.getPath());
+                }
                 if (nextNode.isCorrect()) {
                     return nextNode;
                 } else {

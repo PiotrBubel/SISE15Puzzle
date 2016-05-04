@@ -6,6 +6,7 @@
 package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
+import com.mycompany.sisezad1.heuristics.AMisplacedComparator;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -31,13 +32,13 @@ public class BreadthFirstSearch extends PuzzleSolver {
 
     public BreadthFirstSearch() {
         super();
-        this.maxDepth = 25;
+        this.maxDepth = DEFAULT_MAX_DEPTH;
         this.createdBoards = 0;
     }
 
     public BreadthFirstSearch(String order) {
         super(order);
-        this.maxDepth = 25;
+        this.maxDepth = DEFAULT_MAX_DEPTH;
         this.createdBoards = 0;
     }
 
@@ -49,51 +50,49 @@ public class BreadthFirstSearch extends PuzzleSolver {
 
     @Override
     public Board solve(Board unsolved, PrintStream stream) {
-        uncheckedNodes = new ArrayList();
-        checkedNodes = new ArrayList();
-        newNodes = new ArrayList();
+        uncheckedNodes = new ArrayList<>();
+        checkedNodes = new ArrayList<>();
+        newNodes = new ArrayList<>();
         Board current;
         PuzzleSolver.CREATED_BOARDS = 0;
         this.createdBoards = 0;
 
-        if (stream == null) {
-            stream = System.out;
-        }
-
         this.time = System.nanoTime();
 
         // Pierwszy wierzchołek do sprawdzenia 
-        uncheckedNodes.add(new Board(unsolved));
+        uncheckedNodes.add(new Board(unsolved.getState()));
 
         while (!uncheckedNodes.isEmpty()) {
             //pobieranie pierwszego wierzcholka z listy niesprawdzonych
             current = uncheckedNodes.get(0);
             // Sprawdzenie mozliwych stanow wg kolejnosci
             newNodes = current.getPossibleStates(this.order);
+            this.createdBoards = this.createdBoards + newNodes.size();
+
             // usuniecie powtarzajacych sie wierzcholkow (zeby nie zapetlilo)
             newNodes = removeChecked();
             uncheckedNodes.addAll(newNodes);
             // Sprawdzenie aktualnego wiercholka 
-            stream.println(current.getPath());
+            if (stream != null && !current.getPath().isEmpty() && current.getPath() != null) {
+                stream.println(current.getPath());
+            }
             if (current.isCorrect()) {
                 this.time = System.nanoTime() - time;
-                this.createdBoards = PuzzleSolver.CREATED_BOARDS;
                 return current;
             }
             // Dodanie do listy sprawdzonych, usuniecie z niesprawdzonych
             addToChecked(current);
 
             if (countActualDepth(current) > maxDepth) {
-                System.out.println("Za duza głebokosc");
+                //System.out.println("Za duza głebokosc");
                 // To raczej nie powinno sie zdarzyc i pewnie mozna to usunac
                 // Bo jak nie znajdzie to petla while sie skonczy wiec mozliwe
                 // ze glebokosc tu jest wgl niepotrzebna.
                 break;
             }
         }
-        System.out.println("Nie znaleziono rozwiazania");
+        //System.out.println("Nie znaleziono rozwiazania");
 
-        this.createdBoards = PuzzleSolver.CREATED_BOARDS;
         this.time = System.nanoTime() - time;
         return null;
     }

@@ -53,6 +53,8 @@ public class ReportsGenerator {
             }
         }
         streamReport.println("Wielkosc planszy: " + toSolve.getState().length + "x" + toSolve.getState()[0].length);
+        //streamReport.println("Ochrona przed prostymi petlami: " + Board.SIMPLE_LOOP_CONTROL);
+        //streamReport.println("Ochrona przed zlozonymi petlami: " + Board.STRONG_LOOP_CONTROL);
 
         streamReport.println();
 

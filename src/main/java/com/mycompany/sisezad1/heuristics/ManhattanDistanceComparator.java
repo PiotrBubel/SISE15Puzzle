@@ -6,7 +6,7 @@ import java.util.Comparator;
 
 /**
  * Ocena heurystyczna: suma dystansu kazdego elementu od wlasciwego miejsca (obliczane metryka
- * Manhattan)
+ * Manhattan), nie liczy zera
  *
  * Powinno byc uzywane do Best-first (podane do A* sprawia, ze A* dziala jak best-first)
  */
@@ -17,7 +17,7 @@ public class ManhattanDistanceComparator implements Comparator<Board> {
         return this.sumDistance(b1) - this.sumDistance(b2);
     }
 
-    public int sumDistance(Board b) {
+    protected int sumDistance(Board b) {
         int sum = 0;
         int[][] state = b.getState();
         int correctValue = 1;
@@ -25,7 +25,7 @@ public class ManhattanDistanceComparator implements Comparator<Board> {
         for (int x = 0; x < state.length; x++) {
             for (int y = 0; y < state[0].length; y++) {
                 if (x == state.length - 1 && y == state[0].length - 1) {
-                    correctValue = 0;
+                    break;
                 }
                 int[] valueCoord = b.findNumber(correctValue);
                 sum = sum + (Math.abs(valueCoord[0] - x) + Math.abs(valueCoord[1] - y));
