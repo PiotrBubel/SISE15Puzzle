@@ -13,9 +13,11 @@ import java.io.PrintStream;
  */
 public class ReportsGenerator {
 
-    public static void solveWithReport(PuzzleSolver solver, String reportFilePrefix, Board toSolve) {
+    public static Board solveWithReport(PuzzleSolver solver, String reportFilePrefix, Board toSolve) {
 
         String className = solver.getClass().getSimpleName();
+
+        FileUtils.saveBoard("_" + reportFilePrefix + className + "_FirstBoard.txt", toSolve);
 
         PrintStream streamPaths = null;
         try {
@@ -46,7 +48,7 @@ public class ReportsGenerator {
         } else {
             if (solver.getOrder() != null) {
                 streamReport.println("Kolejnosc: " + solver.getOrder());
-            } else{
+            } else {
                 streamReport.println("--blad--");
             }
         }
@@ -94,7 +96,10 @@ public class ReportsGenerator {
         streamReport.println("--end of report--");
 
         streamReport.close();
+
         System.out.println("Koniec tworzenia plikow raportu " + reportFilePrefix);
+
+        return solvedBoard;
     }
 
 

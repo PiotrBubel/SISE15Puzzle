@@ -4,6 +4,7 @@ import com.mycompany.sisezad1.heuristics.MisplacedComparator;
 import com.mycompany.sisezad1.solvers.BestFirstSearch;
 import com.mycompany.sisezad1.solvers.PuzzleSolver;
 import com.mycompany.sisezad1.utils.BoardUtils;
+import com.mycompany.sisezad1.utils.ReportsGenerator;
 
 
 /**
@@ -28,14 +29,19 @@ public class Main {
         };
 
         Board instance = new Board(state6);
-        instance = BoardUtils.randomizeBoard(4, 4, 40);
+        //instance = BoardUtils.randomizeBoard(4, 4, 20);
 
         PuzzleSolver solver = new BestFirstSearch(new MisplacedComparator());
 
-        Board solved = solver.solve(instance, null);
+        Board solved;// = solver.solve(instance, null);
 
-        BoardUtils.printBoard(solved);
+        solved = ReportsGenerator.solveWithReport(solver, "firstReport", instance);
 
+        if (solved != null) {
+            BoardUtils.printBoard(solved);
+        } else {
+            System.out.println("nie udalo sie znalzc rozwiazania");
+        }
 
         System.exit(0);
     }
