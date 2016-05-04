@@ -1,13 +1,9 @@
 package com.mycompany.sisezad1.utils;
 
 import com.mycompany.sisezad1.Board;
-import com.mycompany.sisezad1.solvers.AStarSearch;
-import com.mycompany.sisezad1.solvers.BestFirstSearch;
-import com.mycompany.sisezad1.solvers.IterativeAStarSearch;
 import com.mycompany.sisezad1.solvers.PuzzleSolver;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintStream;
@@ -103,7 +99,7 @@ public class ReportsGenerator {
 
 
     public static void solveWithReport(PuzzleSolver solver, String reportFilePrefix, String boardFileName) {
-        ReportsGenerator.solveWithReport(solver, reportFilePrefix, FileUtils.loadData(boardFileName));
+        ReportsGenerator.solveWithReport(solver, reportFilePrefix, FileUtils.loadBoard(boardFileName));
     }
 
     private static int countLinesInFile(String fileName) {

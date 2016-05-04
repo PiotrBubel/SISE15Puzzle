@@ -13,7 +13,7 @@ import java.util.Comparator;
 public abstract class PuzzleSolver {
 
     protected static int CREATED_BOARDS = 0;
-
+    public static int DEFAULT_MAX_DEPTH = 25;
 
     protected int createdBoards;
     protected long time = 0;
@@ -37,7 +37,9 @@ public abstract class PuzzleSolver {
                 || !(order.toLowerCase().contains(Board.DOWN_CHAR)
                 && order.toLowerCase().contains(Board.LEFT_CHAR)
                 && order.toLowerCase().contains(Board.RIGHT_CHAR)
-                && order.toLowerCase().contains(Board.UP_CHAR))) {
+                && order.toLowerCase().contains(Board.UP_CHAR)) ^ order.toLowerCase().contains("r")) {
+            //jesli order nie ma 4 znakow lub jesli
+            //      nie zawiera wszystkich liter-kierunkow xor zawiera r
             System.out.println("Podana kolejnosc jest nieprawidlowa. Losuje kolejnosc.");
             this.order = BoardUtils.randomizeOrder();
         } else {

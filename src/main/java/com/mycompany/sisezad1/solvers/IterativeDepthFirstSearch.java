@@ -17,7 +17,7 @@ public class IterativeDepthFirstSearch extends PuzzleSolver {
 
     public IterativeDepthFirstSearch(String order) {
         super(order);
-        maxDepth = 10;
+        maxDepth = DEFAULT_MAX_DEPTH;
         this.createdBoards = 0;
     }
 
@@ -30,6 +30,12 @@ public class IterativeDepthFirstSearch extends PuzzleSolver {
     public IterativeDepthFirstSearch(int depth) {
         super();
         maxDepth = depth;
+        this.createdBoards = 0;
+    }
+
+    public IterativeDepthFirstSearch() {
+        super();
+        maxDepth = DEFAULT_MAX_DEPTH;
         this.createdBoards = 0;
     }
 

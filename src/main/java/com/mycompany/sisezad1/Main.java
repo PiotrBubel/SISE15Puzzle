@@ -1,6 +1,8 @@
 package com.mycompany.sisezad1;
 
+import com.mycompany.sisezad1.heuristics.MisplacedComparator;
 import com.mycompany.sisezad1.solvers.AStarSearch;
+import com.mycompany.sisezad1.solvers.BestFirstSearch;
 import com.mycompany.sisezad1.solvers.BreadthFirstSearch;
 import com.mycompany.sisezad1.solvers.PuzzleSolver;
 import com.mycompany.sisezad1.utils.BoardUtils;
@@ -17,20 +19,26 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        //ConsoleManualMode.mainLoop(args);
-        PuzzleSolver pz = new BreadthFirstSearch("dupa");
-        System.out.println(pz.getOrder());
+        //TODO uncomment this
+        //String[] argsTmp = new String[]{"-a", "cbf"};
+        //ConsoleManualMode.mainLoop(argsTmp);
 
-        int[][] state3 = new int[][]{ //3 ruchy
-                {1, 2, 3, 4},
-                {5, 6, 7, 8},
-                {9, 0, 10, 12},
+        int[][] state6 = new int[][]{ //da sie latwo rozwiazac - 6 ruchow
+                {0, 1, 2, 4},
+                {5, 6, 3, 8},
+                {9, 10, 7, 12},
                 {13, 14, 11, 15}
         };
 
-        Board solved = pz.solve(new Board(state3), null);
+        Board instance = new Board(state6);
+        instance = BoardUtils.randomizeBoard(4, 4, 40);
+
+        PuzzleSolver solver = new BestFirstSearch(new MisplacedComparator());
+
+        Board solved = solver.solve(instance, null);
 
         BoardUtils.printBoard(solved);
+
 
         System.exit(0);
     }

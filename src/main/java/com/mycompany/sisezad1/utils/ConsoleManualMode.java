@@ -6,7 +6,10 @@
 package com.mycompany.sisezad1.utils;
 
 import com.mycompany.sisezad1.Board;
-import com.mycompany.sisezad1.heuristics.*;
+import com.mycompany.sisezad1.heuristics.AManhattanDistanceComparator;
+import com.mycompany.sisezad1.heuristics.AMisplacedComparator;
+import com.mycompany.sisezad1.heuristics.ManhattanDistanceComparator;
+import com.mycompany.sisezad1.heuristics.MisplacedComparator;
 import com.mycompany.sisezad1.solvers.*;
 
 import java.io.BufferedReader;
@@ -25,7 +28,7 @@ public class ConsoleManualMode {
     public static Board manualMode(Board board) {
         Board current = board;
         boolean end = true;
-        Board.LOOP_CONTROL = false;
+        Board.STRONG_LOOP_CONTROL = false;
 
         System.out.println("Program przeszedł w tryb manualny. Naciskaj w,a,s,d aby poruszać polem 0. Naciśnij 'p' aby wyjść.");
         BoardUtils.printBoard(current);
@@ -85,64 +88,114 @@ public class ConsoleManualMode {
     public static void mainLoop(String[] args) {
         PuzzleSolver solver = null;
 
-        if (args.length > 1) {
+        PuzzleSolver.DEFAULT_MAX_DEPTH = 25; //uzywane gdy nie podajemy maksymalnej glebokosci w konstruktorze
+
+        if (args.length >= 1) {
             for (int i = 0; i < args.length; i++) {
                 System.out.println(args[i]);
             }
 
             switch (args[0]) {
-                //pierwszy argument to algorytm, drugi kiedy potrzebny to glebokosc
-                case "-b":
-                    solver = new BreadthFirstSearch();
-                    break;
-                case "-d":
-                    solver = new DepthFirstSearch();
-                    break;
-                case "-i":
-                    if (args.length > 1) {
-                        solver = new IterativeDepthFirstSearch(args[1], Integer.parseInt(args[2]));
-                    } else {
-                        solver = new IterativeDepthFirstSearch(args[1], 8); //default depth
-                    }
-                    break;
-                case "-a": //FIXME
-                    if (args.length > 1) {
-                        solver = new IterativeDepthFirstSearch(args[1], Integer.parseInt(args[2]));
-                    } else {
-                        solver = new IterativeDepthFirstSearch(args[1], 8); //default depth
-                    }
-                    break;
-                //pierwszy argument to algorytm, drugi to kolejnosc, trzeci jesli potrzebny to glebokosc
                 case "--bfs":
-                    solver = new BreadthFirstSearch(args[1]);
+                case "-b":
+                    if (args.length >= 2) {
+                        solver = new BreadthFirstSearch(args[1]);
+                    } else {
+                        solver = new BreadthFirstSearch();
+                    }
                     break;
                 case "--dfs":
-                    solver = new DepthFirstSearch(args[1]);
+                case "-d":
+                    if (args.length >= 2) {
+                        solver = new DepthFirstSearch(args[1]);
+                    } else {
+                        solver = new DepthFirstSearch();
+                    }
                     break;
                 case "--idfs":
-                    if (args.length > 2) {
+                case "-i":
+                    if (args.length >= 3) {
                         solver = new IterativeDepthFirstSearch(args[1], Integer.parseInt(args[2]));
+                    } else if (args.length == 2) {
+                        solver = new IterativeDepthFirstSearch(args[1]); //default depth
                     } else {
-                        solver = new IterativeDepthFirstSearch(args[1], 8); //default depth
+                        solver = new IterativeDepthFirstSearch();
                     }
                     break;
                 case "--a":
-                    if (args.length > 2) {
-                        //switch ()
-                        //solver = new AStarSearch(args[1], Integer.parseInt(args[2]));
-                    } else {
-                        solver = new IterativeDepthFirstSearch(args[1], 8); //default depth
+                case "-a":
+                    if (args.length >= 3) {
+                        switch (args[1]) {
+                            case "a":
+                                if (args[2] == "1") {
+                                    solver = new AStarSearch(new AMisplacedComparator());
+                                } else if (args[2] == "2") {
+                                    solver = new AStarSearch(new AManhattanDistanceComparator());
+                                } else {
+                                    solver = new AStarSearch(new AMisplacedComparator());
+                                }
+                                break;
+                            case "ida":
+                                if (args[2] == "1") {
+                                    solver = new IterativeAStarSearch(new AMisplacedComparator());
+                                } else if (args[2] == "2") {
+                                    solver = new IterativeAStarSearch(new AManhattanDistanceComparator());
+                                } else {
+                                    solver = new IterativeAStarSearch(new AMisplacedComparator());
+                                }
+                                break;
+                            case "bf":
+                                if (args[2] == "1") {
+                                    solver = new AStarSearch(new MisplacedComparator());
+                                } else if (args[2] == "2") {
+                                    solver = new AStarSearch(new ManhattanDistanceComparator());
+                                } else {
+                                    solver = new AStarSearch(new MisplacedComparator());
+                                }
+                                break;
+                            case "cbf":
+                                if (args[2] == "1") {
+                                    solver = new BestFirstSearch(new MisplacedComparator());
+                                } else if (args[2] == "2") {
+                                    solver = new BestFirstSearch(new ManhattanDistanceComparator());
+                                } else {
+                                    solver = new BestFirstSearch(new MisplacedComparator());
+                                }
+                                break;
+                            default:
+                                System.out.println("Podano bledny argument");
+                                break;
+                        }
+                    } else if (args.length == 2) {
+                        switch (args[1]) {
+                            case "a":
+                                solver = new AStarSearch(new AMisplacedComparator());
+                                break;
+                            case "ida":
+                                solver = new IterativeAStarSearch(new AMisplacedComparator());
+                                break;
+                            case "bf":
+                                solver = new IterativeAStarSearch(new MisplacedComparator());
+                                break;
+                            case "cbf":
+                                solver = new BestFirstSearch(new MisplacedComparator());
+                                break;
+                            default:
+                                System.out.println("Podano bledny argument");
+                                break;
+                        }
                     }
                     break;
-                //TODO ogarnac wlaczanie algorytmu best first, a* i wybieranie heurystyki
 
                 default:
                     System.out.println("Podano bledny argument");
-                    solver = new BreadthFirstSearch("rrrr", 10);
                     break;
             }
         } else {
             System.out.println("Program uruchomiony bez poprawnych argumentow");
+        }
+
+        if (solver == null) {
             solver = new BreadthFirstSearch("rrrr", 10);
         }
 
@@ -197,7 +250,6 @@ public class ConsoleManualMode {
             line = br.readLine();
             splittedLine = line.split(" ");
             for (int j = 0; j < rows; j++) {
-                System.out.println(j);
                 state[i][j] = Integer.parseInt(splittedLine[j]);
             }
         }
@@ -247,22 +299,22 @@ public class ConsoleManualMode {
                 {13, 14, 11, 15}
         };
 
-        FileUtils.saveData("plik3.txt", new Board(state7));
-        Board instance = FileUtils.loadData("plik3.txt");
+        FileUtils.saveBoard("plik3.txt", new Board(state7));
+        Board instance = FileUtils.loadBoard("plik3.txt");
 
         instance = BoardUtils.randomizeBoard(4, 4, 10);
 
-        //FileUtils.saveData("plikTestowy.txt", instance);
+        //FileUtils.saveBoard("plikTestowy.txt", instance);
 
-        Board.LOOP_CONTROL = false;
+        Board.STRONG_LOOP_CONTROL = false;
 
 
         PuzzleSolver solver = new IterativeDepthFirstSearch("wsad", 20);
         //solver = new DepthFirstSearch("wsad", 15);
-        Board.LOOP_CONTROL = true;
+        Board.STRONG_LOOP_CONTROL = true;
         //solver = new BestFirstSearch(new MisplacedComparator());  //FIXME requires loop control enabled
         //solver = new BestFirstSearch(new ManhattanDistanceComparator()); //FIXME requires loop control enabled
-        Board.LOOP_CONTROL = false;
+        Board.STRONG_LOOP_CONTROL = false;
         //solver = new AStarSearch(new AMisplacedComparator(), 20);             //A* with not-A comparator acts as regular best-first search
         //solver = new IterativeAStarSearch(new AMisplacedComparator(), 20);    //A* with not-A comparator acts as regular best-first search
         solver = new BreadthFirstSearch("wsad", 10);

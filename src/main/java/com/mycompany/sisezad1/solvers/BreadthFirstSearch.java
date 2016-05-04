@@ -31,13 +31,13 @@ public class BreadthFirstSearch extends PuzzleSolver {
 
     public BreadthFirstSearch() {
         super();
-        this.maxDepth = 10;
+        this.maxDepth = 25;
         this.createdBoards = 0;
     }
 
     public BreadthFirstSearch(String order) {
         super(order);
-        this.maxDepth = 10;
+        this.maxDepth = 25;
         this.createdBoards = 0;
     }
 
