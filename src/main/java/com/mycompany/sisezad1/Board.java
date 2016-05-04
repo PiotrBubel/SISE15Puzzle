@@ -1,7 +1,6 @@
 package com.mycompany.sisezad1;
 
 import com.mycompany.sisezad1.utils.BoardUtils;
-import com.sun.deploy.util.StringUtils;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -14,6 +13,15 @@ import java.util.List;
  */
 public class Board {
 
+    public static final String RIGHT_CHAR_CAP = "D";
+    public static final String LEFT_CHAR_CAP = "A";
+    public static final String UP_CHAR_CAP = "W";
+    public static final String DOWN_CHAR_CAP = "S";
+    public static final String RIGHT_CHAR = "d";
+    public static final String LEFT_CHAR = "a";
+    public static final String UP_CHAR = "w";
+    public static final String DOWN_CHAR = "s";
+    public static boolean LOOP_CONTROL = false;
     private int[][] state;
     private List<Board> nextNodes;
     private Board parentNode;
@@ -105,27 +113,29 @@ public class Board {
     }
 
     public boolean canMoveRight() {
-        int[] zeroCoord = findZero();
-        if (!this.path.isEmpty() && this.path != null) {
-            if (this.path.endsWith("A") ||
-                    this.path.endsWith("DWAS") ||
-                    this.path.endsWith("DSAW")
-                    ) { //TODO more loop patterns
-                //dwas
-                //dsaw
-                return false;
+        if (LOOP_CONTROL) {
+            if (!this.path.isEmpty() && this.path != null) {
+                if (this.path.toLowerCase().endsWith(Board.LEFT_CHAR)
+                    // || this.path.endsWith("DWAS") //FIXME sometimes causes deadlocks
+                    // || this.path.endsWith("DSAW")
+                        ) {
+                    return false;
+                }
             }
         }
+        int[] zeroCoord = findZero();
         return !(zeroCoord[1] == state[0].length - 1);
     }
 
     public boolean canMoveLeft() {
-        if (!this.path.isEmpty() && this.path != null) {
-            if (this.path.endsWith("D") ||
-                    this.path.endsWith("AWDS") ||
-                    this.path.endsWith("ASDW")
-                    ) { //TODO more loop patterns
-                return false;
+        if (LOOP_CONTROL) {
+            if (!this.path.isEmpty() && this.path != null) {
+                if (this.path.toLowerCase().endsWith(Board.RIGHT_CHAR)
+                    //|| this.path.endsWith("AWDS") //FIXME sometimes causes deadlocks
+                    //|| this.path.endsWith("ASDW")
+                        ) {
+                    return false;
+                }
             }
         }
         int[] zeroCoord = findZero();
@@ -133,12 +143,14 @@ public class Board {
     }
 
     public boolean canMoveUp() {
-        if (!this.path.isEmpty() && this.path != null) {
-            if (this.path.endsWith("S") ||
-                    this.path.endsWith("WDSA") ||
-                    this.path.endsWith("WASD")
-                    ) {  //TODO more loop patterns
-                return false;
+        if (LOOP_CONTROL) {
+            if (!this.path.isEmpty() && this.path != null) {
+                if (this.path.toLowerCase().endsWith(Board.DOWN_CHAR)
+                    //|| this.path.endsWith("WDSA")
+                    // || this.path.endsWith("WASD") //FIXME sometimes causes deadlocks
+                        ) {
+                    return false;
+                }
             }
         }
         int[] zeroCoord = findZero();
@@ -146,12 +158,14 @@ public class Board {
     }
 
     public boolean canMoveDown() {
-        if (!this.path.isEmpty() && this.path != null) {
-            if (this.path.endsWith("W") ||
-                    this.path.endsWith("SDWA") ||
-                    this.path.endsWith("SAWD")
-                    ) {  //TODO more loop patterns
-                return false;
+        if (LOOP_CONTROL) {
+            if (!this.path.isEmpty() && this.path != null) {
+                if (this.path.toLowerCase().endsWith(Board.UP_CHAR)
+                    // || this.path.endsWith("SDWA")
+                    // || this.path.endsWith("SAWD")    //FIXME sometimes causes deadlocks
+                        ) {
+                    return false;
+                }
             }
         }
         int[] zeroCoord = findZero();
@@ -167,7 +181,7 @@ public class Board {
         newState[zeroCoord[0]][zeroCoord[1] + 1] = 0;
         //return new Board(newState);
         newB.path = new String(this.path);
-        newB.setNextStepInPath("D");
+        newB.setNextStepInPath(Board.RIGHT_CHAR);
         newB.setParentNode(this);
         return newB;
     }
@@ -180,7 +194,7 @@ public class Board {
         newState[zeroCoord[0]][zeroCoord[1]] = newState[zeroCoord[0]][zeroCoord[1] - 1];
         newState[zeroCoord[0]][zeroCoord[1] - 1] = 0;
         newB.path = new String(this.path);
-        newB.setNextStepInPath("A");
+        newB.setNextStepInPath(Board.LEFT_CHAR);
         newB.setParentNode(this);
         return newB;
     }
@@ -193,7 +207,7 @@ public class Board {
         newState[zeroCoord[0]][zeroCoord[1]] = newState[zeroCoord[0] - 1][zeroCoord[1]];
         newState[zeroCoord[0] - 1][zeroCoord[1]] = 0;
         newB.path = new String(this.path);
-        newB.setNextStepInPath("W");
+        newB.setNextStepInPath(Board.UP_CHAR);
         newB.setParentNode(this);
         return newB;
     }
@@ -206,19 +220,9 @@ public class Board {
         newState[zeroCoord[0]][zeroCoord[1]] = newState[zeroCoord[0] + 1][zeroCoord[1]];
         newState[zeroCoord[0] + 1][zeroCoord[1]] = 0;
         newB.path = new String(this.path);
-        newB.setNextStepInPath("S");
+        newB.setNextStepInPath(Board.DOWN_CHAR);
         newB.setParentNode(this);
         return newB;
-        /*
-         //Z jakiegoś powodu jak było tak, to zmieniało stan tego obiektu. .clone() nie działa tak jak myślę?
-         int[][] newState = state.clone();
-         int[] zeroCoord = findZero();
-
-         newState[zeroCoord[0]][zeroCoord[1]] = newState[zeroCoord[0] + 1][zeroCoord[1]];
-         newState[zeroCoord[0] + 1][zeroCoord[1]] = 0;
-         return new Board(newState);
-         */
-
     }
 
     /**
@@ -236,6 +240,9 @@ public class Board {
             if (toAdd != null) {
                 possibleStates.add(toAdd);
             }
+        }
+        if (possibleStates.isEmpty()) {
+            System.out.println("DEADLOCK - brak mozliwosci ruchu bez zapetlenia.");
         }
         return possibleStates;
     }
@@ -303,32 +310,38 @@ public class Board {
      * @return changed Board, or null if wrong direction given or can't move in given direction
      */
     public Board move(char direction) {
-        switch (direction) {
-            case 'w':
+        String directionString = new String(new char[]{direction});
+        switch (directionString) {
+            case Board.UP_CHAR_CAP:
+            case Board.UP_CHAR:
                 if (canMoveUp()) {
                     return moveUp();
                 } else {
                     return null;
                 }
-            case 's':
+            case Board.DOWN_CHAR_CAP:
+            case Board.DOWN_CHAR:
                 if (canMoveDown()) {
                     return moveDown();
                 } else {
                     return null;
                 }
-            case 'a':
+            case Board.LEFT_CHAR_CAP:
+            case Board.LEFT_CHAR:
                 if (canMoveLeft()) {
                     return moveLeft();
                 } else {
                     return null;
                 }
-            case 'd':
+            case Board.RIGHT_CHAR_CAP:
+            case Board.RIGHT_CHAR:
                 if (canMoveRight()) {
                     return moveRight();
                 } else {
                     return null;
                 }
             default:
+                System.out.println("DUPA");
                 return null;
         }
     }

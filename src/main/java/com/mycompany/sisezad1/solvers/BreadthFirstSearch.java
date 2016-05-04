@@ -52,7 +52,7 @@ public class BreadthFirstSearch extends PuzzleSolver {
         newNodes = new ArrayList();
         Board current;
 
-        if(stream == null){
+        if (stream == null) {
             stream = System.out;
         }
 
