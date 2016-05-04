@@ -43,7 +43,7 @@ public class AStarSearch extends PuzzleSolver {
 
         Board correct = unsolved.findAnswerWithAStar(heuristicFunction, maxDepth, stream); //rekurencyjnie, dlatego w klasie Board
 
-        this.time = time - System.nanoTime();
+        this.time = System.nanoTime() - time;
         return correct;
     }
 

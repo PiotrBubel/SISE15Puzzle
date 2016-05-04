@@ -179,7 +179,7 @@ public class ConsoleManualMode {
         Board.LOOP_CONTROL = false;
 
 
-        PuzzleSolver solver = new IterativeDepthFirstSearch("wsad", 10);
+        PuzzleSolver solver = new IterativeDepthFirstSearch("wsad", 20);
         //solver = new DepthFirstSearch("wsad", 15);
         Board.LOOP_CONTROL = true;
         //solver = new BestFirstSearch(new MisplacedComparator());  //FIXME requires loop control enabled
@@ -187,11 +187,11 @@ public class ConsoleManualMode {
         Board.LOOP_CONTROL = false;
         //solver = new AStarSearch(new AMisplacedComparator(), 20);             //A* with not-A comparator acts as regular best-first search
         //solver = new IterativeAStarSearch(new AMisplacedComparator(), 20);    //A* with not-A comparator acts as regular best-first search
-        //solver = new BreadthFirstSearch("wsad", 20);
+        solver = new BreadthFirstSearch("wsad", 10);
 
-        ReportsGenerator.solveWithReport(solver, "report1", instance); //FIXME
+        ReportsGenerator.solveWithReport(solver, "report1", instance);
 
-        //TODO ilość odwiedzonych stanów (sprawdzonych)
+        //TODO ilość odwiedzonych stanów (sprawdzonych) - DONE
         //TODO ilość stanów przetworzonych (dodanych do kolejki itp.) (stworzonych Boardow)
 
         PrintStream stream = null;

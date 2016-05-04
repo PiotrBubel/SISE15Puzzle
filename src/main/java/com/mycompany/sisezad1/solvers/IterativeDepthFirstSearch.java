@@ -48,7 +48,7 @@ public class IterativeDepthFirstSearch extends PuzzleSolver {
             this.createdBoards = +depthFirstSolver.getCreatedBoards();
             depth++;
         }
-        this.time = time - System.nanoTime();
+        this.time = System.nanoTime() - time;
         return solved;
     }
 

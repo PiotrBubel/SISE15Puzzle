@@ -68,7 +68,7 @@ public class BestFirstSearch extends PuzzleSolver {
             }
         }
 
-        this.time = time - System.nanoTime();
+        this.time = System.nanoTime() - time;
         return current;
     }
 

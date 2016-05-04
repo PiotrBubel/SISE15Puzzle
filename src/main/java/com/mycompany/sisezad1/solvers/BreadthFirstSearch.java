@@ -87,7 +87,7 @@ public class BreadthFirstSearch extends PuzzleSolver {
             }
         }
         System.out.println("Nie znaleziono rozwiazania");
-        this.time = time - System.nanoTime();
+        this.time = System.nanoTime() - time;
         return null;
     }
 

@@ -40,7 +40,7 @@ public class DepthFirstSearch extends PuzzleSolver {
         this.time = System.nanoTime();
 
         Board correct = unsolved.findAnswerWithDFS(order, maxDepth, stream); //rekurencyjnie, dlatego w klasie Board
-        this.time = time - System.nanoTime();
+        this.time = System.nanoTime() - time;
         return correct;
     }
 }

@@ -37,7 +37,7 @@ public class IterativeAStarSearch extends PuzzleSolver {
             this.createdBoards =+ aStarSolver.getCreatedBoards();
             depth++;
         }
-        this.time = time - System.nanoTime();
+        this.time = System.nanoTime() - time;
         return solved;
     }
 }
