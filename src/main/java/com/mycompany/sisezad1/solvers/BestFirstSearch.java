@@ -33,9 +33,6 @@ public class BestFirstSearch extends PuzzleSolver {
     public Board solve(Board unsolved, PrintStream stream) {
         Board.STRONG_LOOP_CONTROL = true;
         this.firstBoard = new Board(unsolved);
-        if (stream == null) {
-            stream = System.out;
-        }
         int steps = 0;
         PuzzleSolver.CREATED_BOARDS = 0;
         Board current = new Board(unsolved.getState());
@@ -64,17 +61,20 @@ public class BestFirstSearch extends PuzzleSolver {
 
             last = new Board(current);
             current = chooseBest(nextCombinations, heuristicFunction);
-            stream.println(current.getPath());
+            if (stream != null && !current.getPath().isEmpty() && current.getPath() != null) {
+                stream.println(current.getPath());
+            }
             nextCombinations.clear();
             steps++;
             //System.out.println("steps: " + steps);
             if (steps == maxSteps) {
+                this.createdBoards = maxSteps;
                 System.out.println("zbyt duza liczba kombinacji");
                 Board.STRONG_LOOP_CONTROL = false;
                 return null;
             }
         }
-
+        this.createdBoards = current.getPath().length();
         this.time = System.nanoTime() - time;
         Board.STRONG_LOOP_CONTROL = false;
         return current;

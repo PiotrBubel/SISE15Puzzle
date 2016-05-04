@@ -36,10 +36,6 @@ public class DepthFirstSearch extends PuzzleSolver {
 
     @Override
     public Board solve(Board unsolved, PrintStream stream) {
-        if (stream == null) {
-            stream = System.out;
-        }
-
         this.time = System.nanoTime();
         PuzzleSolver.CREATED_BOARDS = 0;
         this.createdBoards = 0;

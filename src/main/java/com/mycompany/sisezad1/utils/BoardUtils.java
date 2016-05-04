@@ -4,6 +4,7 @@ import com.mycompany.sisezad1.Board;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -170,5 +171,28 @@ public class BoardUtils {
      */
     public static Board randomizeBoard(int xState, int yState, int maxMovesToSolve) {
         return BoardUtils.randomizeBoard(BoardUtils.buildArrangedBoard(xState, yState), maxMovesToSolve);
+    }
+
+    /**
+     * Method returns only best states from given list in heuristic order
+     * If more than one state have same, lowest heuristics value, then returns all of them
+     */
+    public static List<Board> getOnlyBestBoards(List<Board> list, Comparator heuristics){
+        List<Board> possibleStates = new ArrayList<>();
+        List<Board> bestStates = new ArrayList<>();
+
+        possibleStates.addAll(list);
+
+        Collections.sort(possibleStates, heuristics);
+
+        bestStates.add(possibleStates.get(0));
+
+        for (int i = 1; i < possibleStates.size(); i++) {
+            if(heuristics.compare(bestStates.get(0), possibleStates.get(i)) == 0){
+                bestStates.add(possibleStates.get(i));
+            }
+        }
+
+        return bestStates;
     }
 }

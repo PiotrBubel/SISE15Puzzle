@@ -32,9 +32,7 @@ public class IterativeAStarSearch extends PuzzleSolver {
         int depth = 1;
         PuzzleSolver aStarSolver;
         Board solved = null;
-        if (stream == null) {
-            stream = System.out;
-        }
+
         this.time = System.nanoTime();
         PuzzleSolver.CREATED_BOARDS = 0;
         this.createdBoards = 0;
@@ -42,7 +40,7 @@ public class IterativeAStarSearch extends PuzzleSolver {
             aStarSolver = new AStarSearch(this.heuristicFunction, depth);
             Board toSolve = new Board(unsolved);
             solved = aStarSolver.solve(toSolve, stream);
-            this.createdBoards = +aStarSolver.getCreatedBoards();
+            this.createdBoards = this.createdBoards + aStarSolver.getCreatedBoards();
             depth++;
         }
         this.time = System.nanoTime() - time;
