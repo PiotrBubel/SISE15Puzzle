@@ -22,7 +22,6 @@ public class BestFirstSearch extends PuzzleSolver {
 
     public int maxSteps;
     private List<Board> nextCombinations;
-    private Comparator heuristicFunction;
 
     public BestFirstSearch(Comparator heuristicFunction) {
         super();

@@ -45,6 +45,7 @@ public class IterativeDepthFirstSearch extends PuzzleSolver {
             depthFirstSolver = new DepthFirstSearch(this.order, depth);
             Board toSolve = new Board(unsolved);
             solved = depthFirstSolver.solve(toSolve, stream);
+            this.createdBoards = +depthFirstSolver.getCreatedBoards();
             depth++;
         }
         this.time = time - System.nanoTime();

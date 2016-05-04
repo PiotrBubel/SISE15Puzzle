@@ -178,13 +178,21 @@ public class ConsoleManualMode {
 
         Board.LOOP_CONTROL = false;
 
+
         PuzzleSolver solver = new IterativeDepthFirstSearch("wsad", 10);
         //solver = new DepthFirstSearch("wsad", 15);
+        Board.LOOP_CONTROL = true;
         //solver = new BestFirstSearch(new MisplacedComparator());  //FIXME requires loop control enabled
         //solver = new BestFirstSearch(new ManhattanDistanceComparator()); //FIXME requires loop control enabled
+        Board.LOOP_CONTROL = false;
         //solver = new AStarSearch(new AMisplacedComparator(), 20);             //A* with not-A comparator acts as regular best-first search
         //solver = new IterativeAStarSearch(new AMisplacedComparator(), 20);    //A* with not-A comparator acts as regular best-first search
         //solver = new BreadthFirstSearch("wsad", 20);
+
+        ReportsGenerator.solveWithReport(solver, "report1", instance); //FIXME
+
+        //TODO ilość odwiedzonych stanów (sprawdzonych)
+        //TODO ilość stanów przetworzonych (dodanych do kolejki itp.) (stworzonych Boardow)
 
         PrintStream stream = null;
         try {
@@ -195,7 +203,7 @@ public class ConsoleManualMode {
             System.out.println("Blad podczas tworzenia pliku");
         }
 
-        Board solved = solver.solve(instance, stream);
+        Board solved = solver.solve(instance, null);
 
         if (solved != null) {
             BoardUtils.printBoard(solved);

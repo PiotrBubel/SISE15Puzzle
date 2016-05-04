@@ -17,7 +17,6 @@ import java.util.Comparator;
  */
 public class AStarSearch extends PuzzleSolver {
     int maxDepth;
-    private Comparator heuristicFunction;
 
     public AStarSearch() {
         super();

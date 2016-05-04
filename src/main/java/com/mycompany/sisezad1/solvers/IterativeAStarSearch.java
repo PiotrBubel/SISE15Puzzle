@@ -14,7 +14,6 @@ import java.util.Comparator;
 public class IterativeAStarSearch extends PuzzleSolver {
 
     int maxDepth;
-    private Comparator heuristicFunction;
 
     public IterativeAStarSearch(Comparator heuristicFunction, int depth) {
         maxDepth = depth;
@@ -35,6 +34,7 @@ public class IterativeAStarSearch extends PuzzleSolver {
             aStarSolver = new AStarSearch(this.heuristicFunction, depth);
             Board toSolve = new Board(unsolved);
             solved = aStarSolver.solve(toSolve, stream);
+            this.createdBoards =+ aStarSolver.getCreatedBoards();
             depth++;
         }
         this.time = time - System.nanoTime();
