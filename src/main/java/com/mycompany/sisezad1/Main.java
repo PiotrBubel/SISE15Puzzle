@@ -1,12 +1,9 @@
 package com.mycompany.sisezad1;
 
 import com.mycompany.sisezad1.heuristics.MisplacedComparator;
-import com.mycompany.sisezad1.solvers.AStarSearch;
 import com.mycompany.sisezad1.solvers.BestFirstSearch;
-import com.mycompany.sisezad1.solvers.BreadthFirstSearch;
 import com.mycompany.sisezad1.solvers.PuzzleSolver;
 import com.mycompany.sisezad1.utils.BoardUtils;
-import com.mycompany.sisezad1.utils.ConsoleManualMode;
 
 
 /**
@@ -21,7 +18,7 @@ public class Main {
 
         //TODO uncomment this
         //String[] argsTmp = new String[]{"-a", "cbf"};
-        //ConsoleManualMode.mainLoop(argsTmp);
+        //ConsoleMode.mainLoop(argsTmp);
 
         int[][] state6 = new int[][]{ //da sie latwo rozwiazac - 6 ruchow
                 {0, 1, 2, 4},
