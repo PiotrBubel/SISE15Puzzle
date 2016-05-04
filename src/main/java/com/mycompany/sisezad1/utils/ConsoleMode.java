@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 /**
  * @author Piotrek
  */
-public class ConsoleManualMode {
+public class ConsoleMode {
 
     public static Board manualMode(Board board) {
         Board current = board;
@@ -74,7 +74,7 @@ public class ConsoleManualMode {
                         break;
                 }
             } catch (IOException ex) {
-                Logger.getLogger(ConsoleManualMode.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ConsoleMode.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (current.isCorrect() && end) {
                 System.out.println("Zagadka zostala ulozona.");
@@ -209,7 +209,7 @@ public class ConsoleManualMode {
         Board instance = null;
         while (instance == null) {
             try {
-                instance = ConsoleManualMode.loadBoardFromUser();
+                instance = ConsoleMode.loadBoardFromUser();
             } catch (Exception e) {
                 System.out.println("Nastapil blad, sprobuj ponownie");
             }
