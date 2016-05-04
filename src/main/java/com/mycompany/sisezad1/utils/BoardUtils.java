@@ -125,8 +125,8 @@ public class BoardUtils {
      * @return board after random moves, board path is cleared
      */
     public static Board randomizeBoard(Board board, int maxMovesToSolve) {
-        boolean temp_lc = Board.LOOP_CONTROL;
-        Board.LOOP_CONTROL = false;    //FIXME dont work with loop control enabled
+        boolean temp_lc = Board.STRONG_LOOP_CONTROL;
+        Board.STRONG_LOOP_CONTROL = false;    //FIXME dont work with strong loop control enabled
         Board randomizedBoard = new Board(board);
         int moves = 0;
 
@@ -161,7 +161,7 @@ public class BoardUtils {
                     break;
             }
         }
-        Board.LOOP_CONTROL = temp_lc;
+        Board.STRONG_LOOP_CONTROL = temp_lc;
         return new Board(randomizedBoard.getState());
     }
 

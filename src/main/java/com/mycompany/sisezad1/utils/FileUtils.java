@@ -19,7 +19,7 @@ import java.util.Scanner;
  */
 public class FileUtils {
 
-    public static void saveData(String filePath, Board board) {
+    public static void saveBoard(String filePath, Board board) {
         try (PrintStream out = new PrintStream(new FileOutputStream(filePath))) {
             int[][] state = board.getState();
             for (int x = 0; x < state[0].length; x++) {
@@ -34,7 +34,7 @@ public class FileUtils {
         }
     }
 
-    public static Board loadData(String filePath) {
+    public static Board loadBoard(String filePath) {
         int[][] state;
 
         ArrayList<String> lines = new ArrayList<String>();

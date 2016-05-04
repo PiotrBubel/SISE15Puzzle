@@ -22,7 +22,10 @@ public class Board {
     public static final String LEFT_CHAR = "a";
     public static final String UP_CHAR = "w";
     public static final String DOWN_CHAR = "s";
-    public static boolean LOOP_CONTROL = false;
+    public static boolean STRONG_LOOP_CONTROL = false;
+    public static boolean SIMPLE_LOOP_CONTROL = false;
+
+
     private int[][] state;
     private List<Board> nextNodes;
     private Board parentNode;
@@ -114,12 +117,15 @@ public class Board {
     }
 
     public boolean canMoveRight() {
-        if (LOOP_CONTROL) {
+        if (SIMPLE_LOOP_CONTROL || STRONG_LOOP_CONTROL) {
             if (!this.path.isEmpty() && this.path != null) {
-                if (this.path.toLowerCase().endsWith(Board.LEFT_CHAR)
-                    // || this.path.endsWith("DWAS") //FIXME sometimes causes deadlocks
-                    // || this.path.endsWith("DSAW")
-                        ) {
+                if (this.path.toLowerCase().endsWith(Board.LEFT_CHAR)) {
+                    return false;
+                }
+                if (STRONG_LOOP_CONTROL && (
+                        this.path.toLowerCase().endsWith(loopCauseRight1())
+                                || this.path.toLowerCase().endsWith(loopCauseRight2())
+                )) {
                     return false;
                 }
             }
@@ -128,13 +134,24 @@ public class Board {
         return !(zeroCoord[1] == state[0].length - 1);
     }
 
+    private String loopCauseRight1() {  //DWAS
+        return Board.RIGHT_CHAR + Board.UP_CHAR + Board.LEFT_CHAR + Board.DOWN_CHAR;
+    }
+
+    private String loopCauseRight2() {   //DSAW
+        return Board.RIGHT_CHAR + Board.DOWN_CHAR + Board.LEFT_CHAR + Board.UP_CHAR;
+    }
+
     public boolean canMoveLeft() {
-        if (LOOP_CONTROL) {
+        if (SIMPLE_LOOP_CONTROL || STRONG_LOOP_CONTROL) {
             if (!this.path.isEmpty() && this.path != null) {
-                if (this.path.toLowerCase().endsWith(Board.RIGHT_CHAR)
-                    //|| this.path.endsWith("AWDS") //FIXME sometimes causes deadlocks
-                    //|| this.path.endsWith("ASDW")
-                        ) {
+                if (this.path.toLowerCase().endsWith(Board.RIGHT_CHAR)) {
+                    return false;
+                }
+                if (STRONG_LOOP_CONTROL && (
+                        this.path.toLowerCase().endsWith(loopCauseLeft1())
+                                || this.path.toLowerCase().endsWith(loopCauseLeft2())
+                )) {
                     return false;
                 }
             }
@@ -143,13 +160,24 @@ public class Board {
         return (zeroCoord[1] > 0);
     }
 
+    private String loopCauseLeft1() {  //AWDS
+        return Board.LEFT_CHAR + Board.UP_CHAR + Board.RIGHT_CHAR + Board.DOWN_CHAR;
+    }
+
+    private String loopCauseLeft2() {   //ASDW
+        return Board.LEFT_CHAR + Board.DOWN_CHAR + Board.RIGHT_CHAR + Board.UP_CHAR;
+    }
+
     public boolean canMoveUp() {
-        if (LOOP_CONTROL) {
+        if (SIMPLE_LOOP_CONTROL || STRONG_LOOP_CONTROL) {
             if (!this.path.isEmpty() && this.path != null) {
-                if (this.path.toLowerCase().endsWith(Board.DOWN_CHAR)
-                    //|| this.path.endsWith("WDSA")
-                    // || this.path.endsWith("WASD") //FIXME sometimes causes deadlocks
-                        ) {
+                if (this.path.toLowerCase().endsWith(Board.DOWN_CHAR)) {
+                    return false;
+                }
+                if (STRONG_LOOP_CONTROL && (
+                        this.path.toLowerCase().endsWith(loopCauseUp1())
+                                || this.path.toLowerCase().endsWith(loopCauseUp2())
+                )) {
                     return false;
                 }
             }
@@ -158,19 +186,38 @@ public class Board {
         return (zeroCoord[0] > 0);
     }
 
+    private String loopCauseUp1() {  //WDSA
+        return Board.UP_CHAR + Board.RIGHT_CHAR + Board.DOWN_CHAR + Board.LEFT_CHAR;
+    }
+
+    private String loopCauseUp2() {   //WASD
+        return Board.UP_CHAR + Board.LEFT_CHAR + Board.DOWN_CHAR + Board.RIGHT_CHAR;
+    }
+
     public boolean canMoveDown() {
-        if (LOOP_CONTROL) {
+        if (SIMPLE_LOOP_CONTROL || STRONG_LOOP_CONTROL) {
             if (!this.path.isEmpty() && this.path != null) {
-                if (this.path.toLowerCase().endsWith(Board.UP_CHAR)
-                    // || this.path.endsWith("SDWA")
-                    // || this.path.endsWith("SAWD")    //FIXME sometimes causes deadlocks
-                        ) {
+                if (this.path.toLowerCase().endsWith(Board.UP_CHAR)) {
+                    return false;
+                }
+                if (STRONG_LOOP_CONTROL && (
+                        this.path.toLowerCase().endsWith(loopCauseDown1()) //FIXME sometimes causes deadlocks
+                                || this.path.toLowerCase().endsWith(loopCauseDown2())
+                )) {
                     return false;
                 }
             }
         }
         int[] zeroCoord = findZero();
         return !(zeroCoord[0] == state.length - 1);
+    }
+
+    private String loopCauseDown1() {  //SDWA
+        return Board.DOWN_CHAR + Board.RIGHT_CHAR + Board.UP_CHAR + Board.LEFT_CHAR;
+    }
+
+    private String loopCauseDown2() {   //SAWD
+        return Board.DOWN_CHAR + Board.LEFT_CHAR + Board.UP_CHAR + Board.RIGHT_CHAR;
     }
 
     public Board moveRight() {
@@ -231,7 +278,7 @@ public class Board {
      */
     public List<Board> getPossibleStates(String ord) {
         String order = new String(ord);
-        if (order.startsWith("r") || order.startsWith("R")) {
+        if (order.contains("r") || order.contains("R")) {
             order = BoardUtils.randomizeOrder();
         }
         List<Board> possibleStates = new ArrayList<>();

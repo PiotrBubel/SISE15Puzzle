@@ -13,7 +13,7 @@ import java.util.Comparator;
 public abstract class PuzzleSolver {
 
     protected static int CREATED_BOARDS = 0;
-
+    public static int DEFAULT_MAX_DEPTH = 25;
 
     protected int createdBoards;
     protected long time = 0;
@@ -33,11 +33,17 @@ public abstract class PuzzleSolver {
     }
 
     public PuzzleSolver(String order) {
-        if (order.length() == 4 || !order.startsWith("r") || !order.startsWith("R")) {
-            this.order = order;
-        } else {
+        if (order.length() != 4
+                || !(order.toLowerCase().contains(Board.DOWN_CHAR)
+                && order.toLowerCase().contains(Board.LEFT_CHAR)
+                && order.toLowerCase().contains(Board.RIGHT_CHAR)
+                && order.toLowerCase().contains(Board.UP_CHAR)) ^ order.toLowerCase().contains("r")) {
+            //jesli order nie ma 4 znakow lub jesli
+            //      nie zawiera wszystkich liter-kierunkow xor zawiera r
             System.out.println("Podana kolejnosc jest nieprawidlowa. Losuje kolejnosc.");
             this.order = BoardUtils.randomizeOrder();
+        } else {
+            this.order = order;
         }
         this.firstBoard = null;
         this.createdBoards = 0;
@@ -47,11 +53,11 @@ public abstract class PuzzleSolver {
     /**
      * Method for counting created boards, to use only in Board class
      */
-    public static void createdBoard(){
+    public static void createdBoard() {
         PuzzleSolver.CREATED_BOARDS++;
     }
 
-    public Comparator getHeuristicFunction(){
+    public Comparator getHeuristicFunction() {
         return this.heuristicFunction;
     }
 

@@ -18,13 +18,13 @@ public class DepthFirstSearch extends PuzzleSolver {
 
     public DepthFirstSearch() {
         super();
-        maxDepth = 10;
+        maxDepth = DEFAULT_MAX_DEPTH;
         this.createdBoards = 0;
     }
 
     public DepthFirstSearch(String order) {
         super(order);
-        maxDepth = 10;
+        maxDepth = DEFAULT_MAX_DEPTH;
         this.createdBoards = 0;
     }
 

@@ -21,6 +21,12 @@ public class IterativeAStarSearch extends PuzzleSolver {
         this.createdBoards = 0;
     }
 
+    public IterativeAStarSearch(Comparator heuristicFunction) {
+        maxDepth = DEFAULT_MAX_DEPTH;
+        this.heuristicFunction = heuristicFunction;
+        this.createdBoards = 0;
+    }
+
     @Override
     public Board solve(Board unsolved, PrintStream stream) {
         int depth = 1;

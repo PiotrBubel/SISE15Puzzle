@@ -20,13 +20,19 @@ public class AStarSearch extends PuzzleSolver {
 
     public AStarSearch() {
         super();
-        maxDepth = 10;
+        maxDepth = DEFAULT_MAX_DEPTH;
         this.heuristicFunction = new MisplacedComparator();
         this.createdBoards = 0;
     }
 
     public AStarSearch(Comparator heuristicFunction, int depth) {
         maxDepth = depth - 1;
+        this.heuristicFunction = heuristicFunction;
+        this.createdBoards = 0;
+    }
+
+    public AStarSearch(Comparator heuristicFunction) {
+        maxDepth = DEFAULT_MAX_DEPTH;
         this.heuristicFunction = heuristicFunction;
         this.createdBoards = 0;
     }
