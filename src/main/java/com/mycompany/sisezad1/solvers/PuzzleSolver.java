@@ -12,6 +12,9 @@ import java.util.Comparator;
  */
 public abstract class PuzzleSolver {
 
+    protected static int CREATED_BOARDS = 0;
+
+
     protected int createdBoards;
     protected long time = 0;
     protected String order;            //nieuzywane w metodach heurystycznych
@@ -39,6 +42,13 @@ public abstract class PuzzleSolver {
         this.firstBoard = null;
         this.createdBoards = 0;
         this.heuristicFunction = null;
+    }
+
+    /**
+     * Method for counting created boards, to use only in Board class
+     */
+    public static void createdBoard(){
+        PuzzleSolver.CREATED_BOARDS++;
     }
 
     public Comparator getHeuristicFunction(){

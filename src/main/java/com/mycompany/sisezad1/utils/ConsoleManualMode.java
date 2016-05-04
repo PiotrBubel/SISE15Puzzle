@@ -191,9 +191,6 @@ public class ConsoleManualMode {
 
         ReportsGenerator.solveWithReport(solver, "report1", instance);
 
-        //TODO ilość odwiedzonych stanów (sprawdzonych) - DONE
-        //TODO ilość stanów przetworzonych (dodanych do kolejki itp.) (stworzonych Boardow)
-
         PrintStream stream = null;
         try {
             String className = solver.getClass().getSimpleName();

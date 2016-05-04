@@ -18,16 +18,19 @@ public class IterativeDepthFirstSearch extends PuzzleSolver {
     public IterativeDepthFirstSearch(String order) {
         super(order);
         maxDepth = 10;
+        this.createdBoards = 0;
     }
 
     public IterativeDepthFirstSearch(String order, int depth) {
         super(order);
         maxDepth = depth;
+        this.createdBoards = 0;
     }
 
     public IterativeDepthFirstSearch(int depth) {
         super();
         maxDepth = depth;
+        this.createdBoards = 0;
     }
 
     //de facto to jest prawie wyszukiwanie wszerz (BFS), tylko nie trzyma wszystkiego na raz w pamieci
@@ -40,6 +43,8 @@ public class IterativeDepthFirstSearch extends PuzzleSolver {
             stream = System.out;
         }
         this.time = System.nanoTime();
+        PuzzleSolver.CREATED_BOARDS = 0;
+        this.createdBoards = 0;
 
         while (depth <= maxDepth && solved == null) {
             depthFirstSolver = new DepthFirstSearch(this.order, depth);

@@ -1,5 +1,6 @@
 package com.mycompany.sisezad1;
 
+import com.mycompany.sisezad1.solvers.PuzzleSolver;
 import com.mycompany.sisezad1.utils.BoardUtils;
 
 import java.io.PrintStream;
@@ -239,6 +240,7 @@ public class Board {
             Board toAdd = this.move(order.charAt(i));
             if (toAdd != null) {
                 possibleStates.add(toAdd);
+                PuzzleSolver.createdBoard();
             }
         }
         if (possibleStates.isEmpty()) {
@@ -257,6 +259,7 @@ public class Board {
             Board toAdd = this.move(order.charAt(i));
             if (toAdd != null) {
                 possibleStates.add(toAdd);
+                PuzzleSolver.createdBoard();
             }
         }
         Collections.sort(possibleStates, heuristics);
@@ -341,7 +344,6 @@ public class Board {
                     return null;
                 }
             default:
-                System.out.println("DUPA");
                 return null;
         }
     }
