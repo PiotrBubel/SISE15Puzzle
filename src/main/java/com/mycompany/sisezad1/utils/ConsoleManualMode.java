@@ -105,17 +105,31 @@ public class ConsoleManualMode {
                         solver = new IterativeDepthFirstSearch(args[1], 8); //default depth
                     }
                     break;
-
+                case "-a": //FIXME
+                    if (args.length > 1) {
+                        solver = new IterativeDepthFirstSearch(args[1], Integer.parseInt(args[2]));
+                    } else {
+                        solver = new IterativeDepthFirstSearch(args[1], 8); //default depth
+                    }
+                    break;
                 //pierwszy argument to algorytm, drugi to kolejnosc, trzeci jesli potrzebny to glebokosc
-                case "-bfs":
+                case "--bfs":
                     solver = new BreadthFirstSearch(args[1]);
                     break;
-                case "-dfs":
+                case "--dfs":
                     solver = new DepthFirstSearch(args[1]);
                     break;
-                case "-idfs":
+                case "--idfs":
                     if (args.length > 2) {
                         solver = new IterativeDepthFirstSearch(args[1], Integer.parseInt(args[2]));
+                    } else {
+                        solver = new IterativeDepthFirstSearch(args[1], 8); //default depth
+                    }
+                    break;
+                case "--a":
+                    if (args.length > 2) {
+                        //switch ()
+                        //solver = new AStarSearch(args[1], Integer.parseInt(args[2]));
                     } else {
                         solver = new IterativeDepthFirstSearch(args[1], 8); //default depth
                     }
@@ -124,21 +138,23 @@ public class ConsoleManualMode {
 
                 default:
                     System.out.println("Podano bledny argument");
-                    solver = new DepthFirstSearch();
+                    solver = new BreadthFirstSearch("rrrr", 10);
                     break;
-            }
-            System.out.println("Uruchomi sie algorytm: " + solver.getClass().getSimpleName());
-            if (solver.getHeuristicFunction() == null) {
-                System.out.println("Kolejnosc: " + solver.getOrder());
-            } else {
-                System.out.println("Heurystyka: " + solver.getHeuristicFunction().getClass().getSimpleName());
             }
         } else {
             System.out.println("Program uruchomiony bez poprawnych argumentow");
+            solver = new BreadthFirstSearch("rrrr", 10);
+        }
+
+        System.out.println("Uruchomi sie algorytm: " + solver.getClass().getSimpleName());
+        if (solver.getHeuristicFunction() == null) {
+            System.out.println("Kolejnosc: " + solver.getOrder());
+        } else {
+            System.out.println("Heurystyka: " + solver.getHeuristicFunction().getClass().getSimpleName());
         }
 
         Board instance = null;
-        while(instance == null){
+        while (instance == null) {
             try {
                 instance = ConsoleManualMode.loadBoardFromUser();
             } catch (Exception e) {

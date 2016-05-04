@@ -33,11 +33,15 @@ public abstract class PuzzleSolver {
     }
 
     public PuzzleSolver(String order) {
-        if (order.length() == 4 || !order.startsWith("r") || !order.startsWith("R")) {
-            this.order = order;
-        } else {
+        if (order.length() != 4
+                || !(order.toLowerCase().contains(Board.DOWN_CHAR)
+                && order.toLowerCase().contains(Board.LEFT_CHAR)
+                && order.toLowerCase().contains(Board.RIGHT_CHAR)
+                && order.toLowerCase().contains(Board.UP_CHAR))) {
             System.out.println("Podana kolejnosc jest nieprawidlowa. Losuje kolejnosc.");
             this.order = BoardUtils.randomizeOrder();
+        } else {
+            this.order = order;
         }
         this.firstBoard = null;
         this.createdBoards = 0;
@@ -47,11 +51,11 @@ public abstract class PuzzleSolver {
     /**
      * Method for counting created boards, to use only in Board class
      */
-    public static void createdBoard(){
+    public static void createdBoard() {
         PuzzleSolver.CREATED_BOARDS++;
     }
 
-    public Comparator getHeuristicFunction(){
+    public Comparator getHeuristicFunction() {
         return this.heuristicFunction;
     }
 
