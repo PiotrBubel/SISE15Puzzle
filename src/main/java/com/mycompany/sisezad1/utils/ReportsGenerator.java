@@ -115,7 +115,7 @@ public class ReportsGenerator {
     }
 
 
-    public static void solveWithReport(PuzzleSolver solver, String reportFilePrefix, String boardFileName, int loopLength) {
+    public static void solveWithReport(PuzzleSolver solver, String reportFilePrefix, String boardFileName) {
         ReportsGenerator.solveWithReport(solver, reportFilePrefix, FileUtils.loadBoard(boardFileName));
     }
 
@@ -198,19 +198,19 @@ public class ReportsGenerator {
     }
 
 
-    public static void generateGeneralStatistics(String fileName, int depth, int algorithmsMaxDepth, String order) {
-        List<Board> boards = ReportsGenerator.generateAllStates("pathTMP", depth, false);
+    public static void generateGeneralStatistics(String fileName, int depth, int algorithmsMaxDepth, String order, boolean useBFS) {
+        List<Board> boards = ReportsGenerator.generateAllStates("z_pathTMP", depth, false);
 
-        List<PuzzleSolver> solvers = ReportsGenerator.createAllSolvers(order, algorithmsMaxDepth);
+        List<PuzzleSolver> solvers = ReportsGenerator.createAllSolvers(order, algorithmsMaxDepth, useBFS);
         double[] avgCreated = new double[solvers.size()];
         double[] avgChecked = new double[solvers.size()];
         double[] avgTime = new double[solvers.size()];
         double[] avgPath = new double[solvers.size()];
         int[] notSolved = new int[solvers.size()];
 
-        String tmpFilePath = "_ReportTMP" + fileName + ".txt";
+        String tmpFilePath = "z_ReportTMP" + fileName + ".txt";
         for (int b = 0; b < boards.size(); b++) {
-            solvers = ReportsGenerator.createAllSolvers(order, algorithmsMaxDepth);
+            solvers = ReportsGenerator.createAllSolvers(order, algorithmsMaxDepth, useBFS);
             for (int s = 0; s < solvers.size(); s++) {
                 PrintStream streamPaths = null;
                 try {
@@ -247,9 +247,11 @@ public class ReportsGenerator {
             e.printStackTrace();
             System.out.println("Blad podczas tworzenia pliku paths");
         }
-        reportStream.println("maksymalna glebokosc algorytmow: " + algorithmsMaxDepth);
+        reportStream.println("maksymalna glebokosc algorytmow iteracyjnych, bfs i dfs: " + algorithmsMaxDepth);
+        reportStream.println("maksymalna glebokosc algorytmu custom best first: " + algorithmsMaxDepth * 20 +", innych heurystycznych nie dotyczy");
         reportStream.println("Ochrona przed prostymi petlami: " + Board.SIMPLE_LOOP_CONTROL);
         reportStream.println("Ochrona przed zlozonymi petlami: " + Board.STRONG_LOOP_CONTROL);
+        reportStream.println();
 
         DecimalFormat df = new DecimalFormat("0.00");
 
@@ -283,23 +285,25 @@ public class ReportsGenerator {
     }
 
 
-    public static List<PuzzleSolver> createAllSolvers(String order, int maxDepth) {
+    public static List<PuzzleSolver> createAllSolvers(String order, int maxDepth, boolean useDFS) {
         List<PuzzleSolver> solvers = new ArrayList<>();
 
         //A*
-        solvers.add(new AStarSearch(new AManhattanDistanceComparator(), maxDepth));
-        solvers.add(new AStarSearch(new AMisplacedComparator(), maxDepth));
+        solvers.add(new BestFirstSearch(new AManhattanDistanceComparator(), maxDepth));
+        solvers.add(new BestFirstSearch(new AMisplacedComparator(), maxDepth));
         //Best-first
-        solvers.add(new AStarSearch(new ManhattanDistanceComparator(), maxDepth));
-        solvers.add(new AStarSearch(new MisplacedComparator(), maxDepth));
+        solvers.add(new BestFirstSearch(new ManhattanDistanceComparator(), maxDepth));
+        solvers.add(new BestFirstSearch(new MisplacedComparator(), maxDepth));
         //custom best-first
-        solvers.add(new BestFirstSearch(new ManhattanDistanceComparator()));
-        solvers.add(new BestFirstSearch(new MisplacedComparator()));
+        solvers.add(new CustomBestFirstSearch(new ManhattanDistanceComparator(), maxDepth));
+        solvers.add(new CustomBestFirstSearch(new MisplacedComparator(), maxDepth));
         //iterative a*
         solvers.add(new IterativeAStarSearch(new AManhattanDistanceComparator(), maxDepth));
         solvers.add(new IterativeAStarSearch(new AMisplacedComparator(), maxDepth));
         //DFS
-        solvers.add(new DepthFirstSearch(order, maxDepth));
+        if (useDFS) {
+            solvers.add(new DepthFirstSearch(order, maxDepth));
+        }
         //itarative DFS
         solvers.add(new IterativeDepthFirstSearch(order, maxDepth));
         //BFS
@@ -313,19 +317,23 @@ public class ReportsGenerator {
         String order = "pgld";
         Board.SIMPLE_LOOP_CONTROL = false;
         Board.STRONG_LOOP_CONTROL = false;
-        for (int i = 1; i <= 7; i++) {
+        for (int i = 1; i <= 6; i++) {
             System.out.println("Aktualna glebokosc: " + i);
-            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order);
+            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order, true);
         }
+        ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + 7, 7, algorithmMaxDepth, order, false);
+        ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + 8, 8, algorithmMaxDepth, order, false);
 
         algorithmMaxDepth = 25;
         order = "dlgp";
         Board.SIMPLE_LOOP_CONTROL = false;
         Board.STRONG_LOOP_CONTROL = false;
-        for (int i = 1; i <= 7; i++) {
+        for (int i = 1; i <= 6; i++) {
             System.out.println("Aktualna glebokosc: " + i);
-            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order);
+            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order, true);
         }
+        ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + 7, 7, algorithmMaxDepth, order, false);
+        ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + 8, 8, algorithmMaxDepth, order, false);
 
         algorithmMaxDepth = 10;
         order = "dlgp";
@@ -333,27 +341,32 @@ public class ReportsGenerator {
         Board.STRONG_LOOP_CONTROL = false;
         for (int i = 1; i <= 7; i++) {
             System.out.println("Aktualna glebokosc: " + i);
-            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order);
+            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order, true);
         }
+        ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + 8, 8, algorithmMaxDepth, order, false);
+        ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + 9, 9, algorithmMaxDepth, order, false);
 
         algorithmMaxDepth = 35;
         order = "dlgp";
         Board.SIMPLE_LOOP_CONTROL = false;
         Board.STRONG_LOOP_CONTROL = false;
-        for (int i = 1; i <= 6; i++) {
+        for (int i = 1; i <= 5; i++) {
             System.out.println("Aktualna glebokosc: " + i);
-            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order);
+            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order, true);
         }
+        ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + 6, 6, algorithmMaxDepth, order, false);
+        ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + 7, 7, algorithmMaxDepth, order, false);
 
         algorithmMaxDepth = 25;
         order = "pgld";
         Board.SIMPLE_LOOP_CONTROL = true;
         Board.STRONG_LOOP_CONTROL = false;
-        for (int i = 1; i <= 7; i++) {
+        for (int i = 1; i <= 4; i++) {
             System.out.println("Aktualna glebokosc: " + i);
-            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_loop_" + i, i, algorithmMaxDepth, order);
+            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_loop_" + i, i, algorithmMaxDepth, order, true);
         }
-
+        ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_loop_" + 5, 5, algorithmMaxDepth, order, false);
+        ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_loop_" + 6, 6, algorithmMaxDepth, order, false);
     }
 
     /**

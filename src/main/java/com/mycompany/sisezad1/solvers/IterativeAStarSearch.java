@@ -35,7 +35,7 @@ public class IterativeAStarSearch extends PuzzleSolver {
         PuzzleSolver.CREATED_BOARDS = 0;
         this.createdBoards = 0;
         while (depth <= maxDepth && solved == null) {
-            aStarSolver = new AStarSearch(this.heuristicFunction, depth);
+            aStarSolver = new BestFirstSearch(this.heuristicFunction, depth);
             Board toSolve = new Board(unsolved);
             solved = aStarSolver.solve(toSolve, stream);
             this.createdBoards = this.createdBoards + aStarSolver.getCreatedBoards();

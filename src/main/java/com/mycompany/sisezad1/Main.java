@@ -3,7 +3,6 @@ package com.mycompany.sisezad1;
 import com.mycompany.sisezad1.utils.*;
 
 
-
 /**
  * @author Piotrek
  */
@@ -19,7 +18,7 @@ public class Main {
         //ConsoleMode.mainLoop(argsTmp);
 
         ReportsGenerator.generateAllStatistics("report");
-
+        //ConsoleMode.oldMain();
         System.exit(0);
     }
 }

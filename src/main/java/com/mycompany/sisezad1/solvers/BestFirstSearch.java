@@ -1,6 +1,8 @@
 package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
+import com.mycompany.sisezad1.heuristics.*;
+import com.mycompany.sisezad1.utils.BoardUtils;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -9,105 +11,127 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Best-first search - algorytm 'najpierw najlepszy'
+ * A* - algorytm 'najpierw najlepszy'
  *
  *
- * Rozwijany jest "najlepszy" węzeł spośród węzłów rozpatrywanych do tej pory. Zakłada się, że węzeł
- * najbardziej obiecujący ma najmniejszą wartość funkcji heurystycznej.
+ * Celem tej strategii jest wyznaczenie najtańszej drogi w grafie.
  *
- * Brak zapamietywania calego grafu, nie przechodzi przez graf, do optymalnego dzialania wymaga
- * wlaczonego STRONG_LOOP_CONTROL
+ * A* do dzialania wymaga komparatora A, gdy podany zostanie komparator nie-A dziala jak zwykle
+ * best-first
  */
 public class BestFirstSearch extends PuzzleSolver {
 
-    public BestFirstSearch(Comparator<Board> heuristicFunction) {
+    private List<Board> uncheckedNodes;
+    private List<Board> checkedNodes;
+    private List<Board> newNodes;
+
+    public BestFirstSearch() {
         super();
+        maxDepth = DEFAULT_MAX_DEPTH;
+        this.heuristicFunction = new MisplacedComparator();
+        this.createdBoards = 0;
+    }
+
+    public BestFirstSearch(Comparator<Board> heuristicFunction, int depth) {
+        //maxDepth = depth - 1;//jak rekurencyjnie
+        maxDepth = depth;
         this.heuristicFunction = heuristicFunction;
-        this.maxDepth = 500;
+        this.createdBoards = 0;
+    }
+
+    public BestFirstSearch(Comparator<Board> heuristicFunction) {
+        maxDepth = DEFAULT_MAX_DEPTH;
+        this.heuristicFunction = heuristicFunction;
         this.createdBoards = 0;
     }
 
     @Override
     public Board solve(Board unsolved, PrintStream stream) {
-        boolean tmp = Board.STRONG_LOOP_CONTROL;
-        Board.STRONG_LOOP_CONTROL = true;
-        this.firstBoard = new Board(unsolved);
-        int steps = 0;
+
+        uncheckedNodes = new ArrayList<>();
+        checkedNodes = new ArrayList<>();
+        newNodes = new ArrayList<>();
+        Board current;
         PuzzleSolver.CREATED_BOARDS = 0;
-        Board current = new Board(unsolved.getState());
-        Board last = null;
-        String deadlockCause = "x";
-        List<Board> nextCombinations = new ArrayList<>();
-
-
         this.createdBoards = 0;
-
         this.time = System.nanoTime();
-        while (!current.isCorrect()) {
 
-            nextCombinations = getNextCombinations(current, deadlockCause);
+        // Pierwszy wierzchołek do sprawdzenia
+        uncheckedNodes.add(new Board(unsolved.getState()));
 
-            if (nextCombinations.isEmpty()) {
-                //undo last move, then try again, but now without going same direction
-                deadlockCause = current.getPath()
-                        .substring(current.getPath().length() - 1)
-                        .toLowerCase();
-                //System.out.println("CBF: deadlock caused by: " + deadlockCause + " going back one move");
-                current = new Board(last);
-                nextCombinations = getNextCombinations(current, deadlockCause);
-                deadlockCause = "x";
+        while (!uncheckedNodes.isEmpty()) {
+            //wstawianie najlepszego heurystycznie wierzcholka na pierwsze miejsce
+            Collections.sort(uncheckedNodes, heuristicFunction);
+            //pobieranie pierwszego wierzcholka z listy niesprawdzonych
+            current = uncheckedNodes.get(0);
+            //sprawdzenie czy aktualna glebokosc jest wieksza niz maksymalna
+            if (current.getPath().length() > maxDepth) {
+                this.time = System.nanoTime() - time;
+                return null;
             }
-
-            last = new Board(current);
-            current = chooseBest(nextCombinations, heuristicFunction);
+            // Sprawdzenie aktualnego wierzcholka
             if (stream != null && !current.getPath().isEmpty() && current.getPath() != null) {
                 stream.println(current.getPath());
             }
-            nextCombinations.clear();
-            steps++;
-            //System.out.println("steps: " + steps);
-            if (steps == maxDepth) {
-                this.createdBoards = maxDepth;
-                //System.out.println("CBF: zbyt duza liczba kombinacji");
-                Board.STRONG_LOOP_CONTROL = tmp;
-                return null;
+            if (current.isCorrect()) {
+                this.time = System.nanoTime() - time;
+                return current;
+            }
+            // Dodanie do listy sprawdzonych, usuniecie z niesprawdzonych
+            addToChecked(current);
+            //dodanie kolejnych mozliwych stanow
+            newNodes = current.getPossibleStates(heuristicFunction);
+            this.createdBoards = this.createdBoards + newNodes.size();
+            //usuniecie powtarzajacych sie wierzcholkow (zeby nie zapetlilo)
+            newNodes = newNodesWithoutChecked();
+
+            uncheckedNodes.addAll(newNodes);
+        }
+
+        this.time = System.nanoTime() - time;
+        return null;
+    }
+
+    private List<Board> newNodesWithoutChecked() {
+        List<Board> tmp = new ArrayList<>();
+        boolean isChecked = false;
+        for (Board newNode : newNodes) {
+            for (Board checkedNode : checkedNodes) {
+                if (newNode.equals(checkedNode)) {
+                    isChecked = true;
+                }
+            }
+            if (isChecked) {
+                isChecked = false;
+            } else {
+                tmp.add(newNode);
             }
         }
-        this.createdBoards = current.getPath().length();
+        return tmp;
+    }
+
+    private void addToChecked(Board current) {
+        checkedNodes.add(current);
+        uncheckedNodes.remove(current);
+    }
+
+    /*
+    public Board solveRe(Board unsolved, PrintStream stream) {
+        //połączenie depth first z heurestyką, rozwijany jest węzeł o najlepszej heurestyce,
+        //rozni sie od best first, ze zapisuje wyniki w grafie
+        //rozni sie od dfs tym, ze kolejnosc nie jest podana ani losowa, ale heurystyczna
+
+        if (stream == null) {
+            stream = System.out;
+        }
+
+        this.time = System.nanoTime();
+        PuzzleSolver.CREATED_BOARDS = 0;
+        Board correct = unsolved.findAnswerWithAStar(heuristicFunction, maxDepth, stream); //rekurencyjnie, dlatego w klasie Board
+        this.createdBoards = PuzzleSolver.CREATED_BOARDS;
         this.time = System.nanoTime() - time;
-        Board.STRONG_LOOP_CONTROL = tmp;
-        return current;
+        return correct;
     }
-
-    private List<Board> getNextCombinations(Board current, String deadlockCause) {
-        List<Board> nextCombinations = new ArrayList<>();
-        if (deadlockCause != Board.DOWN_CHAR && current.canMoveDown()) {
-            nextCombinations.add(new Board(current).moveDown());
-            this.createdBoards++;
-        }
-        if (deadlockCause != Board.UP_CHAR && current.canMoveUp()) {
-            nextCombinations.add(new Board(current).moveUp());
-            this.createdBoards++;
-        }
-        if (deadlockCause != Board.RIGHT_CHAR && current.canMoveRight()) {
-            nextCombinations.add(new Board(current).moveRight());
-            this.createdBoards++;
-        }
-        if (deadlockCause != Board.LEFT_CHAR && current.canMoveLeft()) {
-            nextCombinations.add(new Board(current).moveLeft());
-            this.createdBoards++;
-        }
-
-        return nextCombinations;
-    }
-
-    /**
-     * Method chooses best Board from given list. Comparator acts here as heuristic function.
-     *
-     * @return heuristically best Board
-     */
-    private Board chooseBest(List<Board> combinations, Comparator<Board> heuristic) {
-        Collections.sort(combinations, heuristic);
-        return new Board(combinations.get(0));
-    }
+    */
 }
+
