@@ -22,8 +22,8 @@ public class FileUtils {
     public static void saveBoard(String filePath, Board board) {
         try (PrintStream out = new PrintStream(new FileOutputStream(filePath))) {
             int[][] state = board.getState();
-            for (int x = 0; x < state[0].length; x++) {
-                for (int y = 0; y < state.length; y++) {
+            for (int x = 0; x < state.length; x++) {
+                for (int y = 0; y < state[0].length; y++) {
                     out.print(state[x][y]);
                     out.print(" ");
                 }
