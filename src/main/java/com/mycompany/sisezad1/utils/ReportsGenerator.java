@@ -5,9 +5,14 @@ import com.mycompany.sisezad1.heuristics.*;
 import com.mycompany.sisezad1.solvers.*;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -163,7 +168,7 @@ public class ReportsGenerator {
                 {13, 14, 11, 0}
         };
         Board unsolvable = new Board(unsolvableState);
-        PuzzleSolver bfs = new BreadthFirstSearch("rrrr", 6);
+        PuzzleSolver bfs = new BreadthFirstSearch("rrrr", depth);
 
         PrintStream streamPaths = null;
         try {
@@ -210,13 +215,13 @@ public class ReportsGenerator {
         double[] avgPath = new double[solvers.size()];
         int[] notSolved = new int[solvers.size()];
 
-
+        String tmpFilePath = "_generalReportTMP" + fileName + ".txt";
         for (int b = 0; b < boards.size(); b++) {
             solvers = ReportsGenerator.createAllSolvers(order, algorithmsMaxDepth);
             for (int s = 0; s < solvers.size(); s++) {
                 PrintStream streamPaths = null;
                 try {
-                    streamPaths = new PrintStream(new FileOutputStream("_generalReportTMP" + fileName + ".txt"));
+                    streamPaths = new PrintStream(new FileOutputStream(tmpFilePath));
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.out.println("Blad podczas tworzenia pliku paths");
@@ -224,7 +229,7 @@ public class ReportsGenerator {
 
                 Board solved = solvers.get(s).solve(new Board(boards.get(b).getState()), streamPaths);
 
-                avgChecked[s] = avgChecked[s] + (double) ReportsGenerator.countLinesInFile("_generalReportTMP" + fileName + ".txt");
+                avgChecked[s] = avgChecked[s] + (double) ReportsGenerator.countLinesInFile(tmpFilePath);
                 avgCreated[s] = avgCreated[s] + (double) solvers.get(s).getCreatedBoards();
                 avgTime[s] = avgTime[s] + solvers.get(s).getTimeInMilis();
                 if (solved != null) {

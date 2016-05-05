@@ -66,7 +66,7 @@ public class Main {
         for(int i = 1; i <= 6; i++){
             ReportsGenerator.generateGeneralStatistics("generalReport" + i, i, algorithmMaxDepth, order);
         }
-        ReportsGenerator.generateGeneralStatistics("generalReport" + 7, 7, algorithmMaxDepth, order);
+        //ReportsGenerator.generateGeneralStatistics("generalReport" + 7, 7, algorithmMaxDepth, order);
 
         algorithmMaxDepth = 25;
         Board.SIMPLE_LOOP_CONTROL = true;
