@@ -9,6 +9,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 
 /**
@@ -22,8 +23,10 @@ public class Main {
     public static void main(String[] args) {
 
         //TODO uncomment this
-        //String[] argsTmp = new String[]{"-a", "cbf"};
+        //String[] argsTmp = new String[]{"-a", "a", "2"};
         //ConsoleMode.mainLoop(argsTmp);
+
+
 
         int[][] state6 = new int[][]{ //da sie latwo rozwiazac - 6 ruchow
                 {0, 1, 2, 4},
@@ -52,22 +55,29 @@ public class Main {
                 {13, 14, 11, 15}
         };
 
+
+        ReportsGenerator.generateAllStates("allStates", 6);
+        //List<String> paths = FileUtils.loadPaths("_" + "allStates" + ".txt");
+        //ReportsGenerator.removeDuplicates(paths);
+
+
         Board instance = new Board(state5);
+        instance = BoardUtils.randomizeBoard(6, 5,15);
         Board solved = null;// = solver.solve(instance, null);
-        PuzzleSolver.DEFAULT_MAX_DEPTH = 10;
+        PuzzleSolver.DEFAULT_MAX_DEPTH = 20;
         Board.SIMPLE_LOOP_CONTROL = false;
         Board.STRONG_LOOP_CONTROL = false;
 
-        PuzzleSolver solver1 = new IterativeAStarSearch(new AManhattanDistanceComparator(), 20);
+        PuzzleSolver solver1 = new IterativeAStarSearch(new AManhattanDistanceComparator());
         //solver1 = new IterativeDepthFirstSearch(20);
         //solver1 = new DepthFirstSearch("pdlg");
         //solver1 = new BreadthFirstSearch();
 
 
-        solved = solver1.solve(instance, null);
-        System.out.println("time: " + solver1.getTimeInMilis() + "ms");
+        //solved = solver1.solve(instance, null);
+        //System.out.println("time: " + solver1.getTimeInMilis() + "ms");
 
-        solved = ReportsGenerator.solveWithReport(solver1, "test", instance);
+        //solved = ReportsGenerator.solveWithReport(solver1, "test", instance);
         if (solved != null) {
             BoardUtils.printBoard(solved);
             System.out.println("time: " + solver1.getTimeInMilis() + "ms");

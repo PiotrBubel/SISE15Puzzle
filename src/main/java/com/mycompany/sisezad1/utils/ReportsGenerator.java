@@ -1,6 +1,7 @@
 package com.mycompany.sisezad1.utils;
 
 import com.mycompany.sisezad1.Board;
+import com.mycompany.sisezad1.solvers.BreadthFirstSearch;
 import com.mycompany.sisezad1.solvers.DepthFirstSearch;
 import com.mycompany.sisezad1.solvers.IterativeDepthFirstSearch;
 import com.mycompany.sisezad1.solvers.PuzzleSolver;
@@ -11,6 +12,10 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Piotrek on 04.05.2016.
@@ -126,6 +131,62 @@ public class ReportsGenerator {
             e.printStackTrace();
         }
         return lines;
+    }
+
+    public static List<String> removeDuplicates(List<String> withDuplicates) {
+        int deleted = withDuplicates.size();
+        List<String> al = new ArrayList<>();
+        al.addAll(withDuplicates);
+        Set<String> hs = new HashSet<>();
+        hs.addAll(al);
+        al.clear();
+        al.addAll(hs);
+        deleted = deleted - al.size();
+        System.out.println("Removed " + deleted);
+
+        return al;
+    }
+
+    /**
+     * Mathod generates all states of 4x4 board in given depth, then saves them to files Mathod also
+     * creates file with all paths
+     */
+    public static void generateAllStates(String fileName, int depth) {
+        boolean tmp = Board.SIMPLE_LOOP_CONTROL;
+        Board.SIMPLE_LOOP_CONTROL = true;
+        int[][] unsolvableState = new int[][]{ //D
+                {1, 3, 4, 8},
+                {5, 2, 10, 7},
+                {9, 6, 1, 12},
+                {13, 14, 11, 0}
+        };
+        Board unsolvable = new Board(unsolvableState);
+        PuzzleSolver bfs = new BreadthFirstSearch("rrrr", 6);
+
+        PrintStream streamPaths = null;
+        try {
+            streamPaths = new PrintStream(new FileOutputStream("_" + fileName + "_Paths.txt"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Blad podczas tworzenia pliku paths");
+        }
+
+
+        bfs.solve(unsolvable, streamPaths);
+        int generated = ReportsGenerator.countLinesInFile("_" + fileName + "_Paths.txt");
+        System.out.println("Generated " + (generated - 1) + " paths");
+
+        List<String> paths = FileUtils.loadPaths("_" + fileName + "_Paths.txt");
+
+
+        for (int i = 0; i < generated; i++) {
+            Board toSave = BoardUtils.buildArrangedBoard(4, 4);
+            toSave = toSave.allMoves(paths.get(i));
+            FileUtils.saveBoard(paths.get(i).length() + fileName + i + ".txt", toSave);
+        }
+
+
+        Board.SIMPLE_LOOP_CONTROL = tmp;
     }
 
     /**

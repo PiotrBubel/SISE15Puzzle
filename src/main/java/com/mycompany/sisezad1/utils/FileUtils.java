@@ -7,11 +7,13 @@ package com.mycompany.sisezad1.utils;
 
 import com.mycompany.sisezad1.Board;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -65,5 +67,18 @@ public class FileUtils {
             System.err.println("Plansza wczytana z pliku jest bledna");
             return null;
         }
+    }
+
+    public static List<String> loadPaths(String filename) {
+        ArrayList<String> lines = new ArrayList<>();
+        String line;
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            while ((line = reader.readLine()) != null) {
+                if (!line.isEmpty()) lines.add(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lines;
     }
 }
