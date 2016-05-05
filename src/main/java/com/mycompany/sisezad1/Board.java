@@ -374,6 +374,17 @@ public class Board {
         }
         return null;
     }
+    /**
+     * @param moves - String wih moves to make
+     * @return changed Board, or null if wrong direction given or can't move in given direction
+     */
+    public Board allMoves(String moves) {
+        Board afterMoves = this;
+        for (char c : moves.toCharArray()) {
+            afterMoves = afterMoves.move(c);
+        }
+        return afterMoves;
+    }
 
     /**
      * @param direction [w|s|a|d]
