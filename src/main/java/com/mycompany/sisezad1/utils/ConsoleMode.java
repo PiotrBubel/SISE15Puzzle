@@ -125,11 +125,11 @@ public class ConsoleMode {
                         switch (args[1]) {
                             case "a":
                                 if (args[2] == "1") {
-                                    solver = new AStarSearch(new AMisplacedComparator());
+                                    solver = new BestFirstSearch(new AMisplacedComparator());
                                 } else if (args[2] == "2") {
-                                    solver = new AStarSearch(new AManhattanDistanceComparator());
+                                    solver = new BestFirstSearch(new AManhattanDistanceComparator());
                                 } else {
-                                    solver = new AStarSearch(new AMisplacedComparator());
+                                    solver = new BestFirstSearch(new AMisplacedComparator());
                                 }
                                 break;
                             case "ida":
@@ -143,20 +143,20 @@ public class ConsoleMode {
                                 break;
                             case "bf":
                                 if (args[2] == "1") {
-                                    solver = new AStarSearch(new MisplacedComparator());
-                                } else if (args[2] == "2") {
-                                    solver = new AStarSearch(new ManhattanDistanceComparator());
-                                } else {
-                                    solver = new AStarSearch(new MisplacedComparator());
-                                }
-                                break;
-                            case "cbf":
-                                if (args[2] == "1") {
                                     solver = new BestFirstSearch(new MisplacedComparator());
                                 } else if (args[2] == "2") {
                                     solver = new BestFirstSearch(new ManhattanDistanceComparator());
                                 } else {
                                     solver = new BestFirstSearch(new MisplacedComparator());
+                                }
+                                break;
+                            case "cbf":
+                                if (args[2] == "1") {
+                                    solver = new CustomBestFirstSearch(new MisplacedComparator());
+                                } else if (args[2] == "2") {
+                                    solver = new CustomBestFirstSearch(new ManhattanDistanceComparator());
+                                } else {
+                                    solver = new CustomBestFirstSearch(new MisplacedComparator());
                                 }
                                 break;
                             default:
@@ -166,7 +166,7 @@ public class ConsoleMode {
                     } else if (args.length == 2) {
                         switch (args[1]) {
                             case "a":
-                                solver = new AStarSearch(new AMisplacedComparator());
+                                solver = new BestFirstSearch(new AMisplacedComparator());
                                 break;
                             case "ida":
                                 solver = new IterativeAStarSearch(new AMisplacedComparator());
@@ -175,7 +175,7 @@ public class ConsoleMode {
                                 solver = new IterativeAStarSearch(new MisplacedComparator());
                                 break;
                             case "cbf":
-                                solver = new BestFirstSearch(new MisplacedComparator());
+                                solver = new CustomBestFirstSearch(new MisplacedComparator());
                                 break;
                             default:
                                 System.out.println("Podano bledny argument");
@@ -255,7 +255,7 @@ public class ConsoleMode {
         return new Board(state);
     }
 
-    public static void runReportsCases() {
+    public static void oldMain() {
 
         int[][] state1 = new int[][]{ //1 ruch
                 {1, 2, 3, 4},
@@ -296,10 +296,10 @@ public class ConsoleMode {
                 {13, 14, 11, 15}
         };
 
-        FileUtils.saveBoard("plik3.txt", new Board(state7));
-        Board instance = FileUtils.loadBoard("plik3.txt");
+        FileUtils.saveBoard("zzz.txt", new Board(state6));
+        Board instance = FileUtils.loadBoard("zzz.txt");
 
-        instance = BoardUtils.randomizeBoard(4, 4, 10);
+        //instance = BoardUtils.randomizeBoard(4, 4, 10);
 
         //FileUtils.saveBoard("plikTestowy.txt", instance);
 
@@ -308,15 +308,13 @@ public class ConsoleMode {
 
         PuzzleSolver solver = new IterativeDepthFirstSearch("wsad", 20);
         //solver = new DepthFirstSearch("wsad", 15);
-        Board.STRONG_LOOP_CONTROL = true;
-        //solver = new BestFirstSearch(new MisplacedComparator());  //FIXME requires loop control enabled
-        //solver = new BestFirstSearch(new ManhattanDistanceComparator()); //FIXME requires loop control enabled
-        Board.STRONG_LOOP_CONTROL = false;
-        //solver = new AStarSearch(new AMisplacedComparator(), 20);             //A* with not-A comparator acts as regular best-first search
+        //solver = new CustomBestFirstSearch(new MisplacedComparator());
+        //solver = new CustomBestFirstSearch(new ManhattanDistanceComparator());
+        solver = new BestFirstSearch(new AMisplacedComparator(), 20);             //A* with not-A comparator acts as regular best-first search
         //solver = new IterativeAStarSearch(new AMisplacedComparator(), 20);    //A* with not-A comparator acts as regular best-first search
-        solver = new BreadthFirstSearch("wsad", 10);
+        //solver = new BreadthFirstSearch("wsad", 10);
 
-        ReportsGenerator.solveWithReport(solver, "report1", instance);
+        //ReportsGenerator.solveWithReport(solver, "report1", instance);
 
         PrintStream stream = null;
         try {

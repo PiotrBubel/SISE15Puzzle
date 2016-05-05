@@ -48,6 +48,7 @@ public class Board {
     public Board(int[][] state) {
         this.state = state.clone();
         parentNode = null;
+        nextNodes = null;
         path = "";
     }
 
@@ -66,6 +67,7 @@ public class Board {
             }
         }
         parentNode = null;
+        nextNodes = null;
         path = original.getPath();
     }
 
