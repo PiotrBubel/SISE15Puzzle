@@ -1,11 +1,8 @@
 package com.mycompany.sisezad1.utils;
 
 import com.mycompany.sisezad1.Board;
-import com.mycompany.sisezad1.solvers.BreadthFirstSearch;
-import com.mycompany.sisezad1.solvers.DepthFirstSearch;
-import com.mycompany.sisezad1.solvers.IterativeDepthFirstSearch;
-import com.mycompany.sisezad1.solvers.PuzzleSolver;
-import com.sun.xml.internal.fastinfoset.Decoder;
+import com.mycompany.sisezad1.heuristics.*;
+import com.mycompany.sisezad1.solvers.*;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -16,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.xml.transform.sax.SAXSource;
 
 /**
  * Created by Piotrek on 04.05.2016.
@@ -142,16 +141,19 @@ public class ReportsGenerator {
         al.clear();
         al.addAll(hs);
         deleted = deleted - al.size();
-        System.out.println("Removed " + deleted);
-
+        if (deleted != 0) {
+            System.out.println("Removed " + deleted);
+        }
         return al;
     }
 
     /**
-     * Mathod generates all states of 4x4 board in given depth, then saves them to files Mathod also
-     * creates file with all paths
+     * Method generates all states of 4x4 board in given depth
+     *
+     * @param fileName    name of file with paths, and prefix to state files if saveToFiles == true
+     * @param saveToFiles true - saves boards to files
      */
-    public static void generateAllStates(String fileName, int depth) {
+    public static List<Board> generateAllStates(String fileName, int depth, boolean saveToFiles) {
         boolean tmp = Board.SIMPLE_LOOP_CONTROL;
         Board.SIMPLE_LOOP_CONTROL = true;
         int[][] unsolvableState = new int[][]{ //D
@@ -165,28 +167,145 @@ public class ReportsGenerator {
 
         PrintStream streamPaths = null;
         try {
-            streamPaths = new PrintStream(new FileOutputStream("_" + fileName + "_Paths.txt"));
+            streamPaths = new PrintStream(new FileOutputStream("_" + fileName + ".txt"));
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Blad podczas tworzenia pliku paths");
         }
 
-
         bfs.solve(unsolvable, streamPaths);
-        int generated = ReportsGenerator.countLinesInFile("_" + fileName + "_Paths.txt");
-        System.out.println("Generated " + (generated - 1) + " paths");
+        int generated = ReportsGenerator.countLinesInFile("_" + fileName + ".txt");
 
-        List<String> paths = FileUtils.loadPaths("_" + fileName + "_Paths.txt");
+        List<String> paths = FileUtils.loadPaths("_" + fileName + ".txt");
+        paths = ReportsGenerator.removeDuplicates(paths);
 
+        List<Board> generatedBoards = new ArrayList<>();
 
         for (int i = 0; i < generated; i++) {
-            Board toSave = BoardUtils.buildArrangedBoard(4, 4);
-            toSave = toSave.allMoves(paths.get(i));
-            FileUtils.saveBoard(paths.get(i).length() + fileName + i + ".txt", toSave);
+            if (paths.get(i).length() == depth) {
+                Board toSave = BoardUtils.buildArrangedBoard(4, 4);
+                toSave = toSave.allMoves(paths.get(i));
+                if (toSave != null) {
+                    generatedBoards.add(toSave);
+                }
+                if (saveToFiles) {
+                    FileUtils.saveBoard(paths.get(i).length() + fileName + i + ".txt", toSave);
+                }
+            }
         }
 
-
         Board.SIMPLE_LOOP_CONTROL = tmp;
+        System.out.println("Generated " + generatedBoards.size() + " boards");
+        return generatedBoards;
+    }
+
+
+    public static void generateGeneralStatistics(String fileName, int depth, int algorithmsMaxDepth, String order) {
+        List<Board> boards = ReportsGenerator.generateAllStates("path", depth, false);
+
+        List<PuzzleSolver> solvers = ReportsGenerator.createAllSolvers(order, algorithmsMaxDepth);
+        double[] avgCreated = new double[solvers.size()];
+        double[] avgChecked = new double[solvers.size()];
+        double[] avgTime = new double[solvers.size()];
+        double[] avgPath = new double[solvers.size()];
+        int[] notSolved = new int[solvers.size()];
+
+
+        for (int b = 0; b < boards.size(); b++) {
+            solvers = ReportsGenerator.createAllSolvers(order, algorithmsMaxDepth);
+            for (int s = 0; s < solvers.size(); s++) {
+                PrintStream streamPaths = null;
+                try {
+                    streamPaths = new PrintStream(new FileOutputStream("_generalReportTMP" + fileName + ".txt"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("Blad podczas tworzenia pliku paths");
+                }
+
+                Board solved = solvers.get(s).solve(new Board(boards.get(b).getState()), streamPaths);
+
+                avgChecked[s] = avgChecked[s] + (double) ReportsGenerator.countLinesInFile("_generalReportTMP" + fileName + ".txt");
+                avgCreated[s] = avgCreated[s] + (double) solvers.get(s).getCreatedBoards();
+                avgTime[s] = avgTime[s] + solvers.get(s).getTimeInMilis();
+                if (solved != null) {
+                    avgPath[s] = avgPath[s] + solved.getPath().length();
+                    //System.out.println(solved.getPath().length());
+                } else {
+                    notSolved[s]++;
+                }
+            }
+        }
+
+        ReportsGenerator.countAvg(avgCreated, boards.size());
+        ReportsGenerator.countAvg(avgChecked, boards.size());
+        ReportsGenerator.countAvg(avgTime, boards.size());
+
+        PrintStream reportStream = null;
+        try {
+            reportStream = new PrintStream(new FileOutputStream("_" + fileName + ".txt"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Blad podczas tworzenia pliku paths");
+        }
+        reportStream.println("maksymalna glebokosc algorytmow: " + algorithmsMaxDepth);
+        reportStream.println("Ochrona przed prostymi petlami: " + Board.SIMPLE_LOOP_CONTROL);
+        reportStream.println("Ochrona przed zlozonymi petlami: " + Board.STRONG_LOOP_CONTROL);
+
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        for (int s = 0; s < solvers.size(); s++) {
+            PuzzleSolver actual = solvers.get(s);
+            avgPath[s] = avgPath[s] / (boards.size() - notSolved[s]);
+            String additionalAlgData;
+            if (actual.getHeuristicFunction() != null) {
+                additionalAlgData = " heurystyka: " + actual.getHeuristicFunction().getClass().getSimpleName();
+            } else {
+                additionalAlgData = "kolejnosc: " + actual.getOrder();
+            }
+
+            reportStream.println(actual.getClass().getSimpleName() + "  " + additionalAlgData);
+            reportStream.println("srednia dlugosc rozwiazania: \t" + df.format(avgPath[s]));
+            reportStream.println("nie znaleziono rozwiazania dla: \t" + notSolved[s]);
+            reportStream.println("sredni czas: \t\t\t" + df.format(avgTime[s]));
+            reportStream.println("srednia ilosc sprawdzonych: \t" + df.format(avgChecked[s]));
+            reportStream.println("srednia ilosc stworzonych: \t" + df.format(avgCreated[s]));
+
+            reportStream.println();
+        }
+        reportStream.close();
+        System.out.println("Stworzono plik z ogolnym raportem " + fileName + " dla glebokosci " + depth);
+    }
+
+    private static void countAvg(double[] avg, int size) {
+        for (int i = 0; i < avg.length; i++) {
+            avg[i] = avg[i] / (double) size;
+        }
+    }
+
+
+    public static List<PuzzleSolver> createAllSolvers(String order, int maxDepth) {
+        List<PuzzleSolver> solvers = new ArrayList<>();
+
+        //A*
+        solvers.add(new AStarSearch(new AManhattanDistanceComparator(), maxDepth));
+        solvers.add(new AStarSearch(new AMisplacedComparator(), maxDepth));
+        //Best-first
+        solvers.add(new AStarSearch(new ManhattanDistanceComparator(), maxDepth));
+        solvers.add(new AStarSearch(new MisplacedComparator(), maxDepth));
+        //custom best-first
+        solvers.add(new BestFirstSearch(new ManhattanDistanceComparator()));
+        solvers.add(new BestFirstSearch(new MisplacedComparator()));
+        //iterative a*
+        solvers.add(new IterativeAStarSearch(new AManhattanDistanceComparator(), maxDepth));
+        solvers.add(new IterativeAStarSearch(new AMisplacedComparator(), maxDepth));
+        //DFS
+        solvers.add(new DepthFirstSearch(order, maxDepth));
+        //itarative DFS
+        solvers.add(new IterativeDepthFirstSearch(order, maxDepth));
+        //BFS
+        solvers.add(new BreadthFirstSearch(order, maxDepth));
+
+        return solvers;
     }
 
     /**

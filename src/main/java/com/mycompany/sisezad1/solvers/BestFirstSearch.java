@@ -51,7 +51,7 @@ public class BestFirstSearch extends PuzzleSolver {
                 deadlockCause = current.getPath()
                         .substring(current.getPath().length() - 1)
                         .toLowerCase();
-                System.out.println("DEADLOCK CAUSED BY: " + deadlockCause);
+                System.out.println("CBF: deadlock caused by: " + deadlockCause + " going back one move");
                 current = new Board(last);
                 nextCombinations = getNextCombinations(current, deadlockCause);
                 deadlockCause = "x";
@@ -67,7 +67,7 @@ public class BestFirstSearch extends PuzzleSolver {
             //System.out.println("steps: " + steps);
             if (steps == maxDepth) {
                 this.createdBoards = maxDepth;
-                System.out.println("zbyt duza liczba kombinacji");
+                System.out.println("CBF: zbyt duza liczba kombinacji");
                 Board.STRONG_LOOP_CONTROL = false;
                 return null;
             }

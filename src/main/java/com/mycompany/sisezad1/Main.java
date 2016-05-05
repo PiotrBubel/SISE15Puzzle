@@ -26,8 +26,6 @@ public class Main {
         //String[] argsTmp = new String[]{"-a", "a", "2"};
         //ConsoleMode.mainLoop(argsTmp);
 
-
-
         int[][] state6 = new int[][]{ //da sie latwo rozwiazac - 6 ruchow
                 {0, 1, 2, 4},
                 {5, 6, 3, 8},
@@ -56,15 +54,33 @@ public class Main {
         };
 
 
-        ReportsGenerator.generateAllStates("allStates", 6);
+        //ReportsGenerator.generateAllStates("allStates", 6, false);
         //List<String> paths = FileUtils.loadPaths("_" + "allStates" + ".txt");
         //ReportsGenerator.removeDuplicates(paths);
+        int depth = 5;
+        int algorithmMaxDepth = 25;
+        String order = "pgld";
+
+        Board.SIMPLE_LOOP_CONTROL = false;
+        Board.STRONG_LOOP_CONTROL = false;
+        for(int i = 1; i <= 6; i++){
+            ReportsGenerator.generateGeneralStatistics("generalReport" + i, i, algorithmMaxDepth, order);
+        }
+        ReportsGenerator.generateGeneralStatistics("generalReport" + 7, 7, algorithmMaxDepth, order);
+
+        algorithmMaxDepth = 25;
+        Board.SIMPLE_LOOP_CONTROL = true;
+        Board.STRONG_LOOP_CONTROL = false;
+        for(int i = 1; i < 6; i++){
+            //ReportsGenerator.generateGeneralStatistics("generalReportLoopControl" + i, i, algorithmMaxDepth, order);
+        }
+
+        //ReportsGenerator.generateGeneralStatistics("generalReport" + depth, depth, algorithmMaxDepth, order);
 
 
         Board instance = new Board(state5);
-        instance = BoardUtils.randomizeBoard(6, 5,15);
+        instance = BoardUtils.randomizeBoard(6, 5, 15);
         Board solved = null;// = solver.solve(instance, null);
-        PuzzleSolver.DEFAULT_MAX_DEPTH = 20;
         Board.SIMPLE_LOOP_CONTROL = false;
         Board.STRONG_LOOP_CONTROL = false;
 
@@ -75,84 +91,14 @@ public class Main {
 
 
         //solved = solver1.solve(instance, null);
-        //System.out.println("time: " + solver1.getTimeInMilis() + "ms");
 
         //solved = ReportsGenerator.solveWithReport(solver1, "test", instance);
+
         if (solved != null) {
             BoardUtils.printBoard(solved);
             System.out.println("time: " + solver1.getTimeInMilis() + "ms");
         }
 
-
-        if (false) {
-
-            PuzzleSolver.DEFAULT_MAX_DEPTH = 30;
-            int maxMovesToSolve = 10;
-            int xy = 3;
-            PrintStream streamPaths = null;
-            try {
-                streamPaths = new PrintStream(new FileOutputStream("_" + "test" + "_Paths.txt"));
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Blad podczas tworzenia pliku paths");
-            }
-            int notSolved = 0;
-
-            for (int i = 0; i < 100; i++) {
-                instance = BoardUtils.randomizeBoard(xy, xy, maxMovesToSolve);
-                AStarSearch solver = new AStarSearch(new AMisplacedComparator());
-                //solver = new BreadthFirstSearch();
-
-                solved = solver.solve(instance, streamPaths);
-                if (solved == null) {
-                    notSolved++;
-                }
-            }
-            System.out.println("AMisplaced - not solved with given max depth: " + notSolved);
-
-
-            notSolved = 0;
-            for (int i = 0; i < 100; i++) {
-                instance = BoardUtils.randomizeBoard(xy, xy, maxMovesToSolve);
-                AStarSearch solver = new AStarSearch(new MisplacedComparator());
-                //solver = new BreadthFirstSearch();
-
-                solved = solver.solve(instance, streamPaths);
-                if (solved == null) {
-                    notSolved++;
-                }
-            }
-            System.out.println("Misplaced - not solved with given max depth: " + notSolved);
-
-
-            notSolved = 0;
-            for (int i = 0; i < 100; i++) {
-                instance = BoardUtils.randomizeBoard(xy, xy, maxMovesToSolve);
-                AStarSearch solver = new AStarSearch(new AManhattanDistanceComparator());
-                //solver = new BreadthFirstSearch();
-
-                solved = solver.solve(instance, streamPaths);
-                if (solved == null) {
-                    notSolved++;
-                }
-            }
-            System.out.println("AManhattan - not solved with given max depth: " + notSolved);
-
-
-            notSolved = 0;
-            for (int i = 0; i < 100; i++) {
-                instance = BoardUtils.randomizeBoard(xy, xy, maxMovesToSolve);
-                AStarSearch solver = new AStarSearch(new ManhattanDistanceComparator());
-                //solver = new BreadthFirstSearch();
-
-                solved = solver.solve(instance, streamPaths);
-                if (solved == null) {
-                    notSolved++;
-                }
-            }
-            System.out.println("Manhattan - not solved with given max depth: " + notSolved);
-            //solved = ReportsGenerator.solveWithReport(solver, "firstReport", instance);
-        }
         System.exit(0);
     }
 }
