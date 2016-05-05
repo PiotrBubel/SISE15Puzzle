@@ -5,21 +5,14 @@ import com.mycompany.sisezad1.heuristics.*;
 import com.mycompany.sisezad1.solvers.*;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.file.DirectoryNotEmptyException;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.xml.transform.sax.SAXSource;
 
 /**
  * Created by Piotrek on 04.05.2016.
