@@ -193,13 +193,13 @@ public class ReportsGenerator {
         }
 
         Board.SIMPLE_LOOP_CONTROL = tmp;
-        System.out.println("Generated " + generatedBoards.size() + " boards");
+        //System.out.println("Generated " + generatedBoards.size() + " boards");
         return generatedBoards;
     }
 
 
     public static void generateGeneralStatistics(String fileName, int depth, int algorithmsMaxDepth, String order) {
-        List<Board> boards = ReportsGenerator.generateAllStates("path", depth, false);
+        List<Board> boards = ReportsGenerator.generateAllStates("pathTMP", depth, false);
 
         List<PuzzleSolver> solvers = ReportsGenerator.createAllSolvers(order, algorithmsMaxDepth);
         double[] avgCreated = new double[solvers.size()];
@@ -208,7 +208,7 @@ public class ReportsGenerator {
         double[] avgPath = new double[solvers.size()];
         int[] notSolved = new int[solvers.size()];
 
-        String tmpFilePath = "_generalReportTMP" + fileName + ".txt";
+        String tmpFilePath = "_ReportTMP" + fileName + ".txt";
         for (int b = 0; b < boards.size(); b++) {
             solvers = ReportsGenerator.createAllSolvers(order, algorithmsMaxDepth);
             for (int s = 0; s < solvers.size(); s++) {
@@ -231,6 +231,8 @@ public class ReportsGenerator {
                 } else {
                     notSolved[s]++;
                 }
+
+                System.gc();
             }
         }
 
@@ -304,6 +306,54 @@ public class ReportsGenerator {
         solvers.add(new BreadthFirstSearch(order, maxDepth));
 
         return solvers;
+    }
+
+    public static void generateAllStatistics(String fileName) {
+        int algorithmMaxDepth = 25;
+        String order = "pgld";
+        Board.SIMPLE_LOOP_CONTROL = false;
+        Board.STRONG_LOOP_CONTROL = false;
+        for (int i = 1; i <= 7; i++) {
+            System.out.println("Aktualna glebokosc: " + i);
+            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order);
+        }
+
+        algorithmMaxDepth = 25;
+        order = "dlgp";
+        Board.SIMPLE_LOOP_CONTROL = false;
+        Board.STRONG_LOOP_CONTROL = false;
+        for (int i = 1; i <= 7; i++) {
+            System.out.println("Aktualna glebokosc: " + i);
+            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order);
+        }
+
+        algorithmMaxDepth = 10;
+        order = "dlgp";
+        Board.SIMPLE_LOOP_CONTROL = false;
+        Board.STRONG_LOOP_CONTROL = false;
+        for (int i = 1; i <= 7; i++) {
+            System.out.println("Aktualna glebokosc: " + i);
+            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order);
+        }
+
+        algorithmMaxDepth = 35;
+        order = "dlgp";
+        Board.SIMPLE_LOOP_CONTROL = false;
+        Board.STRONG_LOOP_CONTROL = false;
+        for (int i = 1; i <= 6; i++) {
+            System.out.println("Aktualna glebokosc: " + i);
+            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order);
+        }
+
+        algorithmMaxDepth = 25;
+        order = "pgld";
+        Board.SIMPLE_LOOP_CONTROL = true;
+        Board.STRONG_LOOP_CONTROL = false;
+        for (int i = 1; i <= 7; i++) {
+            System.out.println("Aktualna glebokosc: " + i);
+            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order);
+        }
+
     }
 
     /**

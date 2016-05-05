@@ -255,7 +255,7 @@ public class ConsoleMode {
         return new Board(state);
     }
 
-    public static void runReportsCases() {
+    public static void oldMain() {
 
         int[][] state1 = new int[][]{ //1 ruch
                 {1, 2, 3, 4},
@@ -309,8 +309,8 @@ public class ConsoleMode {
         PuzzleSolver solver = new IterativeDepthFirstSearch("wsad", 20);
         //solver = new DepthFirstSearch("wsad", 15);
         Board.STRONG_LOOP_CONTROL = true;
-        //solver = new BestFirstSearch(new MisplacedComparator());  //FIXME requires loop control enabled
-        //solver = new BestFirstSearch(new ManhattanDistanceComparator()); //FIXME requires loop control enabled
+        //solver = new BestFirstSearch(new MisplacedComparator());
+        //solver = new BestFirstSearch(new ManhattanDistanceComparator());
         Board.STRONG_LOOP_CONTROL = false;
         //solver = new AStarSearch(new AMisplacedComparator(), 20);             //A* with not-A comparator acts as regular best-first search
         //solver = new IterativeAStarSearch(new AMisplacedComparator(), 20);    //A* with not-A comparator acts as regular best-first search

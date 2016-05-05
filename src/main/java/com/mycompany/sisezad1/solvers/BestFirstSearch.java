@@ -23,12 +23,13 @@ public class BestFirstSearch extends PuzzleSolver {
     public BestFirstSearch(Comparator<Board> heuristicFunction) {
         super();
         this.heuristicFunction = heuristicFunction;
-        this.maxDepth = 5000;
+        this.maxDepth = 500;
         this.createdBoards = 0;
     }
 
     @Override
     public Board solve(Board unsolved, PrintStream stream) {
+        boolean tmp = Board.STRONG_LOOP_CONTROL;
         Board.STRONG_LOOP_CONTROL = true;
         this.firstBoard = new Board(unsolved);
         int steps = 0;
@@ -51,7 +52,7 @@ public class BestFirstSearch extends PuzzleSolver {
                 deadlockCause = current.getPath()
                         .substring(current.getPath().length() - 1)
                         .toLowerCase();
-                System.out.println("CBF: deadlock caused by: " + deadlockCause + " going back one move");
+                //System.out.println("CBF: deadlock caused by: " + deadlockCause + " going back one move");
                 current = new Board(last);
                 nextCombinations = getNextCombinations(current, deadlockCause);
                 deadlockCause = "x";
@@ -67,14 +68,14 @@ public class BestFirstSearch extends PuzzleSolver {
             //System.out.println("steps: " + steps);
             if (steps == maxDepth) {
                 this.createdBoards = maxDepth;
-                System.out.println("CBF: zbyt duza liczba kombinacji");
-                Board.STRONG_LOOP_CONTROL = false;
+                //System.out.println("CBF: zbyt duza liczba kombinacji");
+                Board.STRONG_LOOP_CONTROL = tmp;
                 return null;
             }
         }
         this.createdBoards = current.getPath().length();
         this.time = System.nanoTime() - time;
-        Board.STRONG_LOOP_CONTROL = false;
+        Board.STRONG_LOOP_CONTROL = tmp;
         return current;
     }
 
