@@ -351,7 +351,7 @@ public class ReportsGenerator {
         Board.STRONG_LOOP_CONTROL = false;
         for (int i = 1; i <= 7; i++) {
             System.out.println("Aktualna glebokosc: " + i);
-            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order);
+            ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_loop_" + i, i, algorithmMaxDepth, order);
         }
 
     }
