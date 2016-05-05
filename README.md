@@ -20,4 +20,5 @@ id_heurystyki:
     1   liczba pol poza swoim polozeniem
     2   suma dystansow miedzy polem i jego poprawnym polozeniem (Manhattan distance)
 
+	
 porzadek jest to dowolna permutacja zbioru {L, P, G, D}, jesli natomiast bedzie zawieral R lub r, to porzadek bedzie losowany kazdorazowo
