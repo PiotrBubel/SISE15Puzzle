@@ -1,12 +1,16 @@
 package com.mycompany.sisezad1.utils;
 
 import com.mycompany.sisezad1.Board;
+import com.mycompany.sisezad1.solvers.DepthFirstSearch;
+import com.mycompany.sisezad1.solvers.IterativeDepthFirstSearch;
 import com.mycompany.sisezad1.solvers.PuzzleSolver;
+import com.sun.xml.internal.fastinfoset.Decoder;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.PrintStream;
+import java.text.DecimalFormat;
 
 /**
  * Created by Piotrek on 04.05.2016.
@@ -30,6 +34,7 @@ public class ReportsGenerator {
 
         Board solvedBoard = solver.solve(toSolve, streamPaths);
         streamPaths.close();
+
         PrintStream streamReport = null;
         try {
             streamReport = new PrintStream(new FileOutputStream("_" + reportFilePrefix + className + "_Report.txt"));
@@ -52,18 +57,21 @@ public class ReportsGenerator {
                 streamReport.println("--blad--");
             }
         }
+        streamReport.println("Ustawiona maksymalna glebokosc: " + solver.getMaxDepth());
         streamReport.println("Wielkosc planszy: " + toSolve.getState().length + "x" + toSolve.getState()[0].length);
-        //streamReport.println("Ochrona przed prostymi petlami: " + Board.SIMPLE_LOOP_CONTROL);
-        //streamReport.println("Ochrona przed zlozonymi petlami: " + Board.STRONG_LOOP_CONTROL);
+        streamReport.println("Ochrona przed prostymi petlami: " + Board.SIMPLE_LOOP_CONTROL);
+        streamReport.println("Ochrona przed zlozonymi petlami: " + Board.STRONG_LOOP_CONTROL);
 
         streamReport.println();
+        DecimalFormat df = new DecimalFormat("0.00");
 
-        double timeInMiliseconds = solver.getTime() / 1000000d;
-        streamReport.println("Czas rozwiazywania: " + timeInMiliseconds + "ms");
+        double timeInMiliseconds = solver.getTimeInMilis();
+        streamReport.println("Czas rozwiazywania: " + df.format(timeInMiliseconds) + "ms");
         streamReport.println("Stworzonych stanow: " + solver.getCreatedBoards());
-
         streamReport.println("Sprawdzonych stanow: " + countLinesInFile("_" + reportFilePrefix + className + "_Paths.txt"));
 
+        //streamReport.println("Sredni czas rozwiazywania dla " + loopLength + " przypadkow: "
+        //        + df.format(ReportsGenerator.countAvgTime(solver, toSolve, loopLength)) + "ms");
 
         streamReport.println();
 
@@ -105,7 +113,7 @@ public class ReportsGenerator {
     }
 
 
-    public static void solveWithReport(PuzzleSolver solver, String reportFilePrefix, String boardFileName) {
+    public static void solveWithReport(PuzzleSolver solver, String reportFilePrefix, String boardFileName, int loopLength) {
         ReportsGenerator.solveWithReport(solver, reportFilePrefix, FileUtils.loadBoard(boardFileName));
     }
 
@@ -118,5 +126,26 @@ public class ReportsGenerator {
             e.printStackTrace();
         }
         return lines;
+    }
+
+    /**
+     * Avarage time is much smaller than time of first solving, this may be caused by processor
+     * cache.
+     *
+     * @return algorithm execution time in ms
+     */
+    public static double countAvgTime(PuzzleSolver solver, Board notSolvedBoard, int ile) {
+        double avgTime = 0;
+        int notSolved1 = 0;
+        Board solved = null;
+
+        for (int x = 1; x <= ile; x++) {
+            //TODO clear processor cache here - is it even possible in java?
+            solved = solver.solve(notSolvedBoard, null);
+            avgTime = avgTime + solver.getTimeInMilis();
+            //System.out.println(x + ": " + solver.getTimeInMilis());
+        }
+        avgTime = avgTime / (double) ile;
+        return avgTime;
     }
 }

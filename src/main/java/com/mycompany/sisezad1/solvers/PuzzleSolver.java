@@ -18,7 +18,8 @@ public abstract class PuzzleSolver {
     protected long time = 0;
     protected String order;            //nieuzywane w metodach heurystycznych
     protected Board firstBoard;
-    protected Comparator heuristicFunction; //nieuzywane w metodach nie-heurystycznych
+    protected Comparator<Board> heuristicFunction; //nieuzywane w metodach nie-heurystycznych
+    protected int maxDepth;                 //w custom best-first to liczba duzo wieksza niz w innych algorytmach
 
 
     /**
@@ -60,8 +61,16 @@ public abstract class PuzzleSolver {
         return this.heuristicFunction;
     }
 
-    public long getTime() {
+    public long getTimeInNanos() {
         return this.time;
+    }
+
+    public double getTimeInMilis() {
+        return this.time / 1000000d;
+    }
+
+    public int getMaxDepth() {
+        return this.maxDepth;
     }
 
     public String getOrder() {

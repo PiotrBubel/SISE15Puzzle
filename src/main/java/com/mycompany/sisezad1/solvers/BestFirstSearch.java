@@ -20,12 +20,10 @@ import java.util.List;
  */
 public class BestFirstSearch extends PuzzleSolver {
 
-    public int maxSteps;
-
-    public BestFirstSearch(Comparator heuristicFunction) {
+    public BestFirstSearch(Comparator<Board> heuristicFunction) {
         super();
         this.heuristicFunction = heuristicFunction;
-        this.maxSteps = 5000;
+        this.maxDepth = 5000;
         this.createdBoards = 0;
     }
 
@@ -67,8 +65,8 @@ public class BestFirstSearch extends PuzzleSolver {
             nextCombinations.clear();
             steps++;
             //System.out.println("steps: " + steps);
-            if (steps == maxSteps) {
-                this.createdBoards = maxSteps;
+            if (steps == maxDepth) {
+                this.createdBoards = maxDepth;
                 System.out.println("zbyt duza liczba kombinacji");
                 Board.STRONG_LOOP_CONTROL = false;
                 return null;
@@ -107,7 +105,7 @@ public class BestFirstSearch extends PuzzleSolver {
      *
      * @return heuristically best Board
      */
-    private Board chooseBest(List<Board> combinations, Comparator heuristic) {
+    private Board chooseBest(List<Board> combinations, Comparator<Board> heuristic) {
         Collections.sort(combinations, heuristic);
         return new Board(combinations.get(0));
     }

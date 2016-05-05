@@ -14,15 +14,24 @@ import java.util.List;
  */
 public class Board {
 
-    public static final String RIGHT_CHAR_CAP = "D";
-    public static final String LEFT_CHAR_CAP = "A";
-    public static final String UP_CHAR_CAP = "W";
-    public static final String DOWN_CHAR_CAP = "S";
-    public static final String RIGHT_CHAR = "d";
-    public static final String LEFT_CHAR = "a";
-    public static final String UP_CHAR = "w";
-    public static final String DOWN_CHAR = "s";
+    public static final String RIGHT_CHAR_CAP = "P";
+    public static final String LEFT_CHAR_CAP = "L";
+    public static final String UP_CHAR_CAP = "G";
+    public static final String DOWN_CHAR_CAP = "D";
+    public static final String RIGHT_CHAR = "p";
+    public static final String LEFT_CHAR = "l";
+    public static final String UP_CHAR = "g";
+    public static final String DOWN_CHAR = "d";
+
+    /**
+     * Designed to work with custom best-first, not safe to use outside this algorithm, may cause
+     * deadlocks (in only 4 cases, but still)
+     */
     public static boolean STRONG_LOOP_CONTROL = false;
+
+    /**
+     * Safe to use, prevents board to create new states witch undo last move
+     */
     public static boolean SIMPLE_LOOP_CONTROL = false;
 
 

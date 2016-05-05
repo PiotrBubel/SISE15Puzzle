@@ -54,15 +54,25 @@ public class Main {
 
         Board instance = new Board(state5);
         Board solved = null;// = solver.solve(instance, null);
-        PuzzleSolver.DEFAULT_MAX_DEPTH = 30;
+        PuzzleSolver.DEFAULT_MAX_DEPTH = 10;
+        Board.SIMPLE_LOOP_CONTROL = false;
+        Board.STRONG_LOOP_CONTROL = false;
 
         PuzzleSolver solver1 = new IterativeAStarSearch(new AManhattanDistanceComparator(), 20);
         //solver1 = new IterativeDepthFirstSearch(20);
-        //solver1 = new DepthFirstSearch();
+        //solver1 = new DepthFirstSearch("pdlg");
         //solver1 = new BreadthFirstSearch();
 
-        solved = solver1.solve(instance, System.out);
-        ReportsGenerator.solveWithReport(solver1, "test", instance);
+
+        solved = solver1.solve(instance, null);
+        System.out.println("time: " + solver1.getTimeInMilis() + "ms");
+
+        solved = ReportsGenerator.solveWithReport(solver1, "test", instance);
+        if (solved != null) {
+            BoardUtils.printBoard(solved);
+            System.out.println("time: " + solver1.getTimeInMilis() + "ms");
+        }
+
 
         if (false) {
 

@@ -24,7 +24,6 @@ import java.util.List;
  */
 public class BreadthFirstSearch extends PuzzleSolver {
 
-    private int maxDepth;
     // Robie na listach ale mozna tez na kolejce FIFO
     private List<Board> uncheckedNodes;
     private List<Board> checkedNodes;

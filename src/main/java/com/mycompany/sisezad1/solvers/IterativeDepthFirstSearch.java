@@ -13,8 +13,6 @@ import java.io.PrintStream;
  */
 public class IterativeDepthFirstSearch extends PuzzleSolver {
 
-    int maxDepth;
-
     public IterativeDepthFirstSearch(String order) {
         super(order);
         maxDepth = DEFAULT_MAX_DEPTH;

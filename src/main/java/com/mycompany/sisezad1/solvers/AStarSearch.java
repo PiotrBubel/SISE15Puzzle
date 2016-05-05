@@ -20,7 +20,7 @@ import java.util.List;
  * best-first
  */
 public class AStarSearch extends PuzzleSolver {
-    int maxDepth;
+
     private List<Board> uncheckedNodes;
     private List<Board> checkedNodes;
     private List<Board> newNodes;
@@ -32,14 +32,14 @@ public class AStarSearch extends PuzzleSolver {
         this.createdBoards = 0;
     }
 
-    public AStarSearch(Comparator heuristicFunction, int depth) {
+    public AStarSearch(Comparator<Board> heuristicFunction, int depth) {
         //maxDepth = depth - 1;//jak rekurencyjnie
         maxDepth = depth;
         this.heuristicFunction = heuristicFunction;
         this.createdBoards = 0;
     }
 
-    public AStarSearch(Comparator heuristicFunction) {
+    public AStarSearch(Comparator<Board> heuristicFunction) {
         maxDepth = DEFAULT_MAX_DEPTH;
         this.heuristicFunction = heuristicFunction;
         this.createdBoards = 0;
@@ -97,7 +97,7 @@ public class AStarSearch extends PuzzleSolver {
     }
 
     private List<Board> newNodesWithoutChecked() {
-        List<Board> tmp = new ArrayList();
+        List<Board> tmp = new ArrayList<>();
         boolean isChecked = false;
         for (Board newNode : newNodes) {
             for (Board checkedNode : checkedNodes) {

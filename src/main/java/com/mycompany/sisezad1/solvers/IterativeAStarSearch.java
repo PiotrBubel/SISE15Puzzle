@@ -13,15 +13,13 @@ import java.util.Comparator;
  */
 public class IterativeAStarSearch extends PuzzleSolver {
 
-    int maxDepth;
-
-    public IterativeAStarSearch(Comparator heuristicFunction, int depth) {
+    public IterativeAStarSearch(Comparator<Board> heuristicFunction, int depth) {
         maxDepth = depth;
         this.heuristicFunction = heuristicFunction;
         this.createdBoards = 0;
     }
 
-    public IterativeAStarSearch(Comparator heuristicFunction) {
+    public IterativeAStarSearch(Comparator<Board> heuristicFunction) {
         maxDepth = DEFAULT_MAX_DEPTH;
         this.heuristicFunction = heuristicFunction;
         this.createdBoards = 0;

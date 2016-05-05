@@ -14,8 +14,6 @@ import java.io.PrintStream;
  */
 public class DepthFirstSearch extends PuzzleSolver {
 
-    int maxDepth;
-
     public DepthFirstSearch() {
         super();
         maxDepth = DEFAULT_MAX_DEPTH;
