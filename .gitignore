@@ -3,6 +3,10 @@
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+.idea
+nbactions.xml
+*.iml
+nb-configuration.xml
 
 # Package Files #
 *.jar
