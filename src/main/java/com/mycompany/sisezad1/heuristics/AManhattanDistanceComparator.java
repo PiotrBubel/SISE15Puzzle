@@ -12,6 +12,10 @@ import com.mycompany.sisezad1.Board;
 public class AManhattanDistanceComparator extends ManhattanDistanceComparator {
     @Override
     public int compare(Board b1, Board b2) {
-        return (this.sumDistance(b1) + b1.getPath().length()) - (this.sumDistance(b2) + b2.getPath().length());
+        return (this.heuristicValue(b1)) - (this.heuristicValue(b2));
+    }
+
+    public int heuristicValue(Board b){
+        return super.heuristicValue(b) + b.getPath().length();
     }
 }

@@ -1,12 +1,12 @@
 package com.mycompany.sisezad1;
 
+import com.mycompany.sisezad1.heuristics.Heuristic;
 import com.mycompany.sisezad1.solvers.PuzzleSolver;
 import com.mycompany.sisezad1.utils.BoardUtils;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -309,7 +309,7 @@ public class Board {
     /**
      * Method returns possible states from this Board in given order
      */
-    public List<Board> getPossibleStates(Comparator heuristics) {
+    public List<Board> getPossibleStates(Heuristic heuristics) {
         List<Board> possibleStates = this.getPossibleStates("rrrr");
         Collections.sort(possibleStates, heuristics);
         return possibleStates;
@@ -319,7 +319,7 @@ public class Board {
      * Method returns only best states from this Board in heuristic order If more than one state
      * have same, lowest heuristics value, then returns all of them
      */
-    public List<Board> getBestStates(Comparator heuristics) {
+    public List<Board> getBestStates(Heuristic heuristics) {
         List<Board> bestStates = BoardUtils.getOnlyBestBoards(this.getPossibleStates("rrrr"), heuristics);
         return bestStates;
     }
@@ -348,12 +348,7 @@ public class Board {
         return null;
     }
 
-    /**
-     * Method used if best first algorithms woult be similar rather to DFS than BFS
-     *
-     * Abandoned method.
-     */
-    public Board findAnswerWithAStar(Comparator heuristics, int depth, PrintStream stream) {
+    public Board findAnswerWithIDA(Heuristic heuristics, int depth, PrintStream stream) {
         if (depth >= 0) {
             this.nextNodes = getBestStates(heuristics);
             PuzzleSolver.addCreated(this.nextNodes.size());
@@ -364,7 +359,7 @@ public class Board {
                 if (nextNode.isCorrect()) {
                     return nextNode;
                 } else {
-                    Board possibleAnswer = nextNode.findAnswerWithAStar(heuristics, depth - 1, stream);
+                    Board possibleAnswer = nextNode.findAnswerWithIDA(heuristics, depth - 1, stream);
                     if (possibleAnswer != null) {
                         return possibleAnswer;
                     }

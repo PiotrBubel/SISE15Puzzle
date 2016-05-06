@@ -1,6 +1,7 @@
 package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
+import com.mycompany.sisezad1.heuristics.Heuristic;
 
 import java.io.PrintStream;
 import java.util.Comparator;
@@ -13,20 +14,22 @@ import java.util.Comparator;
  */
 public class IterativeAStarSearch extends PuzzleSolver {
 
-    public IterativeAStarSearch(Comparator<Board> heuristicFunction, int depth) {
+    Heuristic heuristicFunction;
+
+    public IterativeAStarSearch(Heuristic heuristicFunction, int depth) {
         maxDepth = depth;
         this.heuristicFunction = heuristicFunction;
         this.createdBoards = 0;
     }
 
-    public IterativeAStarSearch(Comparator<Board> heuristicFunction) {
+    public IterativeAStarSearch(Heuristic heuristicFunction) {
         maxDepth = DEFAULT_MAX_DEPTH;
         this.heuristicFunction = heuristicFunction;
         this.createdBoards = 0;
     }
 
     @Override
-    public Board solve(Board unsolved, PrintStream stream) {
+    public Board solve(Board unsolved, PrintStream stream) {    //FIXME
         int depth = 1;
         PuzzleSolver aStarSolver;
         Board solved = null;

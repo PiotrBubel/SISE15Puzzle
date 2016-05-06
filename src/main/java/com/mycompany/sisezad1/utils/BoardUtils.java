@@ -1,10 +1,10 @@
 package com.mycompany.sisezad1.utils;
 
 import com.mycompany.sisezad1.Board;
+import com.mycompany.sisezad1.heuristics.Heuristic;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -177,7 +177,7 @@ public class BoardUtils {
      * Method returns only best states from given list in heuristic order
      * If more than one state have same, lowest heuristics value, then returns all of them
      */
-    public static List<Board> getOnlyBestBoards(List<Board> list, Comparator heuristics){
+    public static List<Board> getOnlyBestBoards(List<Board> list, Heuristic heuristics){
         List<Board> possibleStates = new ArrayList<>();
         List<Board> bestStates = new ArrayList<>();
 

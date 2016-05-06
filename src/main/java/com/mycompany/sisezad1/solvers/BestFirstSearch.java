@@ -32,14 +32,14 @@ public class BestFirstSearch extends PuzzleSolver {
         this.createdBoards = 0;
     }
 
-    public BestFirstSearch(Comparator<Board> heuristicFunction, int depth) {
+    public BestFirstSearch(Heuristic heuristicFunction, int depth) {
         //maxDepth = depth - 1;//jak rekurencyjnie
         maxDepth = depth;
         this.heuristicFunction = heuristicFunction;
         this.createdBoards = 0;
     }
 
-    public BestFirstSearch(Comparator<Board> heuristicFunction) {
+    public BestFirstSearch(Heuristic heuristicFunction) {
         maxDepth = DEFAULT_MAX_DEPTH;
         this.heuristicFunction = heuristicFunction;
         this.createdBoards = 0;
@@ -64,7 +64,7 @@ public class BestFirstSearch extends PuzzleSolver {
             Collections.sort(uncheckedNodes, heuristicFunction);
             //pobieranie pierwszego wierzcholka z listy niesprawdzonych
             current = uncheckedNodes.get(0);
-            //sprawdzenie czy aktualna glebokosc jest wieksza niz maksymalna
+            //sprawdzenie czy aktualna glebokosc jest wieksza niz maksymalna, nie musi tego byc
             if (current.getPath().length() > maxDepth) {
                 this.time = System.nanoTime() - time;
                 return null;
@@ -114,24 +114,5 @@ public class BestFirstSearch extends PuzzleSolver {
         checkedNodes.add(current);
         uncheckedNodes.remove(current);
     }
-
-    /*
-    public Board solveRe(Board unsolved, PrintStream stream) {
-        //połączenie depth first z heurestyką, rozwijany jest węzeł o najlepszej heurestyce,
-        //rozni sie od best first, ze zapisuje wyniki w grafie
-        //rozni sie od dfs tym, ze kolejnosc nie jest podana ani losowa, ale heurystyczna
-
-        if (stream == null) {
-            stream = System.out;
-        }
-
-        this.time = System.nanoTime();
-        PuzzleSolver.CREATED_BOARDS = 0;
-        Board correct = unsolved.findAnswerWithAStar(heuristicFunction, maxDepth, stream); //rekurencyjnie, dlatego w klasie Board
-        this.createdBoards = PuzzleSolver.CREATED_BOARDS;
-        this.time = System.nanoTime() - time;
-        return correct;
-    }
-    */
 }
 

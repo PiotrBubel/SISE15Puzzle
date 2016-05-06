@@ -1,6 +1,7 @@
 package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
+import com.mycompany.sisezad1.heuristics.Heuristic;
 import com.mycompany.sisezad1.utils.BoardUtils;
 
 import java.io.PrintStream;
@@ -18,7 +19,7 @@ public abstract class PuzzleSolver {
     protected long time = 0;
     protected String order;            //nieuzywane w metodach heurystycznych
     protected Board firstBoard;
-    protected Comparator<Board> heuristicFunction; //nieuzywane w metodach nie-heurystycznych
+    protected Heuristic heuristicFunction; //nieuzywane w metodach nie-heurystycznych
     protected int maxDepth;                 //w custom best-first to liczba duzo wieksza niz w innych algorytmach
 
 
@@ -57,7 +58,7 @@ public abstract class PuzzleSolver {
         PuzzleSolver.CREATED_BOARDS = PuzzleSolver.CREATED_BOARDS + i;
     }
 
-    public Comparator getHeuristicFunction() {
+    public Heuristic getHeuristicFunction() {
         return this.heuristicFunction;
     }
 
