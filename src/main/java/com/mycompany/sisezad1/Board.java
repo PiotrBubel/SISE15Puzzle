@@ -348,7 +348,7 @@ public class Board {
         return null;
     }
 
-    public Board findAnswerWithIDA(Heuristic heuristics, int depth, PrintStream stream) {
+    public Board findAnswerWithIDA(Heuristic heuristics, int depth, PrintStream stream) { //FIXME
         if (depth >= 0) {
             this.nextNodes = getBestStates(heuristics);
             PuzzleSolver.addCreated(this.nextNodes.size());
