@@ -10,14 +10,14 @@ import java.util.Comparator;
  *
  * Powinno byc uzywane do Best-first (podane do A* sprawia, ze A* dziala jak best-first)
  */
-public class ManhattanDistanceComparator implements Comparator<Board> {
+public class ManhattanDistanceComparator implements Heuristic {
 
     @Override
     public int compare(Board b1, Board b2) {
-        return this.sumDistance(b1) - this.sumDistance(b2);
+        return this.heuristicValue(b1) - this.heuristicValue(b2);
     }
 
-    protected int sumDistance(Board b) {
+    public int heuristicValue(Board b) {
         int sum = 0;
         int[][] state = b.getState();
         int correctValue = 1;

@@ -344,7 +344,7 @@ public class ReportsGenerator {
             ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + i, i, algorithmMaxDepth, order, true);
         }
         ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + 8, 8, algorithmMaxDepth, order, false);
-        ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + 9, 9, algorithmMaxDepth, order, false);
+        //ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_" + 9, 9, algorithmMaxDepth, order, false);
 
         algorithmMaxDepth = 35;
         order = "dlgp";
@@ -366,7 +366,7 @@ public class ReportsGenerator {
             ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_loop_" + i, i, algorithmMaxDepth, order, true);
         }
         ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_loop_" + 5, 5, algorithmMaxDepth, order, false);
-        ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_loop_" + 6, 6, algorithmMaxDepth, order, false);
+        //ReportsGenerator.generateGeneralStatistics(fileName + "_" + order + algorithmMaxDepth + "_loop_" + 6, 6, algorithmMaxDepth, order, false);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
+import com.mycompany.sisezad1.heuristics.Heuristic;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -20,13 +21,13 @@ import java.util.List;
  */
 public class CustomBestFirstSearch extends PuzzleSolver {
 
-    public CustomBestFirstSearch(Comparator<Board> heuristicFunction) {
+    public CustomBestFirstSearch(Heuristic heuristicFunction) {
         super();
         this.heuristicFunction = heuristicFunction;
         this.maxDepth = DEFAULT_MAX_DEPTH * 20;
         this.createdBoards = 0;
     }
-    public CustomBestFirstSearch(Comparator<Board> heuristicFunction, int maxDepth) {
+    public CustomBestFirstSearch(Heuristic heuristicFunction, int maxDepth) {
         super();
         this.heuristicFunction = heuristicFunction;
         this.maxDepth = maxDepth * 20;

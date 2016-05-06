@@ -16,9 +16,10 @@ public class AMisplacedComparator extends MisplacedComparator {
 
     @Override
     public int compare(Board b1, Board b2) {
-        int b1HeuristicValue = this.countMisplacedWithout0(b1) + b1.getPath().length();  //5
-        int b2HeuristicValue = this.countMisplacedWithout0(b2) + b2.getPath().length();  //0
+        return (this.heuristicValue(b1)) - (this.heuristicValue(b2));
+    }
 
-        return b1HeuristicValue - b2HeuristicValue;
+    public int heuristicValue(Board b) {
+        return super.heuristicValue(b) + b.getPath().length();
     }
 }

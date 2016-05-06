@@ -1,7 +1,6 @@
 package com.mycompany.sisezad1.heuristics;
 
 import com.mycompany.sisezad1.Board;
-import com.mycompany.sisezad1.utils.BoardUtils;
 
 import java.util.Comparator;
 
@@ -10,17 +9,14 @@ import java.util.Comparator;
  *
  * Powinno byc uzywane do Best-first (podane do A* sprawia, ze A* dziala jak best-first)
  */
-public class MisplacedComparator implements Comparator<Board> {
+public class MisplacedComparator implements Heuristic {
 
     @Override
     public int compare(Board b1, Board b2) {
-        int b1Misplaced = this.countMisplacedWithout0(b1);
-        int b2Misplaced = this.countMisplacedWithout0(b2);
-
-        return b1Misplaced - b2Misplaced;
+        return (this.heuristicValue(b1)) - (this.heuristicValue(b2));
     }
 
-    protected int countMisplacedWithout0(Board b) {
+    public int heuristicValue(Board b) {
 
         int[][] state = b.getState();
         int misplaced = 0;
