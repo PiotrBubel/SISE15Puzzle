@@ -17,8 +17,8 @@ public class Main {
         //String[] argsTmp = new String[]{"-a", "a", "2"};
         //ConsoleMode.mainLoop(argsTmp);
 
-        //ReportsGenerator.generateAllStatistics("report");
-        ConsoleMode.oldMain();
+        ReportsGenerator.generateAllStatistics("report");
+        //ConsoleMode.oldMain();
 
         System.exit(0);
     }

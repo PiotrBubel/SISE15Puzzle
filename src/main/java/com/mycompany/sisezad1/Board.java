@@ -34,11 +34,11 @@ public class Board {
      */
     public static boolean SIMPLE_LOOP_CONTROL = false;
 
-
     private int[][] state;
     private List<Board> nextNodes;
     private Board parentNode;
     private String path;
+    private int pathValue; //used in IDA*
 
     /**
      * Creates board with given state, other fields are default
@@ -69,6 +69,15 @@ public class Board {
         parentNode = null;
         nextNodes = null;
         path = original.getPath();
+        pathValue = original.pathValue;
+    }
+
+    public void updatePathValue(int v) {
+        this.pathValue = +v;
+    }
+
+    public int getPathValue() {
+        return this.pathValue;
     }
 
     public void setNextStepInPath(String step) {
@@ -348,9 +357,17 @@ public class Board {
         return null;
     }
 
-    public Board findAnswerWithIDA(Heuristic heuristics, int depth, PrintStream stream) {
-        if (depth >= 0) {
-            this.nextNodes = getBestStates(heuristics);
+    public Board findAnswerWithIDA(Heuristic heuristics, int maxCost, PrintStream stream) { //FIXME
+
+        if (maxCost >= 0) {
+            this.nextNodes = getPossibleStates(heuristics);
+            for (Board b : nextNodes) {
+                b.updatePathCost(heuristics);
+                if (b.pathValue > maxCost) {
+                    nextNodes.remove(b);
+                }
+            }
+
             PuzzleSolver.addCreated(this.nextNodes.size());
             for (Board nextNode : nextNodes) {
                 if (stream != null && !nextNode.getPath().isEmpty() && nextNode.getPath() != null) {
@@ -359,7 +376,7 @@ public class Board {
                 if (nextNode.isCorrect()) {
                     return nextNode;
                 } else {
-                    Board possibleAnswer = nextNode.findAnswerWithIDA(heuristics, depth - 1, stream);
+                    Board possibleAnswer = nextNode.findAnswerWithIDA(heuristics, maxCost - 1, stream);
                     if (possibleAnswer != null) {
                         return possibleAnswer;
                     }
@@ -371,6 +388,20 @@ public class Board {
         }
         return null;
     }
+
+    public void updatePathCost(Heuristic heuristic) {
+        this.pathValue = 0;
+        char[] directions = BoardUtils.reverseMoves(this.path).toCharArray();
+        Board stepBefore = this;
+        int costSum = 0;
+
+        for (char s : directions) {
+            stepBefore = this.move(s);
+            costSum = +heuristic.heuristicValue(stepBefore);
+        }
+        this.pathValue = costSum;
+    }
+
     /**
      * @param moves - String wih moves to make
      * @return changed Board, or null if wrong direction given or can't move in given direction

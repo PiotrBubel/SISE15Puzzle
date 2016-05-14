@@ -5,7 +5,6 @@ import com.mycompany.sisezad1.heuristics.Heuristic;
 import com.mycompany.sisezad1.utils.BoardUtils;
 
 import java.io.PrintStream;
-import java.util.Comparator;
 
 
 /**
@@ -41,7 +40,6 @@ public abstract class PuzzleSolver {
                 && order.toLowerCase().contains(Board.UP_CHAR)) ^ order.toLowerCase().contains("r")) {
             //jesli order nie ma 4 znakow lub jesli
             //      nie zawiera wszystkich liter-kierunkow xor zawiera r
-            System.out.println("Podana kolejnosc jest nieprawidlowa. Losuje kolejnosc.");
             this.order = BoardUtils.randomizeOrder();
         } else {
             this.order = order;

@@ -4,7 +4,7 @@ import com.mycompany.sisezad1.Board;
 import com.mycompany.sisezad1.heuristics.Heuristic;
 
 import java.io.PrintStream;
-import java.util.Comparator;
+import java.util.List;
 
 /**
  * A* - algorytm 'najpierw najlepszy' z poglebieniem iteracyjnym
@@ -14,34 +14,34 @@ import java.util.Comparator;
  */
 public class IterativeAStarSearch extends PuzzleSolver {
 
-    Heuristic heuristicFunction;
-
     public IterativeAStarSearch(Heuristic heuristicFunction, int depth) {
+        super();
         maxDepth = depth;
         this.heuristicFunction = heuristicFunction;
         this.createdBoards = 0;
     }
 
     public IterativeAStarSearch(Heuristic heuristicFunction) {
-        maxDepth = DEFAULT_MAX_DEPTH;
+        super();
+        maxDepth = DEFAULT_MAX_DEPTH * 200;
         this.heuristicFunction = heuristicFunction;
         this.createdBoards = 0;
     }
 
     @Override
     public Board solve(Board unsolved, PrintStream stream) {    //FIXME
+
         int depth = 1;
-        PuzzleSolver aStarSolver;
         Board solved = null;
 
         this.time = System.nanoTime();
-        PuzzleSolver.CREATED_BOARDS = 0;
         this.createdBoards = 0;
+        Board toSolve = new Board(unsolved);
+
         while (depth <= maxDepth && solved == null) {
-            aStarSolver = new BestFirstSearch(this.heuristicFunction, depth);
-            Board toSolve = new Board(unsolved);
-            solved = aStarSolver.solve(toSolve, stream);
-            this.createdBoards = this.createdBoards + aStarSolver.getCreatedBoards();
+            PuzzleSolver.CREATED_BOARDS = 0;
+            solved = toSolve.findAnswerWithIDA(heuristicFunction, depth, stream);
+            this.createdBoards = this.createdBoards + CREATED_BOARDS;
             depth++;
         }
         this.time = System.nanoTime() - time;
