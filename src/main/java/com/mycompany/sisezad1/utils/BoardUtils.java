@@ -28,10 +28,10 @@ public class BoardUtils {
         }
         System.out.println();
 
-        if(b.getPath() != null && !b.getPath().isEmpty()){
+        if (b.getPath() != null && !b.getPath().isEmpty()) {
             System.out.println("Moves: " + b.getPath().length());
             System.out.println("Path: " + b.getPath());
-        }else{
+        } else {
             System.out.println("No path attached");
         }
     }
@@ -174,10 +174,10 @@ public class BoardUtils {
     }
 
     /**
-     * Method returns only best states from given list in heuristic order
-     * If more than one state have same, lowest heuristics value, then returns all of them
+     * Method returns only best states from given list in heuristic order If more than one state
+     * have same, lowest heuristics value, then returns all of them
      */
-    public static List<Board> getOnlyBestBoards(List<Board> list, Heuristic heuristics){
+    public static List<Board> getOnlyBestBoards(List<Board> list, Heuristic heuristics) {
         List<Board> possibleStates = new ArrayList<>();
         List<Board> bestStates = new ArrayList<>();
 
@@ -188,11 +188,31 @@ public class BoardUtils {
         bestStates.add(possibleStates.get(0));
 
         for (int i = 1; i < possibleStates.size(); i++) {
-            if(heuristics.compare(bestStates.get(0), possibleStates.get(i)) == 0){
+            if (heuristics.compare(bestStates.get(0), possibleStates.get(i)) == 0) {
                 bestStates.add(possibleStates.get(i));
             }
         }
 
         return bestStates;
+    }
+
+    public static String reverseMoves(String moves) {
+        char[] directions = new StringBuilder(moves).reverse().toString().toCharArray();
+        String reverseM = "";
+        for (char s : directions) {
+            if (Board.RIGHT_CHAR.equals(s) || Board.RIGHT_CHAR_CAP.equals(s)) {
+                reverseM = reverseM + Board.LEFT_CHAR;
+            }
+            if (Board.LEFT_CHAR.equals(s) || Board.LEFT_CHAR_CAP.equals(s)) {
+                reverseM = reverseM + Board.RIGHT_CHAR;
+            }
+            if (Board.UP_CHAR.equals(s) || Board.UP_CHAR_CAP.equals(s)) {
+                reverseM = reverseM + Board.DOWN_CHAR;
+            }
+            if (Board.DOWN_CHAR.equals(s) || Board.DOWN_CHAR_CAP.equals(s)) {
+                reverseM = reverseM + Board.UP_CHAR;
+            }
+        }
+        return reverseM;
     }
 }

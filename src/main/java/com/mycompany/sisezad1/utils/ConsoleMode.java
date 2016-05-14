@@ -306,12 +306,12 @@ public class ConsoleMode {
         Board.STRONG_LOOP_CONTROL = false;
 
 
-        PuzzleSolver solver = new IterativeDepthFirstSearch("wsad", 20);
+        PuzzleSolver solver;// = new IterativeDepthFirstSearch("wsad", 20);
         //solver = new DepthFirstSearch("wsad", 15);
         //solver = new CustomBestFirstSearch(new MisplacedComparator());
         //solver = new CustomBestFirstSearch(new ManhattanDistanceComparator());
-        solver = new BestFirstSearch(new AMisplacedComparator(), 20);             //A* with not-A comparator acts as regular best-first search
-        //solver = new IterativeAStarSearch(new AMisplacedComparator(), 20);    //A* with not-A comparator acts as regular best-first search
+        //solver = new BestFirstSearch(new AMisplacedComparator(), 20);             //A* with not-A comparator acts as regular best-first search
+        solver = new IterativeAStarSearch(new AMisplacedComparator(), 20);    //A* with not-A comparator acts as regular best-first search
         //solver = new BreadthFirstSearch("wsad", 10);
 
         //ReportsGenerator.solveWithReport(solver, "report1", instance);
@@ -332,5 +332,6 @@ public class ConsoleMode {
         } else {
             System.out.println("Algorytm nie znalazł rozwiązania");
         }
+
     }
 }
