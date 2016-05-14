@@ -31,7 +31,6 @@ public class IterativeDepthFirstSearch extends NonHeuristicSolver {
         this.createdBoards = 0;
     }
 
-    //de facto to jest prawie wyszukiwanie wszerz (BFS), tylko nie trzyma wszystkiego na raz w pamieci
     @Override
     public Board solve(Board unsolved, PrintStream stream) {
         int depth = 1;

@@ -15,7 +15,7 @@ public class AManhattanDistanceComparator extends ManhattanDistanceComparator {
         return (this.heuristicValue(b1)) - (this.heuristicValue(b2));
     }
 
-    public int heuristicValue(Board b){
+    public int heuristicValue(Board b) {
         return super.heuristicValue(b) + b.getPath().length();
     }
 }

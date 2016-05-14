@@ -2,8 +2,6 @@ package com.mycompany.sisezad1.heuristics;
 
 import com.mycompany.sisezad1.Board;
 
-import java.util.Comparator;
-
 /**
  * Ocena heurystyczna: suma dystansu kazdego elementu od wlasciwego miejsca (obliczane metryka
  * Manhattan), nie liczy zera

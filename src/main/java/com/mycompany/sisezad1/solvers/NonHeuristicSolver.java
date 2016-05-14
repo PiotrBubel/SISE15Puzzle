@@ -7,7 +7,7 @@ import com.mycompany.sisezad1.utils.BoardUtils;
  * Created by Piotrek on 14.05.2016.
  */
 public abstract class NonHeuristicSolver extends PuzzleSolver {
-    protected String order;            //nieuzywane w metodach heurystycznych
+    protected String order;
 
     public NonHeuristicSolver(String order) {
         super();

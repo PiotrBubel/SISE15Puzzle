@@ -6,7 +6,6 @@
 package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
-import com.mycompany.sisezad1.heuristics.AMisplacedComparator;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -39,7 +38,6 @@ public class BreadthFirstSearch extends NonHeuristicSolver {
 
     public BreadthFirstSearch(String order, int maxDepth) {
         super(order, maxDepth);
-        this.createdBoards = 0;
     }
 
     @Override

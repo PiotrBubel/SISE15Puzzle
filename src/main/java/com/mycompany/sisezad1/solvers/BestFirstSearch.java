@@ -2,7 +2,6 @@ package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
 import com.mycompany.sisezad1.heuristics.Heuristic;
-import com.mycompany.sisezad1.heuristics.MisplacedComparator;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -25,17 +24,14 @@ public class BestFirstSearch extends HeuristicSolver {
 
     public BestFirstSearch() {
         super();
-        this.heuristicFunction = new MisplacedComparator();
     }
 
     public BestFirstSearch(Heuristic heuristicFunction, int depth) {
-        super(depth);
-        this.heuristicFunction = heuristicFunction;
+        super(depth, heuristicFunction);
     }
 
     public BestFirstSearch(Heuristic heuristicFunction) {
-        super();
-        this.heuristicFunction = heuristicFunction;
+        super(heuristicFunction);
     }
 
     @Override

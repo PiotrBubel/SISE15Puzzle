@@ -4,7 +4,6 @@ import com.mycompany.sisezad1.Board;
 import com.mycompany.sisezad1.heuristics.Heuristic;
 
 import java.io.PrintStream;
-import java.util.List;
 
 /**
  * A* - algorytm 'najpierw najlepszy' z poglebieniem iteracyjnym
@@ -15,12 +14,11 @@ import java.util.List;
 public class IterativeAStarSearch extends HeuristicSolver {
 
     public IterativeAStarSearch(Heuristic heuristicFunction, int depth) {
-        super(depth * 200);
-        this.heuristicFunction = heuristicFunction;
+        super(depth * 200, heuristicFunction);
     }
 
     public IterativeAStarSearch(Heuristic heuristicFunction) {
-        super();
+        super(heuristicFunction);
         maxDepth = DEFAULT_MAX_DEPTH * 200;
     }
 

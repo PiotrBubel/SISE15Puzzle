@@ -1,6 +1,6 @@
 package com.mycompany.sisezad1;
 
-import com.mycompany.sisezad1.utils.*;
+import com.mycompany.sisezad1.utils.ReportsGenerator;
 
 
 /**
