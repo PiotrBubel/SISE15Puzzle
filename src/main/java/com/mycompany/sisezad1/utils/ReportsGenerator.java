@@ -1,8 +1,19 @@
 package com.mycompany.sisezad1.utils;
 
 import com.mycompany.sisezad1.Board;
-import com.mycompany.sisezad1.heuristics.*;
-import com.mycompany.sisezad1.solvers.*;
+import com.mycompany.sisezad1.heuristics.AManhattanDistanceComparator;
+import com.mycompany.sisezad1.heuristics.AMisplacedComparator;
+import com.mycompany.sisezad1.heuristics.ManhattanDistanceComparator;
+import com.mycompany.sisezad1.heuristics.MisplacedComparator;
+import com.mycompany.sisezad1.solvers.BestFirstSearch;
+import com.mycompany.sisezad1.solvers.BreadthFirstSearch;
+import com.mycompany.sisezad1.solvers.CustomBestFirstSearch;
+import com.mycompany.sisezad1.solvers.DepthFirstSearch;
+import com.mycompany.sisezad1.solvers.HeuristicSolver;
+import com.mycompany.sisezad1.solvers.IterativeAStarSearch;
+import com.mycompany.sisezad1.solvers.IterativeDepthFirstSearch;
+import com.mycompany.sisezad1.solvers.NonHeuristicSolver;
+import com.mycompany.sisezad1.solvers.PuzzleSolver;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -50,11 +61,13 @@ public class ReportsGenerator {
 
 
         streamReport.println("Algorytm: " + className);
-        if (solver.getHeuristicFunction() != null) {
-            streamReport.println("Heurystyka: " + solver.getHeuristicFunction().getClass().getSimpleName());
+        if (solver instanceof HeuristicSolver) {
+            HeuristicSolver hs = (HeuristicSolver) solver;
+            streamReport.println("Heurystyka: " + hs.getHeuristicFunction().getClass().getSimpleName());
         } else {
-            if (solver.getOrder() != null) {
-                streamReport.println("Kolejnosc: " + solver.getOrder());
+            if (solver instanceof NonHeuristicSolver) {
+                NonHeuristicSolver hs = (NonHeuristicSolver) solver;
+                streamReport.println("Kolejnosc: " + hs.getOrder());
             } else {
                 streamReport.println("--blad--");
             }
@@ -248,7 +261,7 @@ public class ReportsGenerator {
             System.out.println("Blad podczas tworzenia pliku paths");
         }
         reportStream.println("maksymalna glebokosc algorytmow iteracyjnych, bfs i dfs: " + algorithmsMaxDepth);
-        reportStream.println("maksymalna glebokosc algorytmu custom best first: " + algorithmsMaxDepth * 20 +", innych heurystycznych nie dotyczy");
+        reportStream.println("maksymalna glebokosc algorytmu custom best first: " + algorithmsMaxDepth * 20 + ", innych heurystycznych nie dotyczy");
         reportStream.println("Ochrona przed prostymi petlami: " + Board.SIMPLE_LOOP_CONTROL);
         reportStream.println("Ochrona przed zlozonymi petlami: " + Board.STRONG_LOOP_CONTROL);
         reportStream.println();
@@ -259,10 +272,12 @@ public class ReportsGenerator {
             PuzzleSolver actual = solvers.get(s);
             avgPath[s] = avgPath[s] / (boards.size() - notSolved[s]);
             String additionalAlgData;
-            if (actual.getHeuristicFunction() != null) {
-                additionalAlgData = " heurystyka: " + actual.getHeuristicFunction().getClass().getSimpleName();
+            if (actual instanceof HeuristicSolver) {
+                HeuristicSolver hs = (HeuristicSolver) actual;
+                additionalAlgData = " heurystyka: " + hs.getHeuristicFunction().getClass().getSimpleName();
             } else {
-                additionalAlgData = "kolejnosc: " + actual.getOrder();
+                NonHeuristicSolver hs = (NonHeuristicSolver) actual;
+                additionalAlgData = "kolejnosc: " + hs.getOrder();
             }
 
             reportStream.println(actual.getClass().getSimpleName() + "  " + additionalAlgData);

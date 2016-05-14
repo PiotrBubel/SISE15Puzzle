@@ -12,20 +12,16 @@ import java.util.List;
  *
  * Celem tej strategii jest wyznaczenie najtańszej drogi w grafie.
  */
-public class IterativeAStarSearch extends PuzzleSolver {
+public class IterativeAStarSearch extends HeuristicSolver {
 
     public IterativeAStarSearch(Heuristic heuristicFunction, int depth) {
-        super();
-        maxDepth = depth;
+        super(depth * 200);
         this.heuristicFunction = heuristicFunction;
-        this.createdBoards = 0;
     }
 
     public IterativeAStarSearch(Heuristic heuristicFunction) {
         super();
         maxDepth = DEFAULT_MAX_DEPTH * 200;
-        this.heuristicFunction = heuristicFunction;
-        this.createdBoards = 0;
     }
 
     @Override

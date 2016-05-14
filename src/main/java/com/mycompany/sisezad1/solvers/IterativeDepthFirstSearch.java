@@ -11,24 +11,18 @@ import java.io.PrintStream;
  * Po zbadaniu wszystkich krawędzi wychodzących z danego wierzchołka algorytm powraca do
  * wierzchołka, z którego dany wierzchołek został odwiedzony
  */
-public class IterativeDepthFirstSearch extends PuzzleSolver {
+public class IterativeDepthFirstSearch extends NonHeuristicSolver {
 
     public IterativeDepthFirstSearch(String order) {
         super(order);
-        maxDepth = DEFAULT_MAX_DEPTH;
-        this.createdBoards = 0;
     }
 
     public IterativeDepthFirstSearch(String order, int depth) {
-        super(order);
-        maxDepth = depth;
-        this.createdBoards = 0;
+        super(order, depth);
     }
 
     public IterativeDepthFirstSearch(int depth) {
-        super();
-        maxDepth = depth;
-        this.createdBoards = 0;
+        super(depth);
     }
 
     public IterativeDepthFirstSearch() {

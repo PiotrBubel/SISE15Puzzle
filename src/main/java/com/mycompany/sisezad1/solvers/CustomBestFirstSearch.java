@@ -19,19 +19,17 @@ import java.util.List;
  * Brak zapamietywania calego grafu, nie przechodzi przez graf, do optymalnego dzialania wymaga
  * wlaczonego STRONG_LOOP_CONTROL
  */
-public class CustomBestFirstSearch extends PuzzleSolver {
+public class CustomBestFirstSearch extends HeuristicSolver {
 
     public CustomBestFirstSearch(Heuristic heuristicFunction) {
         super();
         this.heuristicFunction = heuristicFunction;
         this.maxDepth = DEFAULT_MAX_DEPTH * 20;
-        this.createdBoards = 0;
     }
     public CustomBestFirstSearch(Heuristic heuristicFunction, int maxDepth) {
         super();
         this.heuristicFunction = heuristicFunction;
         this.maxDepth = maxDepth * 20;
-        this.createdBoards = 0;
     }
 
     @Override

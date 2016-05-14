@@ -197,10 +197,12 @@ public class ConsoleMode {
         }
 
         System.out.println("Uruchomi sie algorytm: " + solver.getClass().getSimpleName());
-        if (solver.getHeuristicFunction() == null) {
-            System.out.println("Kolejnosc: " + solver.getOrder());
+        if (solver instanceof NonHeuristicSolver) {
+            NonHeuristicSolver hs = (NonHeuristicSolver) solver;
+            System.out.println("Kolejnosc: " + hs.getOrder());
         } else {
-            System.out.println("Heurystyka: " + solver.getHeuristicFunction().getClass().getSimpleName());
+            HeuristicSolver hs = (HeuristicSolver) solver;
+            System.out.println("Heurystyka: " + hs.getHeuristicFunction().getClass().getSimpleName());
         }
 
         Board instance = null;

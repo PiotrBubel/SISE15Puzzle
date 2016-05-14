@@ -22,9 +22,8 @@ import java.util.List;
  * prowadzi dokładnie jedna ścieżka z s, która jest jednocześnie najkrótszą ścieżką w grafie
  * wejściowym.
  */
-public class BreadthFirstSearch extends PuzzleSolver {
+public class BreadthFirstSearch extends NonHeuristicSolver {
 
-    private int maxDepth;
     // Robie na listach ale mozna tez na kolejce FIFO
     private List<Board> uncheckedNodes;
     private List<Board> checkedNodes;
@@ -32,19 +31,14 @@ public class BreadthFirstSearch extends PuzzleSolver {
 
     public BreadthFirstSearch() {
         super();
-        this.maxDepth = DEFAULT_MAX_DEPTH;
-        this.createdBoards = 0;
     }
 
     public BreadthFirstSearch(String order) {
         super(order);
-        this.maxDepth = DEFAULT_MAX_DEPTH;
-        this.createdBoards = 0;
     }
 
     public BreadthFirstSearch(String order, int maxDepth) {
-        super(order);
-        this.maxDepth = maxDepth;
+        super(order, maxDepth);
         this.createdBoards = 0;
     }
 

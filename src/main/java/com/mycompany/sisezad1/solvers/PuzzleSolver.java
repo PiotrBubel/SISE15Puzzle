@@ -1,8 +1,6 @@
 package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
-import com.mycompany.sisezad1.heuristics.Heuristic;
-import com.mycompany.sisezad1.utils.BoardUtils;
 
 import java.io.PrintStream;
 
@@ -14,50 +12,31 @@ public abstract class PuzzleSolver {
 
     public static int DEFAULT_MAX_DEPTH = 25;
     protected static int CREATED_BOARDS = 0;
+
     protected int createdBoards;
     protected long time = 0;
-    protected String order;            //nieuzywane w metodach heurystycznych
     protected Board firstBoard;
-    protected Heuristic heuristicFunction; //nieuzywane w metodach nie-heurystycznych
     protected int maxDepth;                 //w custom best-first to liczba duzo wieksza niz w innych algorytmach
 
 
-    /**
-     * Wywoływany gdy kolejność ma być losowana
-     */
     public PuzzleSolver() {
-        this.order = BoardUtils.randomizeOrder();
         this.firstBoard = null;
         this.createdBoards = 0;
-        this.heuristicFunction = null;
+        this.maxDepth = DEFAULT_MAX_DEPTH;
     }
 
-    public PuzzleSolver(String order) {
-        if (order.length() != 4
-                || !(order.toLowerCase().contains(Board.DOWN_CHAR)
-                && order.toLowerCase().contains(Board.LEFT_CHAR)
-                && order.toLowerCase().contains(Board.RIGHT_CHAR)
-                && order.toLowerCase().contains(Board.UP_CHAR)) ^ order.toLowerCase().contains("r")) {
-            //jesli order nie ma 4 znakow lub jesli
-            //      nie zawiera wszystkich liter-kierunkow xor zawiera r
-            this.order = BoardUtils.randomizeOrder();
-        } else {
-            this.order = order;
-        }
+    public PuzzleSolver(int maxDepth) {
         this.firstBoard = null;
         this.createdBoards = 0;
-        this.heuristicFunction = null;
+        this.maxDepth = maxDepth;
     }
+
 
     /**
      * Method for counting created boards, to use only in Board class
      */
     public static void addCreated(int i) {
         PuzzleSolver.CREATED_BOARDS = PuzzleSolver.CREATED_BOARDS + i;
-    }
-
-    public Heuristic getHeuristicFunction() {
-        return this.heuristicFunction;
     }
 
     public long getTimeInNanos() {
@@ -70,10 +49,6 @@ public abstract class PuzzleSolver {
 
     public int getMaxDepth() {
         return this.maxDepth;
-    }
-
-    public String getOrder() {
-        return this.order;
     }
 
     public int getCreatedBoards() {

@@ -1,13 +1,12 @@
 package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
-import com.mycompany.sisezad1.heuristics.*;
-import com.mycompany.sisezad1.utils.BoardUtils;
+import com.mycompany.sisezad1.heuristics.Heuristic;
+import com.mycompany.sisezad1.heuristics.MisplacedComparator;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -19,30 +18,24 @@ import java.util.List;
  * A* do dzialania wymaga komparatora A, gdy podany zostanie komparator nie-A dziala jak zwykle
  * best-first
  */
-public class BestFirstSearch extends PuzzleSolver {
+public class BestFirstSearch extends HeuristicSolver {
 
-    private List<Board> uncheckedNodes;
-    private List<Board> checkedNodes;
-    private List<Board> newNodes;
+    List<Board> uncheckedNodes;
+    List<Board> checkedNodes;
 
     public BestFirstSearch() {
         super();
-        maxDepth = DEFAULT_MAX_DEPTH;
         this.heuristicFunction = new MisplacedComparator();
-        this.createdBoards = 0;
     }
 
     public BestFirstSearch(Heuristic heuristicFunction, int depth) {
-        //maxDepth = depth - 1;//jak rekurencyjnie
-        maxDepth = depth;
+        super(depth);
         this.heuristicFunction = heuristicFunction;
-        this.createdBoards = 0;
     }
 
     public BestFirstSearch(Heuristic heuristicFunction) {
-        maxDepth = DEFAULT_MAX_DEPTH;
+        super();
         this.heuristicFunction = heuristicFunction;
-        this.createdBoards = 0;
     }
 
     @Override
@@ -50,7 +43,7 @@ public class BestFirstSearch extends PuzzleSolver {
 
         uncheckedNodes = new ArrayList<>();
         checkedNodes = new ArrayList<>();
-        newNodes = new ArrayList<>();
+        List<Board> newNodes = new ArrayList<>();
         Board current;
         PuzzleSolver.CREATED_BOARDS = 0;
         this.createdBoards = 0;
@@ -83,7 +76,7 @@ public class BestFirstSearch extends PuzzleSolver {
             newNodes = current.getPossibleStates(heuristicFunction);
             this.createdBoards = this.createdBoards + newNodes.size();
             //usuniecie powtarzajacych sie wierzcholkow (zeby nie zapetlilo)
-            newNodes = newNodesWithoutChecked();
+            newNodes = newNodesWithoutChecked(newNodes);
 
             uncheckedNodes.addAll(newNodes);
         }
@@ -92,7 +85,7 @@ public class BestFirstSearch extends PuzzleSolver {
         return null;
     }
 
-    private List<Board> newNodesWithoutChecked() {
+    private List<Board> newNodesWithoutChecked(List<Board> newNodes) {
         List<Board> tmp = new ArrayList<>();
         boolean isChecked = false;
         for (Board newNode : newNodes) {

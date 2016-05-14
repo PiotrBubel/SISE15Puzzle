@@ -12,24 +12,19 @@ import java.io.PrintStream;
  * Po zbadaniu wszystkich krawędzi wychodzących z danego wierzchołka algorytm powraca do
  * wierzchołka, z którego dany wierzchołek został odwiedzony
  */
-public class DepthFirstSearch extends PuzzleSolver {
+public class DepthFirstSearch extends NonHeuristicSolver {
 
     public DepthFirstSearch() {
         super();
-        maxDepth = DEFAULT_MAX_DEPTH;
-        this.createdBoards = 0;
     }
 
     public DepthFirstSearch(String order) {
         super(order);
-        maxDepth = DEFAULT_MAX_DEPTH;
-        this.createdBoards = 0;
     }
 
     public DepthFirstSearch(String order, int depth) {
         super(order);
         maxDepth = depth - 1;
-        this.createdBoards = 0;
     }
 
     @Override
