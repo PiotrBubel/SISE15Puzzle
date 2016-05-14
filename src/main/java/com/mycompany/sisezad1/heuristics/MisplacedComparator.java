@@ -2,8 +2,6 @@ package com.mycompany.sisezad1.heuristics;
 
 import com.mycompany.sisezad1.Board;
 
-import java.util.Comparator;
-
 /**
  * Ocena heurystyczna: liczba elementow poza swoim polozeniem docelowym, nie liczy zera
  *

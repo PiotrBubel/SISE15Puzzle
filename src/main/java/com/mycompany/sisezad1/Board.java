@@ -72,14 +72,6 @@ public class Board {
         pathValue = original.pathValue;
     }
 
-    public void updatePathValue(int v) {
-        this.pathValue = +v;
-    }
-
-    public int getPathValue() {
-        return this.pathValue;
-    }
-
     public void setNextStepInPath(String step) {
         this.path = path + step;
     }

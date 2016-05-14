@@ -6,8 +6,19 @@
 package com.mycompany.sisezad1.utils;
 
 import com.mycompany.sisezad1.Board;
-import com.mycompany.sisezad1.heuristics.*;
-import com.mycompany.sisezad1.solvers.*;
+import com.mycompany.sisezad1.heuristics.AManhattanDistanceComparator;
+import com.mycompany.sisezad1.heuristics.AMisplacedComparator;
+import com.mycompany.sisezad1.heuristics.ManhattanDistanceComparator;
+import com.mycompany.sisezad1.heuristics.MisplacedComparator;
+import com.mycompany.sisezad1.solvers.BestFirstSearch;
+import com.mycompany.sisezad1.solvers.BreadthFirstSearch;
+import com.mycompany.sisezad1.solvers.CustomBestFirstSearch;
+import com.mycompany.sisezad1.solvers.DepthFirstSearch;
+import com.mycompany.sisezad1.solvers.HeuristicSolver;
+import com.mycompany.sisezad1.solvers.IterativeAStarSearch;
+import com.mycompany.sisezad1.solvers.IterativeDepthFirstSearch;
+import com.mycompany.sisezad1.solvers.NonHeuristicSolver;
+import com.mycompany.sisezad1.solvers.PuzzleSolver;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;

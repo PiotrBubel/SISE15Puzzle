@@ -1,9 +1,6 @@
 package com.mycompany.sisezad1.heuristics;
 
 import com.mycompany.sisezad1.Board;
-import com.mycompany.sisezad1.utils.BoardUtils;
-
-import java.util.Comparator;
 
 /**
  * Ocena heurystyczna: liczba elementow poza swoim polozeniem docelowym + liczba ruchow od startu

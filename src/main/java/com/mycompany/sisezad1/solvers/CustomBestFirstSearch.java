@@ -22,13 +22,12 @@ import java.util.List;
 public class CustomBestFirstSearch extends HeuristicSolver {
 
     public CustomBestFirstSearch(Heuristic heuristicFunction) {
-        super();
-        this.heuristicFunction = heuristicFunction;
+        super(heuristicFunction);
         this.maxDepth = DEFAULT_MAX_DEPTH * 20;
     }
+
     public CustomBestFirstSearch(Heuristic heuristicFunction, int maxDepth) {
-        super();
-        this.heuristicFunction = heuristicFunction;
+        super(heuristicFunction);
         this.maxDepth = maxDepth * 20;
     }
 
@@ -42,8 +41,7 @@ public class CustomBestFirstSearch extends HeuristicSolver {
         Board current = new Board(unsolved.getState());
         Board last = null;
         String deadlockCause = "x";
-        List<Board> nextCombinations = new ArrayList<>();
-
+        List<Board> nextCombinations;
 
         this.createdBoards = 0;
 
@@ -73,7 +71,6 @@ public class CustomBestFirstSearch extends HeuristicSolver {
             //System.out.println("steps: " + steps);
             if (steps == maxDepth) {
                 this.createdBoards = maxDepth;
-                //System.out.println("CBF: zbyt duza liczba kombinacji");
                 Board.STRONG_LOOP_CONTROL = tmp;
                 return null;
             }

@@ -7,7 +7,8 @@ import java.util.Comparator;
 /**
  * Created by Piotrek on 06.05.2016.
  */
-public interface Heuristic extends Comparator<Board>{
+public interface Heuristic extends Comparator<Board> {
     int heuristicValue(Board board);
+
     int compare(Board b1, Board b2);
 }

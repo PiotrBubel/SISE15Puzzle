@@ -16,8 +16,7 @@ public abstract class PuzzleSolver {
     protected int createdBoards;
     protected long time = 0;
     protected Board firstBoard;
-    protected int maxDepth;                 //w custom best-first to liczba duzo wieksza niz w innych algorytmach
-
+    protected int maxDepth;
 
     public PuzzleSolver() {
         this.firstBoard = null;
