@@ -42,8 +42,8 @@ public class BreadthFirstSearch extends NonHeuristicSolver {
 
     @Override
     public Board solve(Board unsolved, PrintStream stream) {
-        uncheckedNodes = new ArrayList<>();
-        checkedNodes = new ArrayList<>();
+        uncheckedNodes = new ArrayList<>(); //roman
+        checkedNodes = new ArrayList<>();   //andrzej
         newNodes = new ArrayList<>();
         Board current;
         PuzzleSolver.CREATED_BOARDS = 0;
@@ -75,7 +75,7 @@ public class BreadthFirstSearch extends NonHeuristicSolver {
             // Dodanie do listy sprawdzonych, usuniecie z niesprawdzonych
             addToChecked(current);
 
-            if (countActualDepth(current) > maxDepth) {
+            if (current.getPath().length() > maxDepth) {
                 //System.out.println("Za duza głebokosc");
                 // To raczej nie powinno sie zdarzyc i pewnie mozna to usunac
                 // Bo jak nie znajdzie to petla while sie skonczy wiec mozliwe
@@ -111,15 +111,4 @@ public class BreadthFirstSearch extends NonHeuristicSolver {
         checkedNodes.add(current);
         uncheckedNodes.remove(current);
     }
-
-    private int countActualDepth(Board current) {
-        int depth = 0;
-        Board parent = current.getParentNode();
-        while (parent != null) {
-            depth++;
-            parent = parent.getParentNode();
-        }
-        return depth;
-    }
-
 }

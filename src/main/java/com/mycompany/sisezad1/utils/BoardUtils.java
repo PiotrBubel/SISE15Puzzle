@@ -1,6 +1,7 @@
 package com.mycompany.sisezad1.utils;
 
 import com.mycompany.sisezad1.Board;
+import com.mycompany.sisezad1.Moves;
 import com.mycompany.sisezad1.heuristics.Heuristic;
 
 import java.util.ArrayList;
@@ -66,10 +67,10 @@ public class BoardUtils {
      */
     public static String randomizeOrder() {
         List<String> ord = new ArrayList<>();
-        ord.add(Board.DOWN_CHAR);
-        ord.add(Board.LEFT_CHAR);
-        ord.add(Board.RIGHT_CHAR);
-        ord.add(Board.UP_CHAR);
+        ord.add(Moves.DOWN_CHAR);
+        ord.add(Moves.LEFT_CHAR);
+        ord.add(Moves.RIGHT_CHAR);
+        ord.add(Moves.UP_CHAR);
         String randOrd = new String();
         while (ord.size() > 0) {
             Random r = new Random();
@@ -196,23 +197,47 @@ public class BoardUtils {
         return bestStates;
     }
 
+    /**
+     * @return reversed moves, which can be used to bring board to first state
+     */
     public static String reverseMoves(String moves) {
         char[] directions = new StringBuilder(moves).reverse().toString().toCharArray();
         String reverseM = "";
         for (char s : directions) {
-            if (Board.RIGHT_CHAR.equals(s) || Board.RIGHT_CHAR_CAP.equals(s)) {
-                reverseM = reverseM + Board.LEFT_CHAR;
+            boolean addedDirection = false;
+            String d = new String(new char[]{s});
+            if (Moves.RIGHT_CHAR.equals(d)) {
+                reverseM = reverseM + Moves.LEFT_CHAR;
+                addedDirection = true;
             }
-            if (Board.LEFT_CHAR.equals(s) || Board.LEFT_CHAR_CAP.equals(s)) {
-                reverseM = reverseM + Board.RIGHT_CHAR;
+            if (Moves.LEFT_CHAR.equals(d)) {
+                reverseM = reverseM + Moves.RIGHT_CHAR;
+                addedDirection = true;
             }
-            if (Board.UP_CHAR.equals(s) || Board.UP_CHAR_CAP.equals(s)) {
-                reverseM = reverseM + Board.DOWN_CHAR;
+            if (Moves.UP_CHAR.equals(d)) {
+                reverseM = reverseM + Moves.DOWN_CHAR;
+                addedDirection = true;
             }
-            if (Board.DOWN_CHAR.equals(s) || Board.DOWN_CHAR_CAP.equals(s)) {
-                reverseM = reverseM + Board.UP_CHAR;
+            if (Moves.DOWN_CHAR.equals(d)) {
+                reverseM = reverseM + Moves.UP_CHAR;
+                addedDirection = true;
+            }
+
+            if (!addedDirection) {
+                return null;
             }
         }
+
         return reverseM;
+    }
+
+    public static List<Board> deleteBoardsAboveMaxHeuristicCost(List<Board> list, int maxCost, Heuristic heuristic) {
+        List<Board> toReturn = new ArrayList<>();
+        for (Board b : list) {
+            if (heuristic.heuristicValue(b) <= maxCost) {
+                toReturn.add(b);
+            }
+        }
+        return toReturn;
     }
 }

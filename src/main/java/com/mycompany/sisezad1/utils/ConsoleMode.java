@@ -302,29 +302,37 @@ public class ConsoleMode {
                 {9, 10, 7, 12},
                 {13, 14, 11, 15}
         };
+
+
         int[][] state7 = new int[][]{ //da sie latwo rozwiazac - 7 ruchow
-                {5, 1, 2, 4},
-                {9, 6, 3, 8},
-                {0, 10, 7, 12},
-                {13, 14, 11, 15}
+                {0, 2, 3, 4},
+                {1, 6, 7, 8},
+                {5, 10, 11, 12},
+                {9, 13, 14, 15}
         };
 
-        FileUtils.saveBoard("zzz.txt", new Board(state6));
-        Board instance = FileUtils.loadBoard("zzz.txt");
+        int[][] state8 = new int[][]{ //da sie latwo rozwiazac - 7 ruchow
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 0, 15}
+        };
+        //Board instance = FileUtils.loadBoard("zzz.txt");
+        Board instance = new Board(state7);
+        FileUtils.saveBoard("Aa_FirstBoard.txt", instance);
 
         //instance = BoardUtils.randomizeBoard(4, 4, 10);
-
         //FileUtils.saveBoard("plikTestowy.txt", instance);
 
-        Board.STRONG_LOOP_CONTROL = false;
-
+        Board.STRONG_LOOP_CONTROL = true;
+        Board.SIMPLE_LOOP_CONTROL = true;
 
         PuzzleSolver solver;// = new IterativeDepthFirstSearch("wsad", 20);
-        //solver = new DepthFirstSearch("wsad", 15);
+        solver = new DepthFirstSearch("dplg", 15);
         //solver = new CustomBestFirstSearch(new MisplacedComparator());
         //solver = new CustomBestFirstSearch(new ManhattanDistanceComparator());
         //solver = new BestFirstSearch(new AMisplacedComparator(), 20);             //A* with not-A comparator acts as regular best-first search
-        solver = new IterativeAStarSearch(new AMisplacedComparator(), 20);    //A* with not-A comparator acts as regular best-first search
+        //solver = new IterativeAStarSearch(new AMisplacedComparator(), 20);    //A* with not-A comparator acts as regular best-first search
         //solver = new BreadthFirstSearch("wsad", 10);
 
         //ReportsGenerator.solveWithReport(solver, "report1", instance);
@@ -332,13 +340,13 @@ public class ConsoleMode {
         PrintStream stream = null;
         try {
             String className = solver.getClass().getSimpleName();
-            stream = new PrintStream(new FileOutputStream("path_" + className + ".txt"));
+            stream = new PrintStream(new FileOutputStream("Aa_CurrentPath_" + className + ".txt"));
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Blad podczas tworzenia pliku");
         }
 
-        Board solved = solver.solve(instance, null);
+        Board solved = solver.solve(instance, stream);
 
         if (solved != null) {
             BoardUtils.printBoard(solved);

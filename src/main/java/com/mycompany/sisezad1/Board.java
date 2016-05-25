@@ -14,15 +14,6 @@ import java.util.List;
  */
 public class Board {
 
-    public static final String RIGHT_CHAR_CAP = "P";
-    public static final String LEFT_CHAR_CAP = "L";
-    public static final String UP_CHAR_CAP = "G";
-    public static final String DOWN_CHAR_CAP = "D";
-    public static final String RIGHT_CHAR = "p";
-    public static final String LEFT_CHAR = "l";
-    public static final String UP_CHAR = "g";
-    public static final String DOWN_CHAR = "d";
-
     /**
      * Designed to work with custom best-first, not safe to use outside this algorithm, may cause
      * deadlocks (in only 4 cases, but still)
@@ -36,7 +27,7 @@ public class Board {
 
     private int[][] state;
     private List<Board> nextNodes;
-    private Board parentNode;
+    //private Board parentNode;
     private String path;
     private int pathValue; //used in IDA*
 
@@ -47,7 +38,7 @@ public class Board {
      */
     public Board(int[][] state) {
         this.state = state.clone();
-        parentNode = null;
+        //parentNode = null;
         nextNodes = null;
         path = "";
     }
@@ -66,7 +57,7 @@ public class Board {
                 state[x][y] = original.state[x][y];
             }
         }
-        parentNode = null;
+        //parentNode = null;
         nextNodes = null;
         path = original.getPath();
         pathValue = original.pathValue;
@@ -80,13 +71,13 @@ public class Board {
         return this.path;
     }
 
-    public Board getParentNode() {
-        return this.parentNode;
-    }
+    //public Board getParentNode() {
+    //    return this.parentNode;
+    //}
 
-    public void setParentNode(Board parent) {
-        this.parentNode = parent;
-    }
+    //public void setParentNode(Board parent) {
+    //    this.parentNode = parent;
+    //}
 
     public List<Board> getNextNodes() {
         return this.nextNodes;
@@ -131,7 +122,7 @@ public class Board {
     public boolean canMoveRight() {
         if (SIMPLE_LOOP_CONTROL || STRONG_LOOP_CONTROL) {
             if (!this.path.isEmpty() && this.path != null) {
-                if (this.path.toLowerCase().endsWith(Board.LEFT_CHAR)) {
+                if (this.path.toLowerCase().endsWith(Moves.LEFT_CHAR)) {
                     return false;
                 }
                 if (STRONG_LOOP_CONTROL && (
@@ -147,17 +138,17 @@ public class Board {
     }
 
     private String loopCauseRight1() {  //DWAS
-        return Board.RIGHT_CHAR + Board.UP_CHAR + Board.LEFT_CHAR + Board.DOWN_CHAR;
+        return Moves.RIGHT_CHAR + Moves.UP_CHAR + Moves.LEFT_CHAR + Moves.DOWN_CHAR;
     }
 
     private String loopCauseRight2() {   //DSAW
-        return Board.RIGHT_CHAR + Board.DOWN_CHAR + Board.LEFT_CHAR + Board.UP_CHAR;
+        return Moves.RIGHT_CHAR + Moves.DOWN_CHAR + Moves.LEFT_CHAR + Moves.UP_CHAR;
     }
 
     public boolean canMoveLeft() {
         if (SIMPLE_LOOP_CONTROL || STRONG_LOOP_CONTROL) {
             if (!this.path.isEmpty() && this.path != null) {
-                if (this.path.toLowerCase().endsWith(Board.RIGHT_CHAR)) {
+                if (this.path.toLowerCase().endsWith(Moves.RIGHT_CHAR)) {
                     return false;
                 }
                 if (STRONG_LOOP_CONTROL && (
@@ -173,17 +164,17 @@ public class Board {
     }
 
     private String loopCauseLeft1() {  //AWDS
-        return Board.LEFT_CHAR + Board.UP_CHAR + Board.RIGHT_CHAR + Board.DOWN_CHAR;
+        return Moves.LEFT_CHAR + Moves.UP_CHAR + Moves.RIGHT_CHAR + Moves.DOWN_CHAR;
     }
 
     private String loopCauseLeft2() {   //ASDW
-        return Board.LEFT_CHAR + Board.DOWN_CHAR + Board.RIGHT_CHAR + Board.UP_CHAR;
+        return Moves.LEFT_CHAR + Moves.DOWN_CHAR + Moves.RIGHT_CHAR + Moves.UP_CHAR;
     }
 
     public boolean canMoveUp() {
         if (SIMPLE_LOOP_CONTROL || STRONG_LOOP_CONTROL) {
             if (!this.path.isEmpty() && this.path != null) {
-                if (this.path.toLowerCase().endsWith(Board.DOWN_CHAR)) {
+                if (this.path.toLowerCase().endsWith(Moves.DOWN_CHAR)) {
                     return false;
                 }
                 if (STRONG_LOOP_CONTROL && (
@@ -199,17 +190,17 @@ public class Board {
     }
 
     private String loopCauseUp1() {  //WDSA
-        return Board.UP_CHAR + Board.RIGHT_CHAR + Board.DOWN_CHAR + Board.LEFT_CHAR;
+        return Moves.UP_CHAR + Moves.RIGHT_CHAR + Moves.DOWN_CHAR + Moves.LEFT_CHAR;
     }
 
     private String loopCauseUp2() {   //WASD
-        return Board.UP_CHAR + Board.LEFT_CHAR + Board.DOWN_CHAR + Board.RIGHT_CHAR;
+        return Moves.UP_CHAR + Moves.LEFT_CHAR + Moves.DOWN_CHAR + Moves.RIGHT_CHAR;
     }
 
     public boolean canMoveDown() {
         if (SIMPLE_LOOP_CONTROL || STRONG_LOOP_CONTROL) {
             if (!this.path.isEmpty() && this.path != null) {
-                if (this.path.toLowerCase().endsWith(Board.UP_CHAR)) {
+                if (this.path.toLowerCase().endsWith(Moves.UP_CHAR)) {
                     return false;
                 }
                 if (STRONG_LOOP_CONTROL && (
@@ -225,11 +216,11 @@ public class Board {
     }
 
     private String loopCauseDown1() {  //SDWA
-        return Board.DOWN_CHAR + Board.RIGHT_CHAR + Board.UP_CHAR + Board.LEFT_CHAR;
+        return Moves.DOWN_CHAR + Moves.RIGHT_CHAR + Moves.UP_CHAR + Moves.LEFT_CHAR;
     }
 
     private String loopCauseDown2() {   //SAWD
-        return Board.DOWN_CHAR + Board.LEFT_CHAR + Board.UP_CHAR + Board.RIGHT_CHAR;
+        return Moves.DOWN_CHAR + Moves.LEFT_CHAR + Moves.UP_CHAR + Moves.RIGHT_CHAR;
     }
 
     public Board moveRight() {
@@ -241,8 +232,8 @@ public class Board {
         newState[zeroCoord[0]][zeroCoord[1] + 1] = 0;
         //return new Board(newState);
         newB.path = new String(this.path);
-        newB.setNextStepInPath(Board.RIGHT_CHAR);
-        newB.setParentNode(this);
+        newB.setNextStepInPath(Moves.RIGHT_CHAR);
+        //newB.setParentNode(this);
         return newB;
     }
 
@@ -254,8 +245,8 @@ public class Board {
         newState[zeroCoord[0]][zeroCoord[1]] = newState[zeroCoord[0]][zeroCoord[1] - 1];
         newState[zeroCoord[0]][zeroCoord[1] - 1] = 0;
         newB.path = new String(this.path);
-        newB.setNextStepInPath(Board.LEFT_CHAR);
-        newB.setParentNode(this);
+        newB.setNextStepInPath(Moves.LEFT_CHAR);
+        //newB.setParentNode(this);
         return newB;
     }
 
@@ -267,8 +258,8 @@ public class Board {
         newState[zeroCoord[0]][zeroCoord[1]] = newState[zeroCoord[0] - 1][zeroCoord[1]];
         newState[zeroCoord[0] - 1][zeroCoord[1]] = 0;
         newB.path = new String(this.path);
-        newB.setNextStepInPath(Board.UP_CHAR);
-        newB.setParentNode(this);
+        newB.setNextStepInPath(Moves.UP_CHAR);
+        //newB.setParentNode(this);
         return newB;
     }
 
@@ -280,8 +271,8 @@ public class Board {
         newState[zeroCoord[0]][zeroCoord[1]] = newState[zeroCoord[0] + 1][zeroCoord[1]];
         newState[zeroCoord[0] + 1][zeroCoord[1]] = 0;
         newB.path = new String(this.path);
-        newB.setNextStepInPath(Board.DOWN_CHAR);
-        newB.setParentNode(this);
+        newB.setNextStepInPath(Moves.DOWN_CHAR);
+        //newB.setParentNode(this);
         return newB;
     }
 
@@ -353,12 +344,7 @@ public class Board {
 
         if (maxCost >= 0) {
             this.nextNodes = getPossibleStates(heuristics);
-            for (Board b : nextNodes) {
-                b.updatePathCost(heuristics);
-                if (b.pathValue > maxCost) {
-                    nextNodes.remove(b);
-                }
-            }
+            this.nextNodes = BoardUtils.deleteBoardsAboveMaxHeuristicCost(this.nextNodes, maxCost, heuristics);
 
             PuzzleSolver.addCreated(this.nextNodes.size());
             for (Board nextNode : nextNodes) {
@@ -413,29 +399,25 @@ public class Board {
     public Board move(char direction) {
         String directionString = new String(new char[]{direction});
         switch (directionString) {
-            case Board.UP_CHAR_CAP:
-            case Board.UP_CHAR:
+            case Moves.UP_CHAR:
                 if (canMoveUp()) {
                     return moveUp();
                 } else {
                     return null;
                 }
-            case Board.DOWN_CHAR_CAP:
-            case Board.DOWN_CHAR:
+            case Moves.DOWN_CHAR:
                 if (canMoveDown()) {
                     return moveDown();
                 } else {
                     return null;
                 }
-            case Board.LEFT_CHAR_CAP:
-            case Board.LEFT_CHAR:
+            case Moves.LEFT_CHAR:
                 if (canMoveLeft()) {
                     return moveLeft();
                 } else {
                     return null;
                 }
-            case Board.RIGHT_CHAR_CAP:
-            case Board.RIGHT_CHAR:
+            case Moves.RIGHT_CHAR:
                 if (canMoveRight()) {
                     return moveRight();
                 } else {
