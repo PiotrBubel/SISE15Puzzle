@@ -19,13 +19,11 @@ public abstract class PuzzleSolver {
     protected int maxDepth;
 
     public PuzzleSolver() {
-        this.firstBoard = null;
         this.createdBoards = 0;
         this.maxDepth = DEFAULT_MAX_DEPTH;
     }
 
     public PuzzleSolver(int maxDepth) {
-        this.firstBoard = null;
         this.createdBoards = 0;
         this.maxDepth = maxDepth;
     }

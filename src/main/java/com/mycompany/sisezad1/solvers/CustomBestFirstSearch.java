@@ -1,6 +1,7 @@
 package com.mycompany.sisezad1.solvers;
 
 import com.mycompany.sisezad1.Board;
+import com.mycompany.sisezad1.Moves;
 import com.mycompany.sisezad1.heuristics.Heuristic;
 
 import java.io.PrintStream;
@@ -83,19 +84,19 @@ public class CustomBestFirstSearch extends HeuristicSolver {
 
     private List<Board> getNextCombinations(Board current, String deadlockCause) {
         List<Board> nextCombinations = new ArrayList<>();
-        if (deadlockCause != Board.DOWN_CHAR && current.canMoveDown()) {
+        if (deadlockCause != Moves.DOWN_CHAR && current.canMoveDown()) {
             nextCombinations.add(new Board(current).moveDown());
             this.createdBoards++;
         }
-        if (deadlockCause != Board.UP_CHAR && current.canMoveUp()) {
+        if (deadlockCause != Moves.UP_CHAR && current.canMoveUp()) {
             nextCombinations.add(new Board(current).moveUp());
             this.createdBoards++;
         }
-        if (deadlockCause != Board.RIGHT_CHAR && current.canMoveRight()) {
+        if (deadlockCause != Moves.RIGHT_CHAR && current.canMoveRight()) {
             nextCombinations.add(new Board(current).moveRight());
             this.createdBoards++;
         }
-        if (deadlockCause != Board.LEFT_CHAR && current.canMoveLeft()) {
+        if (deadlockCause != Moves.LEFT_CHAR && current.canMoveLeft()) {
             nextCombinations.add(new Board(current).moveLeft());
             this.createdBoards++;
         }
